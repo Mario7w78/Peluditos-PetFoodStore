@@ -1,0 +1,30 @@
+/* src/styles/registro.module.css */
+.container {
+  text-align: center;
+  padding: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input {
+  margin: 10px 0;
+  padding: 8px;
+  width: 250px;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+}

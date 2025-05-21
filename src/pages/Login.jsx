@@ -1,7 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import '../styles/login.css';
+import styles from '../styles/Alumno3Styles';
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -22,17 +24,28 @@ const Login = () => {
 
   //El error estaba en que las className se usan :""
   return (
-    <div className="container">
-      <form onSubmit={handleSubmit} className="form">
-        <h2>Iniciar Sesión</h2>
-        {error && <p className="error">{error}</p>}
-        <input type="email" placeholder="Correo" value={email} onChange={e => setEmail(e.target.value)} />
-        <input type="password" placeholder="Contraseña" value={password} onChange={e => setPassword(e.target.value)} />
-        <button type="submit">Iniciar Sesión</button>
-        <Link className="enlace" to="/registro">¿No tienes cuenta? Regístrate</Link>
-        <Link className="enlace" to="/recuperacion">Olvidé mi contraseña</Link>
-      </form>
-    </div>
+    
+    <div className="min-h-screen flex flex-col">   
+    <Header />
+
+    <main className="flex-grow">
+      <div className={styles.container}>
+        <form onSubmit={handleSubmit} className={styles.form} >
+          <h2 className="text-2xl font-semibold mb-6">Iniciar Sesión</h2>
+          {error && <p className={styles.error}>{error}</p>}
+          <input type="email" className={styles.input}
+          placeholder="Correo" value={email} onChange={e => setEmail(e.target.value)}/>
+          <input type="password" className={styles.input}
+          placeholder="Contraseña" value={password} onChange={e => setPassword(e.target.value)}/>
+          <button type="submit" className={styles.button} >Iniciar Sesión</button>
+          <Link className={styles.link} to="/registro">¿No tienes cuenta? Regístrate</Link>
+          <Link className={styles.link} to="/recuperacion">Olvidé mi contraseña</Link>
+        </form>
+      </div>
+    </main>
+
+    <Footer />
+    </div> 
   );
 
 };

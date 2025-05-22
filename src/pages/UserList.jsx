@@ -22,6 +22,7 @@ export function UserList() {
               <th className={styles.tableHeader}>Nombre</th>
               <th className={styles.tableHeader}>Email</th>
               <th className={styles.tableHeader}>Detalle</th>
+              <th className={styles.tableHeader}>Desactivar usuario</th>
             </tr>
           </thead>
 

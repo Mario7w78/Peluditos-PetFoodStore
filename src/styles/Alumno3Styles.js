@@ -13,7 +13,10 @@ const styles = {
   navLinks: "flex flex-wrap justify-center gap-6 md:gap-15 text-gray-700 font-medium",
   searchInput: "px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400",
   userIcon: "text-gray-600 hover:text-blue-500 cursor-pointer text-xl",
+
+  //lista de usuarios
   tableHeader: "px-16 py-1",
+  deactivatebutton: "bg-white font-bold border-2 rounded-2xl px-2 py-1 my-2 text-blue-500 text-[14px] hover:bg-blue-500 hover:text-white hover:border"
   
 };
 

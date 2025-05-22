@@ -5,7 +5,7 @@ import styles from '../styles/Alumno3Styles';
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import SuccessPopup from "../components/popup";
-
+import { v4 as uuidv4 } from 'uuid'; 
 
 
 const Registro = () => {
@@ -39,9 +39,11 @@ const Registro = () => {
       return;
     }
 
+    //Gnerar un ID unico para el nuevo usuario
+    const id = uuidv4();
     // Nuevo usuario creado como objeto
     setAdmin(false);
-    const nuevoUsuario = { nombre, email, password, age, dni, admin};
+    const nuevoUsuario = {id, nombre, email, password, age, dni, admin};
 
     const { success, message } = register(nuevoUsuario);
     if (success) {

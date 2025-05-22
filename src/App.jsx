@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import Recuperacion from "./pages/Recuperacion";
 import { UserList } from "./pages/UserList";
+import { UserDetail } from "./pages/UserDetail";
 
 
 
@@ -19,7 +20,8 @@ function App() {
         <Route path="/recuperacion" element={<Recuperacion/>} />
 
 
-        <Route path="/userList" element={<UserList/>} />
+        <Route path="/userlist" element={<UserList/>} />
+        <Route path="/userdetail/:id" element={<UserDetail/>} />
       </Routes>
     </>
     

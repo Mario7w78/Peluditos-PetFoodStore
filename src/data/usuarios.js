@@ -1,5 +1,6 @@
 const Admin = [
   {
+    id: "admin",
     nombre: "admin",
     email: "admin@peluditos",
     password: "admin123",

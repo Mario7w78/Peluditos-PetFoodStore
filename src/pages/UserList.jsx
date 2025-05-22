@@ -8,6 +8,7 @@ import styles from "../styles/Alumno3Styles";
 
 export function UserList() {
   const { usuarios } = useContext(AuthContext);
+  console.log(usuarios);
 
   return (
     <>
@@ -24,13 +25,13 @@ export function UserList() {
             </tr>
           </thead>
 
-          <tbody>
+          <tbody className="border-b-1 border-blue-600">
             {usuarios.length === 0 ? (
               <tr>
                 <td colSpan="4">No hay usuarios registrados</td>
               </tr>
             ) : (
-              usuarios.map((usuario, index) => <UserRow usuario={usuario} key={usuario.id} />)
+              usuarios.map((usuario) => <UserRow usuario={usuario} key={usuario.id} />)
             )}
           </tbody>
         </table>

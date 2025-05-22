@@ -6,7 +6,7 @@ const Admin = [
     password: "admin123",
     age: "",
     dni: "",
-    Admin: true,
+    admin: true,
   },
 ];
 

@@ -25,7 +25,7 @@ export function UserList() {
             </tr>
           </thead>
 
-          <tbody className="border-b-1 border-blue-600">
+          <tbody >
             {usuarios.length === 0 ? (
               <tr>
                 <td colSpan="4">No hay usuarios registrados</td>

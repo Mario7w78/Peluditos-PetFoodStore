@@ -13,6 +13,7 @@ const styles = {
   navLinks: "flex flex-wrap justify-center gap-6 md:gap-15 text-gray-700 font-medium",
   searchInput: "px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400",
   userIcon: "text-gray-600 hover:text-blue-500 cursor-pointer text-xl",
+  tableHeader: "px-16 py-1",
   
 };
 

@@ -4,6 +4,7 @@ import { Title } from "../components/Title";
 import { UserRow } from "../components/UserRow";
 import { AuthContext } from '../context/AuthContext';
 import React, { useContext } from "react";
+import styles from "../styles/Alumno3Styles";
 
 export function UserList() {
 
@@ -14,16 +15,15 @@ export function UserList() {
         <>
 
             <Header />
-
+            <div className="flex flex-col items-center">
             <Title text="Lista de Usuarios" />
 
-            <table>
+            <table className="text-center">
                 <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>DNI</th>
-                        <th>Fecha de Nacimiento</th>
+                    <tr className="bg-gray-200">
+                        <th className={styles.tableHeader} >Nombre</th>
+                        <th className={styles.tableHeader} >Email</th>
+                        <th className={styles.tableHeader} >Detalle</th>
                     </tr>
                 </thead>
 
@@ -43,7 +43,10 @@ export function UserList() {
 
             </table>
 
+            </div>
+
             <Footer />
+
 
 
         </>

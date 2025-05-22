@@ -16,6 +16,7 @@ const Registro = () => {
   const [age, setAge] = useState('');
   const [error, setError] = useState('');
   const [dni, setDni] = useState('');
+  const [admin, setAdmin] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
@@ -39,7 +40,8 @@ const Registro = () => {
     }
 
     // Nuevo usuario creado como objeto
-    const nuevoUsuario = { nombre, email, password, age, dni };
+    setAdmin(false);
+    const nuevoUsuario = { nombre, email, password, age, dni, admin};
 
     const { success, message } = register(nuevoUsuario);
     if (success) {

@@ -1,4 +1,17 @@
+const Admin = [
+  {
+    nombre: "admin",
+    email: "admin@peluditos",
+    password: "admin123",
+    age: "",
+    dni: "",
+    Admin: true,
+  },
+];
 
+if (!localStorage.getItem("usuarios")) {
+  localStorage.setItem("usuarios", JSON.stringify(Admin));
+}
 
 const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 

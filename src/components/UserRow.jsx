@@ -24,7 +24,7 @@ export function UserRow({ usuario }) {
         </Link>
       </td>
       <td>
-        <button onClick={handleDeactivate} className={styles.deactivatebutton} >
+        <button onClick={handleDeactivate} className={styles.deactivatebutton}  >
           Desactivar
         </button>
       </td>

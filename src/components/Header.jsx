@@ -1,7 +1,8 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import styles from "../styles/Alumno3Styles";
+import Footer from "./Footer";
 
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
@@ -27,6 +28,7 @@ const Header = () => {
   }, []);
 
   return (
+    <>
     <header className={styles.header}>
       <div className="text-xl font-bold text-blue-700"> {/*Mas adelante colocar el logo de la tienda en lugar de "Peluditos PetFoodStore🐾"*/}
         <Link to="/">Peluditos PetFoodStore 🐾</Link>
@@ -77,6 +79,9 @@ const Header = () => {
         )}
       </div>
     </header>
+    <Outlet />
+    <Footer />
+   </>
   );
 };
 

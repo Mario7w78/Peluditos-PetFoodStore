@@ -1,5 +1,3 @@
-import Footer from "../components/Footer";
-import Header from "../components/Header";
 import { Title } from "../components/Title";
 import { UserRow } from "../components/UserRow";
 import { AuthContext } from "../context/AuthContext";
@@ -12,7 +10,6 @@ export function UserList() {
 
   return (
     <>
-      <Header />
       <div className="flex flex-col items-center">
         <Title text="Lista de Usuarios" />
 
@@ -26,19 +23,19 @@ export function UserList() {
             </tr>
           </thead>
 
-          <tbody >
+          <tbody>
             {usuarios.length === 0 ? (
               <tr>
                 <td colSpan="4">No hay usuarios registrados</td>
               </tr>
             ) : (
-              usuarios.map((usuario) => <UserRow usuario={usuario} key={usuario.id} />)
+              usuarios.map((usuario) => (
+                <UserRow usuario={usuario} key={usuario.id} />
+              ))
             )}
           </tbody>
         </table>
       </div>
-
-      <Footer />
     </>
   );
 }

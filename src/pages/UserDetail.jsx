@@ -1,8 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import { Title } from "../components/Title";
 export function UserDetail() {
   const { id } = useParams();
@@ -12,7 +10,6 @@ export function UserDetail() {
 
   return (
     <>
-      <Header />
       <Title text="Detalle del Usuario" />
       <div className="flex flex-col items-center ">
         <div className="flex justify-center gap-4 px-2 py-3 border border-blue-500 rounded-3xl w-[30%]">
@@ -34,16 +31,21 @@ export function UserDetail() {
                 {usuario.age ? usuario.age : "No disponible"}
               </p>
               <p>
-                <strong>Rol:</strong> {usuario.admin ? "Administrador" : "Usuario"}
+                <strong>Rol:</strong>{" "}
+                {usuario.admin ? "Administrador" : "Usuario"}
               </p>
             </div>
           ) : (
             <p>No se encontró el usuario.</p>
           )}
         </div>
-        <Link className="text-blue-700 hover:font-bold border my-3 rounded-2xl p-2 hover:border-2" to="/userlist">Volver a la lista de usuarios</Link>
+        <Link
+          className="text-blue-700 hover:font-bold border my-3 rounded-2xl p-2 hover:border-2"
+          to="/userlist"
+        >
+          Volver a la lista de usuarios
+        </Link>
       </div>
-      <Footer />
     </>
   );
 }

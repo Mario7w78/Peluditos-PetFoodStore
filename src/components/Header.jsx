@@ -9,12 +9,19 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const navigate = useNavigate();
+ 
 
   const handleLogout = () => {
     logout();
     setMenuOpen(false);
     navigate("/login");
   };
+ 
+  const irAlPerfil = () => {
+    setMenuOpen(false);
+    navigate("/perfil");
+  };
+
 
   // Cierra el menú si se hace clic fuera
   useEffect(() => {
@@ -35,7 +42,7 @@ const Header = () => {
       </div>
         {/*Evaluar porque se no siguen en line los nav cuando se modifica la ventana*/}
       <nav className={styles.navLinks}> 
-        <Link to="#" className="hover:text-blue-600">Categorías</Link>
+        <Link to="/agregar-producto" className="hover:text-blue-600">Categorías</Link>
         <Link to="#" className="hover:text-blue-600">Productos</Link>
         <Link to="#" className="hover:text-blue-600">Nosotros</Link>
       </nav>
@@ -60,19 +67,21 @@ const Header = () => {
                 {/* Taggle de menu, falta el carrito*/} {/*Se puede linkear a una pagina de /perfil para modificar password o nombre*/}
                 {menuOpen && (
                 <div className="absolute right-0 top-14 bg-white border rounded-md shadow-md z-50 w-40 text-sm">
-                    <Link
-                    to="#"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                    onClick={() => setMenuOpen(false)}
-                    >
+                    
+                      <button 
+                      onClick={irAlPerfil}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100" 
+                      >
                     Ver perfil
-                    </Link>
+                      </button>
+                    
                     <button
                         onClick={handleLogout}
                         className="block w-full text-left px-4 py-2 hover:bg-gray-100"
                     >
                     Cerrar sesión
                     </button>
+                    
                 </div>
                 )}
             </div>

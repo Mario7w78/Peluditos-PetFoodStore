@@ -25,7 +25,14 @@ export const AuthProvider = ({ children }) => {
     return { success: true };
   };
 
-  //desactivar usuario o eliminar usuario
+  const actualizarUsuario = (usuarioActualizado) => {
+    const nuevosUsuarios = usuarios.map(u =>
+      u.id === usuarioActualizado.id ? usuarioActualizado : u
+    );
+    localStorage.setItem("usuariosRegistrados", JSON.stringify(nuevosUsuarios));
+    setUsuarios(nuevosUsuarios);
+    setUser(usuarioActualizado);
+  };
 
   const deactivate = (id) => {
     const updatedUsuarios = usuarios.filter(usuario => usuario.id !== id);
@@ -36,7 +43,19 @@ export const AuthProvider = ({ children }) => {
   const logout = () => setUser(null);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, deactivate, usuarios}}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        usuarios,
+        setUsuarios,
+        login,
+        logout,
+        register,
+        actualizarUsuario, // <-- nuevo método
+        deactivate
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

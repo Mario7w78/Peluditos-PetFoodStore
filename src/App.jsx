@@ -10,6 +10,7 @@ import AddProductForm from "./pages/AddProductForm";
 import ProductList from "./pages/ProductList";
 import UserProfile from "./pages/UserProfile";
 import Header from "./components/Header";
+import Dashboard from "./pages/Dashboard";
 
 
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/agregar-producto" element={<AddProductForm />} />
           <Route path="/productos" element={<ProductList />} />
           <Route path="/perfil" element={<UserProfile />} />
+          <Route path="/dashboard" element={<Dashboard/>} />
         </Route>
       </Routes>
     </>

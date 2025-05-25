@@ -1,0 +1,76 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(60, 60, 60, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px 32px 24px 32px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.12);
+  min-width: 420px;
+  max-width: 90vw;
+  text-align: center;
+  position: relative;
+}
+
+.modal-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.modal-icon {
+  margin: 16px auto 12px auto;
+  display: flex;
+  justify-content: center;
+}
+
+.modal-text {
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+  color: #222;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.modal-btn {
+  min-width: 120px;
+  padding: 10px 0;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.modal-btn-danger {
+  background: #ff7e5a;
+  color: #fff;
+}
+
+.modal-btn-danger:hover {
+  background: #ff5a36;
+}
+
+.modal-btn-cancel {
+  background: #eee;
+  color: #444;
+}
+
+.modal-btn-cancel:hover {
+  background: #ddd;
+}

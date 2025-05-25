@@ -25,11 +25,30 @@ export const AuthProvider = ({ children }) => {
     return { success: true };
   };
 
+  const actualizarUsuario = (usuarioActualizado) => {
+    const nuevosUsuarios = usuarios.map(u =>
+      u.id === usuarioActualizado.id ? usuarioActualizado : u
+    );
+    localStorage.setItem("usuariosRegistrados", JSON.stringify(nuevosUsuarios));
+    setUsuarios(nuevosUsuarios);
+    setUser(usuarioActualizado);
+  };
 
   const logout = () => setUser(null);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, usuarios}}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        usuarios,
+        setUsuarios,
+        login,
+        logout,
+        register,
+        actualizarUsuario // <-- nuevo método
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

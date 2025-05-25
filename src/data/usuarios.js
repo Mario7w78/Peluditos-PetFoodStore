@@ -25,4 +25,4 @@ export const obtenerUsuarios = () => {
   return JSON.parse(localStorage.getItem("usuarios")) || [];
 };
 
-//Colocar el usuario del admin predefinido y un usuario pruebas
+//Coloca r el usuario del admin predefinido y un usuario pruebas

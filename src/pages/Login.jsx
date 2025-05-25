@@ -40,6 +40,7 @@ const Login = () => {
           <button type="submit" className={styles.button} >Iniciar Sesión</button>
           <Link className={styles.link} to="/registro">¿No tienes cuenta? Regístrate</Link>
           <Link className={styles.link} to="/recuperacion">Olvidé mi contraseña</Link>
+           
         </form>
       </div>
     </main>

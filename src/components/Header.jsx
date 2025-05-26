@@ -45,6 +45,9 @@ const Header = () => {
         <Link to="/agregar-producto" className="hover:text-blue-600">Categorías</Link>
         <Link to="#" className="hover:text-blue-600">Productos</Link>
         <Link to="#" className="hover:text-blue-600">Nosotros</Link>
+        <Link to="/carrito" className="flex items-center gap-2 text-white hover:text-gray-200">
+          🛒 <span className="font-semibold">Compras {productos.length}</span>
+        </Link>
       </nav>
 
       <div className="flex items-center gap-4 relative" ref={menuRef}>

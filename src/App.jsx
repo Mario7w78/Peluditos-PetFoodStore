@@ -23,6 +23,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/recuperacion" element={<Recuperacion />} />
+          <Route path="/carrito" element={<CarritoCompra/>} />
+          <Route path="/checkout" element={<Checkout/>} />
+          <Route path="/pedido" element={<PedidoCompleto/>}/>
           <Route path="/userlist" element={<UserList />} />
           <Route path="/userdetail/:id" element={<UserDetail />} />
           <Route path="/agregar-producto" element={<AddProductForm />} />

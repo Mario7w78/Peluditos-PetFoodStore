@@ -4,13 +4,17 @@ import { guardarUsuario, obtenerUsuarios } from '../data/usuarios';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('currentUser');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const [usuarios, setUsuarios] = useState(obtenerUsuarios());
 
   const login = (email, password) => {
     const usuario = usuarios.find(u => u.email === email && u.password === password);
     if (usuario) {
       setUser(usuario);
+      
       return true;
     }
     return false;

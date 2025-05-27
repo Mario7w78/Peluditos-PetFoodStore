@@ -22,7 +22,7 @@ const PedidoCompleto = () => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <Header />
+            
             <main className="flex-grow p-6 text-center">
                 <h1 className="text-2xl font-bold mb-4">Pedido Completado</h1>
                 <p className="text-lg mb-4">¡Gracias por tu compra! Tu pedido ha sido procesado con éxito.</p>

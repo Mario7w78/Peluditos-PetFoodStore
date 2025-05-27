@@ -8,7 +8,7 @@
 */
 
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { obtenerProductos } from "../data/productos";
@@ -36,16 +36,27 @@ const PedidoCompleto = () => {
                     <ul className="space-y-3">
                         {productos.map((prod) => (
                             <li key={prod.id} className="flex items-center gap-4 border-b pb-2">
-                                <img src={prod.image} alt={prod.nombre} width={80} className="rounded" />
+                                {/* Mostrar imagen del producto */}
+                                <img src={prod.imagen} alt={prod.nombre} width={80} className="rounded" />
                                 <div>
                                     <p><strong>{prod.nombre}</strong></p>
-                                    <p>Cantidad: {parseInt(prod.cantidad, 10)}</p>
-                                    <p>Precio Total: ${(prod.precio * parseInt(prod.cantidad, 10)).toFixed(2)}</p>
+                                    {/* Mostrar cantidad, por defecto 1 si no existe */}
+                                    <p>Cantidad: {prod.cantidad ? parseInt(prod.cantidad, 10) : 1}</p>
+                                    {/* Mostrar precio total, por defecto solo el precio si no hay cantidad */}
+                                    <p>
+                                        Precio Total: $
+                                        {prod.precio && prod.cantidad
+                                            ? (prod.precio * parseInt(prod.cantidad, 10)).toFixed(2)
+                                            : prod.precio
+                                                ? Number(prod.precio).toFixed(2)
+                                                : "0.00"}
+                                    </p>
                                 </div>
                             </li>
                         ))}
                     </ul>
                 </div>
+                {/* Botón para volver al menú principal */}
                 <Link to="/">
                     <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500">
                         Volver al menú principal

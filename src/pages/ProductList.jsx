@@ -57,7 +57,11 @@ function ProductList() {
                     <td className="px-6 py-4">{producto.nombre}</td>
                     <td className="px-6 py-4">{producto.presentacion}</td>
                     <td className="px-6 py-4">{producto.descripcion}</td>
-                    <td className="px-6 py-4">{producto.categoria}</td>
+                    <td className="px-6 py-4">
+                      {typeof producto.categoria === "object" && producto.categoria !== null
+                        ? producto.categoria.nombre
+                        : producto.categoria}
+                    </td>
                     <td className="px-6 py-4">{producto.stock}</td>
                     <td className="px-6 py-4">{producto.precio}</td>
                     <td className="px-6 py-4 flex gap-2">

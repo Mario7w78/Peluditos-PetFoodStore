@@ -136,22 +136,19 @@ const { addProducto } = useProductContext();
             </div>
 
             <div className="flex items-center gap-4 mt-4">
-              <select
+              <label htmlFor="stock">Stock:</label>
+              <input
+                type="number"
+                name="stock"
+                min={1}
                 className="w-full border rounded px-3 py-2 text-sm"
-                value={stock}
-                onChange={(e) => JSON.parse(setStock(e.target.value))}
-              >
-                {/*// Realizaremos la conversion de string a objeto para obtener valores enteros para poder realizar los calculos*/}
-                {/*// JSON.parse({stock})*/}
-                {/*// parseInt("");*/}
-                <option value="" selected disabled>Stock</option>
-                <option value="10">10 unidades</option>
-                <option value="20">20 unidades</option>
-                <option value="30">30 unidades</option>
-              </select>
+                
+                onChange={(e) => setStock(Number(e.target.value))}
+              />
 
               <label htmlFor="precio">Precio:</label>
-              <input type="number"
+              <input
+                type="number"
                 name="precio"
                 className="w-full border rounded px-3 py-2 text-sm"
                 value={precio}

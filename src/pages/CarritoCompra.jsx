@@ -24,18 +24,17 @@ Ideas:
 
 // En teoria se añadiria un contador por cada producto ingresado utilizando un useEffect()
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useProductContext } from "../context/ProductContext";
-import { actualizarProductos, eliminarProductos } from "../data/productos";
+import { actualizarProductos } from "../data/productos";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import styles from "../styles/CarritoStyles";
 
-
 const CarritoCompra = () => {
     // modificarProductos
-    const { productos, eliminarProducto } = useProductContext();
+    const { productos, eliminarProducto, setProductos } = useProductContext();
     // console.log(productos); 
     // Contador de oferta con tiempo limitado que comienza desde el segundo 30
     const [contador, setContador] = useState(30);
@@ -57,94 +56,23 @@ const CarritoCompra = () => {
 
     // Función para aumentar o disminuir cantidad
     const actualizarCantidad = (id, incremento) => {
-        // Contador de incrementos:
-        // Contador de incrementos que comienza desde el numero 0
-        const [conteoIncrementos, setconteoIncrementos] = useState(0);
-        const [conteoReducciones, setconteoReducciones] = useState(0);
-
-        // Por cada vez que presiona el boton de actualizarCantidad, subira un contador
-        const conteoIncrementosFunct = () => {
-            useEffect(() => {
-                conteoIncrementos.forEach(cont => {
-                    setconteoIncrementos(conteoIncrementos + 1);
-                });
-            }, [conteoIncrementos]);
-        }
-
-        const conteoReduccionesFunct = () => {
-            useEffect(() => {
-                conteoReducciones.forEach(contRed => {
-                    setconteoReducciones(conteoReducciones + 1);
-                });
-            }, [conteoReducciones]);
-        }
-
-        const nuevosProductos = productos.map((prod) =>
-            // ...prod utiliza un operador de propagacion para que obtenga las propiedades de prod, unicamente que
-            // cambia la cantidad
-            {incremento < 0 &&
-                prod.id === id ? { ...prod, stock: Math.max(1, prod.stock + incremento) } : prod
-                stockVariable[prod] = conteoIncrementos;
+        // ...prod utiliza un operador de propagacion para que obtenga las propiedades de prod, unicamente que
+        // cambia la cantidad
+        const nuevosProductos = productos.map((prod) => {
+            if (prod.id === id) {
+                // No permitir menos de 1
+                const nuevaCantidad = Math.max(1, prod.stock + incremento);
+                return { ...prod, stock: nuevaCantidad };
             }
-        );
-        return actualizarProductos(nuevosProductos) && stockVariable;
+            return prod;
+        });
+        setProductos(nuevosProductos);
+        actualizarProductos(nuevosProductos);
     };
-    
-    // Existira un contador para cuando suba una unidad para cada producto, pero cada producto tiene un
-    // precioUnidad distinto, por lo que crearemos un array que contenga un espacio para cada cantidad
-    // extra de producto
-    // 
-    // Declarar un array stockVariable[5]
-    // Obtener id, stock, precio de cada producto.
-    // Por cada producto.id:
-    //      Obtener el precioUnidad de un determinado producto.id
-    //      Ingresarlo en un array precioUnidades[5]
-    // Obtener las cantidades utilizando actualizarCantidad():
-    //      Obtener el stockVariable de un determinado producto.id
-    //      Ingresarlo en un array stockVariable[5]
-    // Declarar un array totalPrecioProductosArr[5]
-    // Por i hasta totalPrecioProductos.length:
-    //      totalPrecioProductosArr[i] = precioUnidades[i] * stockVariable[i];
-    //      const totalPrecioProductos += totalPrecioProductosArr[i];
-    // const total = {prod.precio} + totalPrecioProductos
-    // return total
 
-    // conteoIncrementos
-    // conteoReducciones
     // Funcion para obtener el precio total de los productos
-    const calcularPrecio = (conteoIncrementos) => {
-        const initializationArr = [];
-
-        // Obtendremos los precios de las unidades de cada producto
-        // En esta ocasion, utilizaremos la funcion forEach(valor actual, index, arreglo)
-        // Alternativamente es posible utilizar .map(), pero resulta complicado ingresar valores en un array
-        productos.forEach(function(productos, index){
-            const precioUnidad = {productos.precio} / {productos.stock};
-            precioUnidades[index] = precioUnidad;
-        });
-        
-        //  Obtener las cantidades utilizando actualizarCantidad():
-        //      Obtener el stockVariable de un determinado producto.id
-        //      Ingresarlo en un array stockVariable[5]
-
-        // Obtendremos las cantidades de cada uno de los productos
-        productos.forEach(function(stockVariable, index){
-            // Obtener el array
-
-        });
-
-        const totalPrecio = productos.map((prod) => (
-            
-            // Esta parte esta en relacion con el aumento de las cantidades del precioUnidad
-            const precioUnidad = {prod.precio} / {prod.stock}
-            
-            // Esta parte muestra el total del precio original + stock añadido durante la pagina de carro de compras
-            // El stockAñadido no tendria que tener un valor distinto, porque el simbolo cambiaria segun sea positivo
-            // o negativo
-            const total = {prod.precio} + precioUnidad * {prod.stockVariable};
-
-            return total;
-        ))
+    const calcularTotal = () => {
+        return productos.reduce((acc, prod) => acc + prod.precio * prod.stock, 0);
     };
 
     return (
@@ -170,13 +98,19 @@ const CarritoCompra = () => {
                                             <p>Cantidad: {prod.stock}</p>
                                             {/* Botones de cantidad */}
                                             <div className="flex gap-2 mt-2">
-                                                <button className="bg-gray-300 px-2 py-1 rounded">
+                                                <button
+                                                    className="bg-gray-300 px-2 py-1 rounded"
+                                                    onClick={() => actualizarCantidad(prod.id, -1)}
+                                                >
                                                     -
                                                 </button>
-                                                <button className="bg-gray-300 px-2 py-1 rounded">
+                                                <button
+                                                    className="bg-gray-300 px-2 py-1 rounded"
+                                                    onClick={() => actualizarCantidad(prod.id, 1)}
+                                                >
                                                     +
                                                 </button>
-                                                <button>Prueba</button>
+                                                {/* <button>Prueba</button> */}
                                             </div>
 
                                             {/* Botón para eliminar */}
@@ -195,7 +129,7 @@ const CarritoCompra = () => {
                     <div className="w-1/3 bg-gray-100 p-6 rounded-lg shadow-lg">
                         <h2 className="text-xl font-semibold mb-4">Resumen de la compra</h2>
                         <p><strong>Productos:</strong> {productos.length}</p>
-                        <p><strong>Total:</strong></p>
+                        <p><strong>Total:</strong> ${calcularTotal().toFixed(2)}</p>
 
                         <Link to="/checkout">
                             <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500">
@@ -209,12 +143,12 @@ const CarritoCompra = () => {
                 {/*La razon del por que utilizamos {} es por el formato de js en una declaracion de jsx*/}
                 {/*En el caso de que el contador llegase a cero, simplemente desapareceria. El problema*/}
                 {/* es que detiene todas las funcionalidades de los botones*/}
-                <image src="src\images\Limited-offer.jpg" alt="centered image" className={styles.image_offer} />
-                {contador > 0}{
+                <img src="src/images/Limited-offer.jpg" alt="centered image" className={styles.image_offer} />
+                {contador > 0 && (
                     <div className="bg-red-500 text-white p-4 rounded-md text-center font-bold mb-4">
                         La oferta finalizara en {contador} segundos
                     </div>
-                }
+                )}
             </aside>
         </div>
     );

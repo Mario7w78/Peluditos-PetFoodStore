@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-const AppContext = createContext();
+const OrderContext = createContext();
 
 export const ContextProvider = ({ children }) => {
     // Estado para los productos

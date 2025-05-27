@@ -1,16 +1,22 @@
-import React, { createContext, useState } from 'react';
+import { createContext, useState } from 'react';
 import { guardarUsuario, obtenerUsuarios } from '../data/usuarios';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+
+
   const [usuarios, setUsuarios] = useState(obtenerUsuarios());
 
   const login = (email, password) => {
     const usuario = usuarios.find(u => u.email === email && u.password === password);
     if (usuario) {
       setUser(usuario);
+      localStorage.setItem('user', JSON.stringify(usuario));
       return true;
     }
     return false;
@@ -40,7 +46,10 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('usuarios', JSON.stringify(updatedUsuarios));
   };
 
-  const logout = () => setUser(null);
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+  }
 
   return (
     <AuthContext.Provider

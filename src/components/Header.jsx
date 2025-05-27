@@ -23,6 +23,12 @@ const Header = () => {
     navigate("/perfil");
   };
 
+  //Cambiar mas adelante la dirección
+  const irListaOrdenes = () => {
+    setMenuOpen(false);
+    navigate("/"); 
+  };
+
 
   // Cierra el menú si se hace clic fuera
   useEffect(() => {
@@ -72,13 +78,20 @@ const Header = () => {
                 {menuOpen && (
                 <div className="absolute right-0 top-14 bg-white border rounded-md shadow-md z-50 w-40 text-sm">
                     
-                      <button 
+                    <button 
                       onClick={irAlPerfil}
                       className="block w-full text-left px-4 py-2 hover:bg-gray-100" 
-                      >
+                    >
                     Ver perfil
-                      </button>
+                    </button>
                     
+                    <button
+                      onClick={irListaOrdenes}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
+                    Lista de Ordenes
+                    </button>
+
                     <button
                         onClick={handleLogout}
                         className="block w-full text-left px-4 py-2 hover:bg-gray-100"

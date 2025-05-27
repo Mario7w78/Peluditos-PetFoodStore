@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -11,13 +10,13 @@ import ProductList from "./pages/ProductList";
 import UserProfile from "./pages/UserProfile";
 import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
+import {ProtectedRoutes} from "./pages/ProtectedRoutes";
 import CarritoCompra from "./pages/CarritoCompra";
 import Checkout from "./pages/Checkout";
 import PedidoCompleto from "./pages/PedidoCompleto";
 
-
-
 function App() {
+  
   return (
     <>
       <Routes>
@@ -26,15 +25,19 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/recuperacion" element={<Recuperacion />} />
+          <Route path="/perfil" element={<UserProfile />} />
           <Route path="/carrito" element={<CarritoCompra/>} />
           <Route path="/checkout" element={<Checkout/>} />
           <Route path="/pedido" element={<PedidoCompleto/>}/>
-          <Route path="/userlist" element={<UserList />} />
-          <Route path="/userdetail/:id" element={<UserDetail />} />
-          <Route path="/agregar-producto" element={<AddProductForm />} />
-          <Route path="/productos" element={<ProductList />} />
-          <Route path="/perfil" element={<UserProfile />} />
-          <Route path="/dashboard" element={<Dashboard/>} />
+          
+          <Route element={<ProtectedRoutes/>}>
+            <Route path="/userlist" element={<UserList />} />
+            <Route path="/dashboard" element={<Dashboard/>} />
+            <Route path="/agregar-producto" element={<AddProductForm />} />
+            <Route path="/userdetail/:id" element={<UserDetail />} />
+            <Route path="/productos" element={<ProductList />} />
+          </Route>
+
         </Route>
       </Routes>
     </>

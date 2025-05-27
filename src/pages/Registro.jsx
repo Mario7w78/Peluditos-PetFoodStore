@@ -38,9 +38,11 @@ const Registro = () => {
 
     //Gnerar un ID unico para el nuevo usuario
     const id = uuidv4();
+    // Guarda la fecha y hora de registro
+    const fechaRegistro = new Date().toISOString();
     // Nuevo usuario creado como objeto
     setAdmin(false);
-    const nuevoUsuario = { id, nombre, email, password, age, dni, admin };
+    const nuevoUsuario = { id, nombre, email, password, age, dni, admin, fechaRegistro };
 
     const { success, message } = register(nuevoUsuario);
     if (success) {

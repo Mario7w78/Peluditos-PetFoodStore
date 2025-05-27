@@ -16,8 +16,7 @@ function ProductList() {
           <div className="flex gap-2">
             <button
               onClick={() => navigate("/agregar-producto")}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm"
-            >
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm">
               Agregar otro producto
             </button>
           </div>
@@ -81,5 +80,4 @@ function ProductList() {
 }
 
 export default ProductList;
-
 

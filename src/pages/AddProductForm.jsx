@@ -5,13 +5,16 @@ import { useProductContext } from "../context/ProductContext";
 import { useCategoriesStore } from "../context/CategoriesContext";
 import Home from "./Home";
 
+// En este caso, se realizara el cambio del tipo de dato del atributo stock de la funcion para añadir un producto
+// utilizando el hook useState("") a useState(0) como default;
+
 function AddProductForm() {
   const navigate = useNavigate();
 
   const [nombre, setNombre] = useState("");
   const [presentacion, setPresentacion] = useState("");
   const [descripcion, setDescripcion] = useState("");
-  const [stock, setStock] = useState("");
+  const [stock, setStock] = useState(0);
   const [imagen, setImagen] = useState(null);
   const [precio, setPrecio] = useState(0);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -136,9 +139,12 @@ const { addProducto } = useProductContext();
               <select
                 className="w-full border rounded px-3 py-2 text-sm"
                 value={stock}
-                onChange={(e) => setStock(e.target.value)}
+                onChange={(e) => JSON.parse(setStock(e.target.value))}
               >
-                <option value="">Stock</option>
+                {/*// Realizaremos la conversion de string a objeto para obtener valores enteros para poder realizar los calculos*/}
+                {/*// JSON.parse({stock})*/}
+                {/*// parseInt("");*/}
+                <option value="" selected disabled>Stock</option>
                 <option value="10">10 unidades</option>
                 <option value="20">20 unidades</option>
                 <option value="30">30 unidades</option>

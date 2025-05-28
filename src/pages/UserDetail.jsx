@@ -10,11 +10,9 @@ export function UserDetail() {
   const { id } = useParams();
 
   const { usuarios } = useContext(AuthContext);
-  const ordenes = obtenerOrdenes();
-
-
+  const ordenestotales = obtenerOrdenes();
   const usuario = usuarios.find((user) => user.id === id);
-
+  const ordenes = ordenestotales.filter((orden) => orden.usuarioid === id);
   return (
     <>
       <Title text="Detalle del Usuario" />
@@ -41,6 +39,11 @@ export function UserDetail() {
                 <strong>Rol:</strong>{" "}
                 {usuario.admin ? "Administrador" : "Usuario"}
               </p>
+              
+            <p>
+                <strong>Fecha de Registro:</strong>{" "}
+                {usuario.fechaRegistro}
+            </p>
             </div>
           ) : (
             <p>No se encontró el usuario.</p>
@@ -56,8 +59,11 @@ export function UserDetail() {
       <div className="flex flex-col items-center mt-6">
         <Title text="Ordenes:" />
 
-        {ordenes.map((orden, index) => (<Order order={orden}/>))}
-
+        {ordenes.length === 0 ? (
+          <p>El cliente no ha realizado ninguna orden actualmente</p>
+        ) : (
+          ordenes.slice(0, 10).map((orden, index) => <Order key={orden.id || index} order={orden} />)
+        )}
       </div>
 
     </>

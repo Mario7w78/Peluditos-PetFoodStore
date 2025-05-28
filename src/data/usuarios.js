@@ -7,6 +7,7 @@ const Admin = [
     age: "",
     dni: "",
     admin: true,
+    fechaRegistro: new Date().toLocaleDateString(),
   },
 ];
 

@@ -14,6 +14,7 @@ import {ProtectedRoutes} from "./pages/ProtectedRoutes";
 import CarritoCompra from "./pages/CarritoCompra";
 import Checkout from "./pages/Checkout";
 import PedidoCompleto from "./pages/PedidoCompleto";
+import { OrderList } from "./pages/OrderList";
 
 function App() {
   
@@ -36,6 +37,7 @@ function App() {
             <Route path="/agregar-producto" element={<AddProductForm />} />
             <Route path="/userdetail/:id" element={<UserDetail />} />
             <Route path="/productos" element={<ProductList />} />
+            <Route path="/totalorderlist" element={<OrderList />} />
           </Route>
 
         </Route>

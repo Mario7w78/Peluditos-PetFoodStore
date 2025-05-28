@@ -18,8 +18,7 @@ export function UserList() {
             <tr className="bg-gray-200">
               <th className={styles.tableHeader}>Nombre</th>
               <th className={styles.tableHeader}>Email</th>
-              <th className={styles.tableHeader}>Detalle</th>
-              <th className={styles.tableHeader}>Desactivar usuario</th>
+              <th className={styles.tableHeader}>Acciones</th>
             </tr>
           </thead>
 

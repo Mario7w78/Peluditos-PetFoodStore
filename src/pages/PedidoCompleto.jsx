@@ -63,7 +63,7 @@ const PedidoCompleto = () => {
                     </button>
                 </Link>
             </main>
-            <Footer />
+            
         </div>
     );
 };

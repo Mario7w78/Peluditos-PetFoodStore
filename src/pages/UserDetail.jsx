@@ -3,12 +3,15 @@ import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import { Title } from "../components/Title";
 import { Order } from "../components/order";
+import { obtenerOrdenes } from "../data/ordenes";
+
+
 export function UserDetail() {
   const { id } = useParams();
 
   const { usuarios } = useContext(AuthContext);
+  const ordenes = obtenerOrdenes();
 
-  
 
   const usuario = usuarios.find((user) => user.id === id);
 
@@ -52,9 +55,11 @@ export function UserDetail() {
       </div>
       <div className="flex flex-col items-center mt-6">
         <Title text="Ordenes:" />
-        <Order/>
+
+        {ordenes.map((orden, index) => (<Order order={orden}/>))}
+
       </div>
-      
+
     </>
   );
 }

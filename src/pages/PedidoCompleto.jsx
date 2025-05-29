@@ -36,7 +36,7 @@ const PedidoCompleto = () => {
                     <ul className="space-y-3">
                         {productos.map((prod) => (
                             <li key={prod.id} className="flex items-center gap-4 border-b pb-2">
-                                <img src={prod.image} alt={prod.nombre} width={80} className="rounded" />
+                                <img src={prod.imagen} alt={prod.nombre} width={80} className="rounded" />
                                 <div>
                                     <p><strong>{prod.nombre}</strong></p>
                                     <p>Cantidad: {prod.stock}</p>

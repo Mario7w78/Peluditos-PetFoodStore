@@ -32,13 +32,6 @@ export const eliminarProductos = (id) => {
   localStorage.removeItem("productos", JSON.stringify(productos));
 };
 */
-export const eliminarProductos = (id, setProductos) => {
-  const productos = JSON.parse(localStorage.getItem("productos")) || []; // Obtener productos actuales
-  const productosFiltrados = productos.filter(prod => prod.id !== id); // Filtrar los productos y excluir el que coincide con el id
-
-  localStorage.setItem("productos", JSON.stringify(productosFiltrados)); // Actualizar localStorage con los productos restantes
-  setProductos(productosFiltrados);
-};
 
 /*
 export const eliminarProductos = (id) => {

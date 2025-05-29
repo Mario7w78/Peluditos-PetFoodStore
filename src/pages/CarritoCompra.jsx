@@ -27,7 +27,8 @@ Ideas:
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useProductContext } from "../context/ProductContext";
-import { actualizarProductos, eliminarProductos } from "../data/productos";
+import { actualizarProductos } from "../data/productos";
+//import { actualizarProductos, eliminarProductos } from "../data/productos";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import styles from "../styles/CarritoStyles";
@@ -35,7 +36,7 @@ import styles from "../styles/CarritoStyles";
 
 const CarritoCompra = () => {
     // modificarProductos
-    const { productos, setProductos } = useProductContext();
+    const { productos, setProductos, eliminarProducto } = useProductContext();
     // console.log(productos); 
     // Contador de oferta con tiempo limitado que comienza desde el segundo 30
     const [contador, setContador] = useState(30);
@@ -170,7 +171,7 @@ const CarritoCompra = () => {
                                             </div>
 
                                             {/* Botón para eliminar */}
-                                            <button onClick={() => eliminarProductos(prod.id, setProductos)}
+                                            <button onClick={() => eliminarProducto(prod.id)}
                                                 className="text-red-500 mt-2">Eliminar</button>
                                         </div>
                                     </li>

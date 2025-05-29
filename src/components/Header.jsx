@@ -146,7 +146,7 @@ const Header = () => {
                     onClick={irAlPerfil}
                     className="block w-full text-left px-4 py-2 text-blue-600 hover:bg-gray-100"
                   >
-                    Ver perfil
+                    Mi Cuenta
                   </button>
                   <button
                     onClick={handleLogout}

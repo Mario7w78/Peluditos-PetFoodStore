@@ -14,6 +14,7 @@ const Registro = () => {
   const [error, setError] = useState("");
   const [dni, setDni] = useState("");
   const [admin, setAdmin] = useState(false);
+  const [estado, setEstado] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
@@ -44,7 +45,9 @@ const Registro = () => {
       dni,
       age,
       password,
-      rol: "cliente", // ✅ Cliente por defecto
+      estado,
+      admin,
+      rol: "cliente", 
     };
 
     const { success, message } = register(nuevoUsuario);

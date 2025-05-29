@@ -39,8 +39,8 @@ const PedidoCompleto = () => {
                                 <img src={prod.image} alt={prod.nombre} width={80} className="rounded" />
                                 <div>
                                     <p><strong>{prod.nombre}</strong></p>
-                                    <p>Cantidad: {parseInt(prod.cantidad, 10)}</p>
-                                    <p>Precio Total: ${(prod.precio * parseInt(prod.cantidad, 10)).toFixed(2)}</p>
+                                    <p>Cantidad: {prod.stock}</p>
+                                    <p>Precio Total: {prod.precio}</p>
                                 </div>
                             </li>
                         ))}

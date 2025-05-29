@@ -136,7 +136,7 @@ function AddProductForm() {
               <select
                 className="w-full border rounded px-3 py-2 text-sm"
                 value={stock}
-                onChange={(e) => JSON.parse(setStock(e.target.value))}
+                onChange={(e) => setStock(e.target.value)}
               >
                 {/*// Realizaremos la conversion de string a objeto para obtener valores enteros para poder realizar los calculos*/}
                 {/*// JSON.parse({stock})*/}

@@ -35,7 +35,7 @@ import styles from "../styles/CarritoStyles";
 
 const CarritoCompra = () => {
     // modificarProductos
-    const { productos, eliminarProducto } = useProductContext();
+    const { productos, setProductos } = useProductContext();
     // console.log(productos); 
     // Contador de oferta con tiempo limitado que comienza desde el segundo 30
     const [contador, setContador] = useState(30);
@@ -59,54 +59,43 @@ const CarritoCompra = () => {
     // Contador de incrementos que comienza desde el numero 0
     const [conteoIncrementos, setconteoIncrementos] = useState(0);
     const [conteoReducciones, setconteoReducciones] = useState(0);
+
     
-    /*
-    // Función para aumentar o disminuir cantidad adjuntado con un contador de incrementos:
-    const actualizarCantidad = (id, incremento) => {
-        // Por cada vez que presiona el boton de actualizarCantidad, subira un contador
-        const conteoIncrementosFunct = () => {
-            useEffect(() => {
-                conteoIncrementos.forEach(cont => {
-                    setconteoIncrementos(conteoIncrementos + 1);
-                });
-            }, [conteoIncrementos]);
-        }
-
-        const conteoReduccionesFunct = () => {
-            useEffect(() => {
-                conteoReducciones.forEach(contRed => {
-                    setconteoReducciones(conteoReducciones + 1);
-                });
-            }, [conteoReducciones]);
-        }
-
-        // const newProduct = [];
-        const nuevosProductos = productos.map((prod) =>
-            // ...prod utiliza un operador de propagacion para que obtenga las propiedades de prod,
-            // unicamente que cambia la cantidad. La funcion math.max retorna el mayor de cero o mas numeros
-            // dados como parametros de entrada
-            prod.id === id ? { ...prod, stock: Math.max(1, prod.stock + incremento) } : prod,
-            stockVariable[prod.id] = stockVariable[prod.id] + incremento
-        );
-        return actualizarProductos(nuevosProductos) && stockVariable;
-    };
-    */
-
     const actualizarCantidad = (id, incremento) => {
         setStockVariable(prevStock => ({
             ...prevStock,
             [id]: (prevStock[id] || 0) + incremento
         }));
 
+        /*
+        const nuevosProductos = productos.map(prod =>
+            prod.id === id ? { ...prod, stock: Math.max(1, prod.stock + incremento) } : prod
+        );
+        */
+
+        const nuevosProductos = productos.map(prod => {
+            if (prod.id === id) {
+                return { ...prod, stock: Math.max(1, Number(prod.stock) + Number(incremento)) }; // Suma correctamente el incremento
+            }
+            return prod;
+        });
+
+        //setProductos(nuevosProductos); // Actualizar el estado correctamente
+        //localStorage.setItem("productos", JSON.stringify(nuevosProductos)); //
+        actualizarProductos(nuevosProductos);
+    };
+    
+    /*
+    const actualizarCantidad = (id, incremento) => {
         const nuevosProductos = productos.map(prod =>
             prod.id === id ? { ...prod, stock: Math.max(1, prod.stock + incremento) } : prod
         );
 
-        actualizarProductos(nuevosProductos);
+        setProductos(nuevosProductos); // Asegura que el estado se actualiza
+        localStorage.setItem("productos", JSON.stringify(nuevosProductos)); // Guarda cambios en localStorage
     };
+    */
     
-    
-
     // Existira un contador para cuando suba una unidad para cada producto, pero cada producto tiene un
     // precioUnidad distinto, por lo que crearemos un array que contenga un espacio para cada cantidad
     // extra de producto
@@ -133,24 +122,6 @@ const CarritoCompra = () => {
         // const precioUnidades = {};
         let totalPrecioProductos = 0;
 
-        /*
-        // Obtendremos los precios de las unidades de cada producto
-        productos.map((prod) => {
-            const precioUnidad = prod.precio / prod.stock;
-            precioUnidades[prod.id] = precioUnidad;
-        });
-        
-        const totalPrecioProductosArr = [];
-        const totalPrecioProductos = 0;
-
-        totalPrecioProductosArr.forEach(PreProd => {
-            if(stockVariable[prod.id]){
-                totalPrecioProductosArr[productos.id] = precioUnidades[productos.id] * stockVariable[productos.id],
-                totalPrecioProductos += totalPrecioProductosArr[productos.id]
-            }
-        });
-        */
-
         // Obtendremos los precios de las unidades de cada producto (La funcion .map serviria, pero seria mucho mas
         // dificil de utilizar)
         const totalPrecioProductosArr = [];
@@ -163,12 +134,6 @@ const CarritoCompra = () => {
                 // precioUnidad * stockVariable[prod.id];
             }
         });
-
-        // Esta parte muestra el total del precio original + stock añadido durante la pagina de carro de compras
-        // El stockAñadido no tendria que tener un valor distinto, porque el simbolo cambiaria segun sea positivo
-        // o negativo
-        // const total = Math.round(productos.precio + totalPrecioProductos);
-        // return total;
 
         return Math.round(productos.reduce((acc, prod) => acc + prod.precio * prod.stock, 0) + totalPrecioProductos)
     };
@@ -196,16 +161,16 @@ const CarritoCompra = () => {
                                             <p>Cantidad: {prod.stock} </p>
                                             {/* Botones de cantidad */}
                                             <div className="flex gap-2 mt-2">
-                                                <button className="bg-gray-300 px-2 py-1 rounded" >
+                                                <button className="bg-gray-300 px-2 py-1 rounded" onClick={() => {actualizarCantidad(prod.id, -1); window.location.reload()}}>
                                                     -
                                                 </button>
-                                                <button className="bg-gray-300 px-2 py-1 rounded">
+                                                <button className="bg-gray-300 px-2 py-1 rounded" onClick={() => {actualizarCantidad(prod.id, 1); window.location.reload()}}>
                                                     +
                                                 </button>
                                             </div>
 
                                             {/* Botón para eliminar */}
-                                            <button onClick={() => eliminarProducto(prod.id)}
+                                            <button onClick={() => eliminarProductos(prod.id, setProductos)}
                                                 className="text-red-500 mt-2">Eliminar</button>
                                         </div>
                                     </li>

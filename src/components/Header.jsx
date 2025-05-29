@@ -44,9 +44,16 @@ const Header = () => {
 
   return (
     <>
-      <header className="bg-blue-600 text-white flex items-center justify-between p-4 shadow-md relative" ref={menuRef}>
+      <header
+        className="bg-blue-600 text-white flex items-center justify-between p-4 shadow-md relative"
+        ref={menuRef}
+      >
         <div className="flex items-center gap-2 text-xl font-bold">
-          <img src="/LOGO.png" alt="Logo Peluditos" className="h-15 w-15 object-contain rounded-full" />
+          <img
+            src="/LOGO.png"
+            alt="Logo Peluditos"
+            className="h-15 w-15 object-contain rounded-full"
+          />
           <Link to="/">Peluditos PetFoodStore</Link>
         </div>
 
@@ -61,15 +68,37 @@ const Header = () => {
 
             {mostrarCategorias && (
               <div className="absolute bg-white text-black mt-2 shadow-md rounded z-50 w-40 flex flex-col">
-                <Link to="/categorias/perro" onClick={() => setMostrarCategorias(false)} className="px-4 py-2 hover:bg-gray-100">Perro</Link>
-                <Link to="/categorias/gato" onClick={() => setMostrarCategorias(false)} className="px-4 py-2 hover:bg-gray-100">Gato</Link>
-                <Link to="/categorias/hamster" onClick={() => setMostrarCategorias(false)} className="px-4 py-2 hover:bg-gray-100">Hámster</Link>
+                <Link
+                  to="/categorias/perro"
+                  onClick={() => setMostrarCategorias(false)}
+                  className="px-4 py-2 hover:bg-gray-100"
+                >
+                  Perro
+                </Link>
+                <Link
+                  to="/categorias/gato"
+                  onClick={() => setMostrarCategorias(false)}
+                  className="px-4 py-2 hover:bg-gray-100"
+                >
+                  Gato
+                </Link>
+                <Link
+                  to="/categorias/hamster"
+                  onClick={() => setMostrarCategorias(false)}
+                  className="px-4 py-2 hover:bg-gray-100"
+                >
+                  Hámster
+                </Link>
               </div>
             )}
           </div>
 
-          <Link to="/productos" className="text-white hover:underline">Productos</Link>
-          <Link to="/nosotros" className="text-white hover:underline">Nosotros</Link>
+          <Link to="/productos" className="text-white hover:underline">
+            Productos
+          </Link>
+          <Link to="/nosotros" className="text-white hover:underline">
+            Nosotros
+          </Link>
         </nav>
 
         <div className="flex items-center gap-4">
@@ -81,15 +110,41 @@ const Header = () => {
             onChange={(e) => setBusqueda(e.target.value)}
             onKeyDown={handleBuscar}
           />
+
+          <button
+            onClick={() => navigate("/carrito")}
+            className="text-2xl hover:text-yellow-300 transition-colors duration-200"
+            title="Ver carrito"
+          >
+            🛒
+          </button>
+
           {!user ? (
-            <Link to="/login" className={styles.userIcon}>👤</Link>
+            <Link to="/login" className={styles.userIcon}>
+              👤
+            </Link>
           ) : (
             <div className="flex flex-col items-center relative">
-              <button onClick={() => setMenuOpen(!menuOpen)} className="text-2xl hover:text-green-600 transition-colors duration-200">👤</button>
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="text-2xl hover:text-green-600 transition-colors duration-200"
+              >
+                👤
+              </button>
               {menuOpen && (
                 <div className="absolute right-0 top-10 bg-white border rounded-md shadow-md z-50 w-40 text-sm">
-                  <button onClick={irAlPerfil} className="block w-full text-left px-4 py-2 text-blue-600 hover:bg-gray-100">Ver perfil</button>
-                  <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-blue-600 hover:bg-gray-100">Cerrar sesión</button>
+                  <button
+                    onClick={irAlPerfil}
+                    className="block w-full text-left px-4 py-2 text-blue-600 hover:bg-gray-100"
+                  >
+                    Ver perfil
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-blue-600 hover:bg-gray-100"
+                  >
+                    Cerrar sesión
+                  </button>
                 </div>
               )}
             </div>
@@ -97,8 +152,12 @@ const Header = () => {
         </div>
       </header>
 
-      {location.pathname === '/' && (
-        <img src="/BANNER.png" alt="Super Oferta" className="w-full object-cover h-32" />
+      {location.pathname === "/" && (
+        <img
+          src="/BANNER.png"
+          alt="Super Oferta"
+          className="w-full object-cover h-32"
+        />
       )}
 
       <Outlet />

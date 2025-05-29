@@ -33,6 +33,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import styles from "../styles/CarritoStyles";
 
+var snd = new Audio("src\audio\snap-274158.mp3");
 
 const CarritoCompra = () => {
     // modificarProductos
@@ -162,10 +163,10 @@ const CarritoCompra = () => {
                                             <p>Cantidad: {prod.stock} </p>
                                             {/* Botones de cantidad */}
                                             <div className="flex gap-2 mt-2">
-                                                <button className="bg-gray-300 px-2 py-1 rounded" onClick={() => {actualizarCantidad(prod.id, -1); window.location.reload()}}>
+                                                <button className="bg-gray-300 px-2 py-1 rounded" onClick={() => {actualizarCantidad(prod.id, -1); window.location.reload(); snd.play()}}>
                                                     -
                                                 </button>
-                                                <button className="bg-gray-300 px-2 py-1 rounded" onClick={() => {actualizarCantidad(prod.id, 1); window.location.reload()}}>
+                                                <button className="bg-gray-300 px-2 py-1 rounded" onClick={() => {actualizarCantidad(prod.id, 1); window.location.reload(); snd.play()}}>
                                                     +
                                                 </button>
                                             </div>

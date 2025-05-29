@@ -39,6 +39,17 @@ const ordenesBase = [
     ],
     usuarioid: "admin",
   },
+  {
+    id: "5",
+    fecha: "2023-10-16",
+    total: 300.0,
+    productos: [
+      { id: "p7", nombre: "Producto 7", cantidad: 3, precio: 80.0 },
+      { id: "p8", nombre: "Producto 8", cantidad: 1, precio: 60.0 },
+    ],
+    usuarioid: "12345678",
+  },
+
 ];
 
 // Inicializar localStorage con las órdenes base si no existen

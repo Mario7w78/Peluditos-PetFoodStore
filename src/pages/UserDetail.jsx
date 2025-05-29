@@ -12,7 +12,7 @@ export function UserDetail() {
   const { usuarios } = useContext(AuthContext);
   const ordenestotales = obtenerOrdenes();
   const usuario = usuarios.find((user) => user.id === id);
-  const ordenes = ordenestotales.filter((orden) => orden.usuarioid === id);
+  const ordenes = ordenestotales.filter((orden) => orden.usuarioid === id).slice(0,10);
   return (
     <>
       <Title text="Detalle del Usuario" />
@@ -56,7 +56,7 @@ export function UserDetail() {
           Volver a la lista de usuarios
         </Link>
       </div>
-      <div className="flex flex-col items-center mt-6">
+      <div className="flex flex-col items-center mt-6 h-screen">
         <Title text="Ordenes:" />
         
         <OrderTable ordenes = {ordenes}/>

@@ -9,6 +9,16 @@ const Admin = [
     admin: true,
     fechaRegistro: new Date().toLocaleDateString(),
   },
+  {
+    id: "12345678",
+    nombre: "Pepito",
+    email: "pepe@flores",
+    password: "pepeflores23",
+    age: "2000-01-01",
+    dni: "72761974",
+    admin: false,
+    fechaRegistro: "12/12/2012",
+  },
 ];
 
 if (!localStorage.getItem("usuarios")) {

@@ -10,15 +10,19 @@ export const OrderList = () => {
   const {usuarios} = useContext(AuthContext);
 
   const handleSearch = (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    const filteredOrders = ordenestotales.filter(
+    const busqueda = e.target.value.toLowerCase();
+    const usuario = usuarios.find((user)=>user.nombre.toLowerCase().includes(busqueda))
+    const id = usuario ? usuario.id : null;
+    const filtro = ordenestotales.filter(
       (orden) =>
-        orden.id?.toString().includes(searchTerm) || 
+        orden.id?.toString().includes(busqueda) || 
         orden.productos?.some((producto) =>
-          producto.nombre?.toLowerCase().includes(searchTerm) 
-        )
+          producto.nombre?.toLowerCase().includes(busqueda) 
+        )||
+        orden.usuarioid === id 
+        
     );
-    setOrdenes(filteredOrders);
+    setOrdenes(filtro);
   };
 
   return (

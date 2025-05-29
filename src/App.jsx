@@ -21,6 +21,7 @@ import CarritoCompra from "./pages/CarritoCompra";
 import Checkout from "./pages/Checkout";
 import PedidoCompleto from "./pages/PedidoCompleto";
 import { OrderList } from "./pages/OrderList";
+import { OrderDetail } from "./pages/OrderDetail";
 
 function App() {
   
@@ -49,6 +50,9 @@ function App() {
             <Route path="/userdetail/:id" element={<UserDetail />} />
             <Route path="/productos" element={<ProductList />} />
             <Route path="/totalorderlist" element={<OrderList />} />
+            <Route path="/orderdetail/:orderId" element={<OrderDetail />} />
+
+
           </Route>
 
         </Route>

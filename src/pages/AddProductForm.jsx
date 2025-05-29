@@ -4,6 +4,7 @@ import ModalNuevaCategoria from "./ModalNuevaCategoria";
 import { useProductContext } from "../context/ProductContext";
 import { useCategoriesStore } from "../context/CategoriesContext";
 import Home from "./Home";
+import CategoryList from "./CategoryList"; 
 
 function AddProductForm() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ function AddProductForm() {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
   const [showModalNuevaCategoria, setShowModalNuevaCategoria] = useState(false);
-
+  const [mostrarListaCategorias, setMostrarListaCategorias] = useState(false);
   const { categorias, addCategoria } = useCategoriesStore();
   const handleRegresar = () => {
     navigate("/");
@@ -97,6 +98,15 @@ const { addProducto } = useProductContext();
               >
                 Crear Categoría
               </button>
+              <button
+  onClick={() => navigate("/categorias")}
+  type="button"
+  className="bg-blue-500 hover:bg-blue-600 text-white px-2 py-2 rounded text-sm"
+>
+  Ir a lista de categorías
+</button>
+
+
             </div>
 
             <div>
@@ -167,6 +177,9 @@ const { addProducto } = useProductContext();
           addCategoria(nuevaCategoria);
           setCategoriaSeleccionada(nuevaCategoria);
           setShowModalNuevaCategoria(false);
+
+
+          
         }}
       />
 

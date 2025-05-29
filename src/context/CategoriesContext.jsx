@@ -1,4 +1,3 @@
-// CategoriesContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 
 const CategoriesContext = createContext();
@@ -17,8 +16,14 @@ export const CategoriesProvider = ({ children }) => {
     localStorage.setItem("categorias", JSON.stringify(nuevas));
   };
 
+  const removeCategoria = (nombreCategoria) => {
+    const filtradas = categorias.filter(cat => cat.nombre !== nombreCategoria);
+    setCategorias(filtradas);
+    localStorage.setItem("categorias", JSON.stringify(filtradas));
+  };
+
   return (
-    <CategoriesContext.Provider value={{ categorias, addCategoria }}>
+    <CategoriesContext.Provider value={{ categorias, addCategoria, removeCategoria }}>
       {children}
     </CategoriesContext.Provider>
   );
@@ -26,3 +31,4 @@ export const CategoriesProvider = ({ children }) => {
 
 // Hook personalizado
 export const useCategoriesStore = () => useContext(CategoriesContext);
+

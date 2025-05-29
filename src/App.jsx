@@ -9,6 +9,7 @@ import { UserDetail } from "./pages/UserDetail";
 import AddProductForm from "./pages/AddProductForm";
 import ProductList from "./pages/ProductList";
 import UserProfile from "./pages/UserProfile"; // Asegúrate de que la ruta sea correcta
+import CategoryList from "./pages/CategoryList"; // Ajusta ruta
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/userlist" element={<UserList/>} />
         <Route path="/userdetail/:id" element={<UserDetail/>} />
         <Route path="/perfil" element={<UserProfile />} />
+        <Route path="/categorias" element={<CategoryList />} />
       </Routes>
     </>
     

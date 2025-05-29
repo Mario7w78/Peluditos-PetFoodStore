@@ -46,22 +46,23 @@ const CarritoCompra = () => {
         if (contador > 0) {
             const timer = setInterval(() =>
                 setContador((prev) => prev - 1), 1000);
-            return () => clearInterval(timer); // Limpieza del intervalo
+            return () => clearTimeout(timer); // Limpieza del intervalo
         }
     }, [contador]); // Esto indica los cambios de efectos inclinados hacia contador
 
-    // ¿Realizar un localStorage para las subidas y bajadas de las cantidades
-    // como un reemplazo de un array dinamico?
     // El contador de Incrementos podria estar adherido a la funcion de actualizar cantidad, si incremento
     // fuese menor a 0 entonces sube reduc, de otra manera, sube incr
 
-    // Función para aumentar o disminuir cantidad
-    const actualizarCantidad = (id, incremento) => {
-        // Contador de incrementos:
-        // Contador de incrementos que comienza desde el numero 0
-        const [conteoIncrementos, setconteoIncrementos] = useState(0);
-        const [conteoReducciones, setconteoReducciones] = useState(0);
+    // Declararemos una variable local para CarritoCompra
+    const [stockVariable, setStockVariable] = useState({});
 
+    // Contador de incrementos que comienza desde el numero 0
+    const [conteoIncrementos, setconteoIncrementos] = useState(0);
+    const [conteoReducciones, setconteoReducciones] = useState(0);
+    
+    /*
+    // Función para aumentar o disminuir cantidad adjuntado con un contador de incrementos:
+    const actualizarCantidad = (id, incremento) => {
         // Por cada vez que presiona el boton de actualizarCantidad, subira un contador
         const conteoIncrementosFunct = () => {
             useEffect(() => {
@@ -79,17 +80,33 @@ const CarritoCompra = () => {
             }, [conteoReducciones]);
         }
 
+        // const newProduct = [];
         const nuevosProductos = productos.map((prod) =>
-            // ...prod utiliza un operador de propagacion para que obtenga las propiedades de prod, unicamente que
-            // cambia la cantidad
-            {incremento < 0 &&
-                prod.id === id ? { ...prod, stock: Math.max(1, prod.stock + incremento) } : prod
-                stockVariable[prod] = conteoIncrementos;
-            }
+            // ...prod utiliza un operador de propagacion para que obtenga las propiedades de prod,
+            // unicamente que cambia la cantidad. La funcion math.max retorna el mayor de cero o mas numeros
+            // dados como parametros de entrada
+            prod.id === id ? { ...prod, stock: Math.max(1, prod.stock + incremento) } : prod,
+            stockVariable[prod.id] = stockVariable[prod.id] + incremento
         );
         return actualizarProductos(nuevosProductos) && stockVariable;
     };
+    */
+
+    const actualizarCantidad = (id, incremento) => {
+        setStockVariable(prevStock => ({
+            ...prevStock,
+            [id]: (prevStock[id] || 0) + incremento
+        }));
+
+        const nuevosProductos = productos.map(prod =>
+            prod.id === id ? { ...prod, stock: Math.max(1, prod.stock + incremento) } : prod
+        );
+
+        actualizarProductos(nuevosProductos);
+    };
     
+    
+
     // Existira un contador para cuando suba una unidad para cada producto, pero cada producto tiene un
     // precioUnidad distinto, por lo que crearemos un array que contenga un espacio para cada cantidad
     // extra de producto
@@ -99,9 +116,11 @@ const CarritoCompra = () => {
     // Por cada producto.id:
     //      Obtener el precioUnidad de un determinado producto.id
     //      Ingresarlo en un array precioUnidades[5]
+    // *** Este siguiente paso esta adjunto al componente de actualizarCantidad
     // Obtener las cantidades utilizando actualizarCantidad():
     //      Obtener el stockVariable de un determinado producto.id
     //      Ingresarlo en un array stockVariable[5]
+    // ****
     // Declarar un array totalPrecioProductosArr[5]
     // Por i hasta totalPrecioProductos.length:
     //      totalPrecioProductosArr[i] = precioUnidades[i] * stockVariable[i];
@@ -109,42 +128,49 @@ const CarritoCompra = () => {
     // const total = {prod.precio} + totalPrecioProductos
     // return total
 
-    // conteoIncrementos
-    // conteoReducciones
     // Funcion para obtener el precio total de los productos
-    const calcularPrecio = (conteoIncrementos) => {
-        const initializationArr = [];
+    const calcularPrecio = () => {
+        // const precioUnidades = {};
+        let totalPrecioProductos = 0;
 
+        /*
         // Obtendremos los precios de las unidades de cada producto
-        // En esta ocasion, utilizaremos la funcion forEach(valor actual, index, arreglo)
-        // Alternativamente es posible utilizar .map(), pero resulta complicado ingresar valores en un array
-        productos.forEach(function(productos, index){
-            const precioUnidad = {productos.precio} / {productos.stock};
-            precioUnidades[index] = precioUnidad;
+        productos.map((prod) => {
+            const precioUnidad = prod.precio / prod.stock;
+            precioUnidades[prod.id] = precioUnidad;
         });
         
-        //  Obtener las cantidades utilizando actualizarCantidad():
-        //      Obtener el stockVariable de un determinado producto.id
-        //      Ingresarlo en un array stockVariable[5]
+        const totalPrecioProductosArr = [];
+        const totalPrecioProductos = 0;
 
-        // Obtendremos las cantidades de cada uno de los productos
-        productos.forEach(function(stockVariable, index){
-            // Obtener el array
+        totalPrecioProductosArr.forEach(PreProd => {
+            if(stockVariable[prod.id]){
+                totalPrecioProductosArr[productos.id] = precioUnidades[productos.id] * stockVariable[productos.id],
+                totalPrecioProductos += totalPrecioProductosArr[productos.id]
+            }
+        });
+        */
 
+        // Obtendremos los precios de las unidades de cada producto (La funcion .map serviria, pero seria mucho mas
+        // dificil de utilizar)
+        const totalPrecioProductosArr = [];
+
+        productos.forEach(prod => {
+            const precioUnidad = Math.round(prod.precio / prod.stock);
+            if (stockVariable[prod.id]) {
+                totalPrecioProductosArr[productos.id] = precioUnidades[productos.id] * stockVariable[productos.id],
+                totalPrecioProductos += totalPrecioProductosArr[productos.id];
+                // precioUnidad * stockVariable[prod.id];
+            }
         });
 
-        const totalPrecio = productos.map((prod) => (
-            
-            // Esta parte esta en relacion con el aumento de las cantidades del precioUnidad
-            const precioUnidad = {prod.precio} / {prod.stock}
-            
-            // Esta parte muestra el total del precio original + stock añadido durante la pagina de carro de compras
-            // El stockAñadido no tendria que tener un valor distinto, porque el simbolo cambiaria segun sea positivo
-            // o negativo
-            const total = {prod.precio} + precioUnidad * {prod.stockVariable};
+        // Esta parte muestra el total del precio original + stock añadido durante la pagina de carro de compras
+        // El stockAñadido no tendria que tener un valor distinto, porque el simbolo cambiaria segun sea positivo
+        // o negativo
+        // const total = Math.round(productos.precio + totalPrecioProductos);
+        // return total;
 
-            return total;
-        ))
+        return Math.round(productos.reduce((acc, prod) => acc + prod.precio * prod.stock, 0) + totalPrecioProductos)
     };
 
     return (
@@ -162,21 +188,20 @@ const CarritoCompra = () => {
                             <ul className="space-y-4">
                                 {productos.map((prod) => (
                                     <li key={prod.id} className="flex items-center gap-4 border-b pb-2 mb-2">
-                                        <img src={prod.imagen} alt={prod.nombre} width={80} className="rounded" />
+                                        <img src={prod.imagen} alt={prod.nombre} width={80} className="rounded"/>
                                         <div>
                                             <p className="font-semibold">{prod.nombre}</p>
                                             {/*La funcion toFixed() sirve para redondear valores*/}
-                                            <p>Precio: ${prod.precio.toFixed(2)}</p>
-                                            <p>Cantidad: {prod.stock}</p>
+                                            <p>Precio: ${prod.precio}</p>
+                                            <p>Cantidad: {prod.stock} </p>
                                             {/* Botones de cantidad */}
                                             <div className="flex gap-2 mt-2">
-                                                <button className="bg-gray-300 px-2 py-1 rounded">
+                                                <button className="bg-gray-300 px-2 py-1 rounded" >
                                                     -
                                                 </button>
                                                 <button className="bg-gray-300 px-2 py-1 rounded">
                                                     +
                                                 </button>
-                                                <button>Prueba</button>
                                             </div>
 
                                             {/* Botón para eliminar */}
@@ -195,8 +220,10 @@ const CarritoCompra = () => {
                     <div className="w-1/3 bg-gray-100 p-6 rounded-lg shadow-lg">
                         <h2 className="text-xl font-semibold mb-4">Resumen de la compra</h2>
                         <p><strong>Productos:</strong> {productos.length}</p>
-                        <p><strong>Total:</strong></p>
-
+                        {/*<p><strong>Total: </strong></p>*/}
+                        <p><strong>Total: </strong>${calcularPrecio().toFixed(2)}</p>
+                        {/*<p><strong>Total: </strong>${calcularTotal().toFixed(2)}</p>*/}
+                        
                         <Link to="/checkout">
                             <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500">
                                 Continuar a Checkout

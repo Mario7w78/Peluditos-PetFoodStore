@@ -27,30 +27,27 @@ function AddProductForm() {
   };
 
 
-const { addProducto } = useProductContext();
-  const handleCrearProducto = () => {
-    const nuevoProducto = {
-      nombre,
-      presentacion,
-      descripcion,
-      stock,
-      precio: parseFloat(precio),
-      imagen: previewUrl,
-      categoria: categoriaSeleccionada,
-    };
-
+  const { addProducto } = useProductContext();
+    const handleCrearProducto = () => {
+      const nuevoProducto = {
+        nombre,
+        presentacion,
+        descripcion,
+        stock,
+        precio: parseFloat(precio),
+        imagen: previewUrl,
+        categoria: categoriaSeleccionada,
+      };
     addProducto(nuevoProducto);
     navigate("/productos");
-  };
-
-  const handleImagenChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImagen(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    }
-  };
-
+    };
+    const handleImagenChange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        setImagen(file);
+        setPreviewUrl(URL.createObjectURL(file));
+      }
+    };
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md border">
@@ -185,14 +182,7 @@ const { addProducto } = useProductContext();
           setShowModalNuevaCategoria(false);
         }}
       />
-
     </div>
-
-    
-   
-
-
-
   );
 }
 

@@ -13,6 +13,7 @@ import { guardarEnvio } from "../data/infoenvio";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
+import { guardarProducto } from "../data/productos";
 
 const Checkout = () => {
     const navigate = useNavigate();
@@ -62,10 +63,7 @@ const Checkout = () => {
                         <option value="mastercard">MasterCard</option>
                         <option value="paypal">PayPal</option>
                     </select>
-
-                    <button type="submit" className="mt-4 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500">
-                        Finalizar Compra
-                    </button>
+                    &nbsp;
                     <Link to="/pedido">
                         <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500">
                             Finalizar Compra
@@ -73,7 +71,6 @@ const Checkout = () => {
                     </Link>
                 </form>
             </main>
-            
         </div>
     );
 };

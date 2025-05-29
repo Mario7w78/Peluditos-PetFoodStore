@@ -12,11 +12,9 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const success = login(email, password);
-
     if (success) {
-      navigate("/"); 
+      navigate("/");
     } else {
       setError("Credenciales incorrectas. Intenta de nuevo.");
     }

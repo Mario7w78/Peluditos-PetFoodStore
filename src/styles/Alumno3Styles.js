@@ -1,4 +1,3 @@
-
 const styles = {
   container: "flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 px-4",
   form: "bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-4 text-center",

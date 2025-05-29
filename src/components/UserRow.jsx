@@ -18,12 +18,11 @@ export function UserRow({ usuario }) {
       <td>
         <Link
           to={`/userdetail/${usuario.id}`}
-          className="text-blue-500 hover:font-bold"
+          className="text-blue-500 hover:font-bold mr-4"
         >
           Ver detalle
         </Link>
-      </td>
-      <td>
+
         <button onClick={handleDeactivate} className={styles.deactivatebutton}  >
           Desactivar
         </button>

@@ -1,12 +1,13 @@
 const Admin = [
   {
     id: "admin",
-    nombre: "Administrador",
+    nombre: "admin",
     email: "admin@peluditos",
     password: "admin123",
-    dni: "",
     age: "",
-    rol: "admin", 
+    dni: "",
+    admin: true,
+    fechaRegistro: new Date().toLocaleDateString(),
   },
 ];
 

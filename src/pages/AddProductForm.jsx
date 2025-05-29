@@ -2,18 +2,17 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProductContext } from "../context/ProductContext";
 import { AuthContext } from "../context/AuthContext";
+import ModalNuevaCategoria from "./ModalNuevaCategoria";
+import { useCategoriesStore } from "../context/CategoriesContext";
+import Home from "./Home";
+
+
+// En este caso, se realizara el cambio del tipo de dato del atributo stock de la funcion para añadir un producto
+// utilizando el hook useState("") a useState(0) como default;
 
 function AddProductForm() {
   const navigate = useNavigate();
   const { addProducto } = useProductContext();
-  const { user } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (!user || user.rol !== "admin") {
-      navigate("/");
-    }
-  }, [user, navigate]);
-
   const [nombre, setNombre] = useState("");
   const [presentacion, setPresentacion] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -62,7 +61,7 @@ function AddProductForm() {
       presentacion,
       descripcion,
       stock,
-      precio,
+      precio: parseFloat(precio),
       imagen: previewUrl,
       categoria: categoriaSeleccionada,
     };

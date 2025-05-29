@@ -9,11 +9,12 @@ const Registro = () => {
   const { register } = useContext(AuthContext);
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
-  const [dni, setDni] = useState("");
-  const [age, setAge] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [age, setAge] = useState("");
   const [error, setError] = useState("");
+  const [dni, setDni] = useState("");
+  const [admin, setAdmin] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
@@ -78,7 +79,6 @@ const Registro = () => {
                 onChange={(e) => setNombre(e.target.value)}
                 required
               />
-
               <input
                 type="email"
                 className={styles.input}
@@ -87,7 +87,6 @@ const Registro = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-
               <input
                 type="text"
                 className={styles.input}
@@ -96,7 +95,6 @@ const Registro = () => {
                 onChange={(e) => setDni(e.target.value)}
                 required
               />
-
               <input
                 type="password"
                 className={styles.input}
@@ -105,7 +103,6 @@ const Registro = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-
               <input
                 type="password"
                 className={styles.input}

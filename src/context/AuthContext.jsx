@@ -1,24 +1,22 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState } from 'react';
 import { guardarUsuario, obtenerUsuarios } from '../data/usuarios';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [usuarios, setUsuarios] = useState(obtenerUsuarios());
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
-  useEffect(() => {
-    const usuarioGuardado = localStorage.getItem("user");
-    if (usuarioGuardado) {
-      setUser(JSON.parse(usuarioGuardado));
-    }
-  }, []);
+
+  const [usuarios, setUsuarios] = useState(obtenerUsuarios());
 
   const login = (email, password) => {
     const usuario = usuarios.find(u => u.email === email && u.password === password);
     if (usuario) {
       setUser(usuario);
-      localStorage.setItem("user", JSON.stringify(usuario));
+      localStorage.setItem('user', JSON.stringify(usuario));
       return true;
     }
     return false;
@@ -53,6 +51,7 @@ export const AuthProvider = ({ children }) => {
     setUsuarios(updatedUsuarios);
     localStorage.setItem('usuarios', JSON.stringify(updatedUsuarios));
   };
+
 
   return (
     <AuthContext.Provider

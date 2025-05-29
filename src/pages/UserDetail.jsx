@@ -2,8 +2,8 @@ import { Link, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import { Title } from "../components/Title";
-import { Order } from "../components/order";
 import { obtenerOrdenes } from "../data/ordenes";
+import { OrderTable } from "../components/OrderTable";
 
 
 export function UserDetail() {
@@ -58,12 +58,9 @@ export function UserDetail() {
       </div>
       <div className="flex flex-col items-center mt-6">
         <Title text="Ordenes:" />
-
-        {ordenes.length === 0 ? (
-          <p>El cliente no ha realizado ninguna orden actualmente</p>
-        ) : (
-          ordenes.slice(0, 10).map((orden, index) => <Order key={orden.id || index} order={orden} />)
-        )}
+        
+        <OrderTable ordenes = {ordenes}/>
+        
       </div>
 
     </>

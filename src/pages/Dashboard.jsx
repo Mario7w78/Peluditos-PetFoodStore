@@ -1,184 +1,165 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../styles/Dashboard.css'; // Asegúrate de tener un archivo CSS para los estilos
+import { useContext, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import { useOrderContext } from "../context/orderContext";
+import { useProductContext } from "../context/ProductContext";
+import { OrderTable } from "../components/OrderTable";
 
-
-const usuariosDemo = [
-  { id: 1, nombre: 'Juan Perez', estado: 'Activo', email: 'juan.perez@gmail.com', fecha: '20/01/2025', avatar: 'https://randomuser.me/api/portraits/men/32.jpg' },
-  { id: 2, nombre: 'Mario Gonzales', estado: 'Activo', email: 'mario.gonzales@gmail.com', fecha: '18/01/2025', avatar: 'https://randomuser.me/api/portraits/men/33.jpg' },
-  { id: 3, nombre: 'Marco Aurelio', estado: 'Activo', email: 'marco.aurelio@gmail.com', fecha: '15/01/2025', avatar: 'https://randomuser.me/api/portraits/men/34.jpg' },
-  { id: 4, nombre: 'Ana Díaz', estado: 'Activo', email: 'ana.diaz@gmail.com', fecha: '10/01/2025', avatar: 'https://randomuser.me/api/portraits/women/35.jpg' },
-  { id: 5, nombre: 'Carlos Lopez', estado: 'Activo', email: 'carlos.lopez@gmail.com', fecha: '09/01/2025', avatar: 'https://randomuser.me/api/portraits/men/36.jpg' },
-  { id: 6, nombre: 'Laura Méndez', estado: 'Activo', email: 'laura.mendez@gmail.com', fecha: '07/01/2025', avatar: 'https://randomuser.me/api/portraits/women/37.jpg' },
-  { id: 7, nombre: 'Alejandro Ruiz', estado: 'Inactivo', email: 'alejandro.ruiz@gmail.com', fecha: '05/01/2025', avatar: 'https://randomuser.me/api/portraits/men/38.jpg' },
-];
-
-const ordenesDemo = [
-  { id: '#1234', usuario: 'Alejandro Ruiz', fecha: '20/01/2025', total: 199, estado: 'Entregado' },
-  { id: '#1234', usuario: 'Alejandro Ruiz', fecha: '20/01/2025', total: 199, estado: 'Entregado' },
-  { id: '#1234', usuario: 'Alejandro Ruiz', fecha: '20/01/2025', total: 199, estado: 'Entregado' },
-  { id: '#1234', usuario: 'Alejandro Ruiz', fecha: '20/01/2025', total: 199, estado: 'Entregado' },
-];
-
-const ordenesUsuario = [
-  { id: '#1234', fecha: '20/01/2025', total: 199 },
-  { id: '#1235', fecha: '19/01/2025', total: 178 },
-  { id: '#1236', fecha: '18/01/2025', total: 210 },
-  { id: '#1237', fecha: '16/01/2025', total: 320 },
-  { id: '#1238', fecha: '14/01/2025', total: 150 },
-  { id: '#1239', fecha: '12/01/2025', total: 320 },
-];
-
-export default function Dashboard() {
-  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(usuariosDemo[0]);
+export const Dashboard = () => {
   const navigate = useNavigate();
+  const { usuarios } = useContext(AuthContext);
+  const { ordenes } = useOrderContext();
+  const { productos } = useProductContext();
+  const [selectedUser, setSelectedUser] = useState(usuarios[0]);
+
+  // Resumen
+  const totalOrdenes = ordenes.length;
+  const totalUsuarios = usuarios.length;
+  const totalIngresos = ordenes.reduce((acc, orden) => acc + orden.total, 0);
+
+  const ordenesUsuario = ordenes.filter(
+    (ord) => ord.usuarioId === selectedUser?.id
+  );
+
   return (
-    <div className="dashboard-container">
-      <div className="dashboard-header">
-        <h1>Dashboard</h1>
-      </div>
+    <div className="p-8 bg-[#fafbfc] min-h-screen font-sans">
+      <h1 className="text-3xl font-bold mb-6 text-[#222]">Dashboard</h1>
 
-      <div className="dashboard-cards">
-        <div className="dashboard-card">
+      {/* Cards */}
+      <div className="flex flex-col sm:flex-row gap-6 mb-8">
+        <div className="flex-1 bg-[#ff7e5a] text-white rounded-xl p-6 shadow text-center">
           <span>Órdenes</span>
-          <h2>68</h2>
+          <h2 className="text-4xl font-bold">{totalOrdenes}</h2>
         </div>
-        <div className="dashboard-card">
+        <div className="flex-1 bg-[#ff7e5a] text-white rounded-xl p-6 shadow text-center">
           <span>Usuarios nuevos</span>
-          <h2>12</h2>
+          <h2 className="text-4xl font-bold">{totalUsuarios}</h2>
         </div>
-        <div className="dashboard-card">
+        <div className="flex-1 bg-[#ff7e5a] text-white rounded-xl p-6 shadow text-center">
           <span>Ingresos totales</span>
-          <h2>S/2348.00</h2>
+          <h2 className="text-4xl font-bold">S/{totalIngresos.toFixed(2)}</h2>
         </div>
       </div>
 
-      <div className="dashboard-main">
-        <div className="dashboard-users">
-          <div className="dashboard-users-header">
-            <span>Usuarios registrados</span>
-            <button className="btn-ver-todos">Ver todos los usuarios</button>
+      {/* Zona principal: tabla de usuarios + detalle */}
+      <div className="flex flex-col lg:flex-row gap-8 mb-8">
+        {/* Usuarios */}
+        <div className="flex-1 bg-white rounded-xl p-6 shadow">
+          <div className="flex justify-between items-center mb-4">
+            <span className="font-semibold text-lg">Usuarios registrados</span>
+            <Link to="/userlist" className="bg-[#ff7e5a] text-white rounded-md px-4 py-2 font-semibold hover:bg-[#ff5a36]">
+              Ver todos los usuarios
+            </Link>
           </div>
-          <table>
+          <table className="w-full border-collapse mb-4">
             <thead>
               <tr>
-                <th>Nombre</th>
-                <th>Estado</th>
-                <th>Acciones</th>
+                <th className="text-left py-2">Nombre</th>
+                <th className="text-left py-2">Estado</th>
+                <th className="text-left py-2">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {usuariosDemo.map(user => (
-                <tr key={user.id}>
-                  <td>
-                    <img src={user.avatar} alt={user.nombre} className="avatar" />
+              {usuarios.slice(0, 5).map((user) => (
+                <tr key={user.id} className="border-b">
+                  <td className="py-2 flex items-center gap-2">
+                    <img src={user.avatar || '/default-avatar.png'} className="w-7 h-7 rounded-full object-cover" />
                     {user.nombre}
                   </td>
-                  <td>
-                    <span className={user.estado === 'Activo' ? 'estado-activo' : 'estado-inactivo'}>
-                      {user.estado}
+                  <td className="py-2">
+                    <span className={user.activo ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
+                      {user.activo ? "Activo" : "Inactivo"}
                     </span>
                   </td>
-                  <td>
-                    <button className="btn-dashboard" onClick={() => setUsuarioSeleccionado(user)}>Ver detalle</button>
-                    <button className="btn-dashboard">Desactivar</button>
-                    <button className="btn-dashboard">Eliminar</button>
+                  <td className="py-2 flex gap-2">
+                    <button
+                      onClick={() => setSelectedUser(user)}
+                      className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-3 py-1 rounded hover:bg-[#ff7e5a] hover:text-white transition"
+                    >
+                      Ver detalle
+                    </button>
+                    <button className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-3 py-1 rounded hover:bg-[#ff7e5a] hover:text-white transition">
+                      Desactivar
+                    </button>
+                    <button className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-3 py-1 rounded hover:bg-[#ff7e5a] hover:text-white transition">
+                      Eliminar
+                    </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <div className="dashboard-pagination">
-            <button>&lt;</button>
-            <button className="active">1</button>
-            <button>2</button>
-            <button>3</button>
-            <span>...</span>
-            <button>10</button>
-            <button>&gt;</button>
-          </div>
         </div>
-        <div className="dashboard-user-detail">
-          <span className="detalle-title">Detalle del usuario</span>
-          <div className="detalle-user-card">
-            <div className="detalle-user-header">
-              <div>
-                <b>{usuarioSeleccionado.nombre}</b>
-                <div className="detalle-user-email">Correo: {usuarioSeleccionado.email}</div>
-                <div>Fecha de registro: {usuarioSeleccionado.fecha}</div>
-                <div>Estado: <span className={usuarioSeleccionado.estado === 'Activo' ? 'estado-activo' : 'estado-inactivo'}>{usuarioSeleccionado.estado}</span></div>
+
+        {/* Detalle de usuario */}
+        <div className="flex-1 bg-white rounded-xl p-6 shadow">
+          <span className="font-semibold text-lg mb-2 block">Detalle del usuario</span>
+          {selectedUser ? (
+            <div className="bg-[#f8f8f8] rounded-lg p-4 mb-4">
+              <div className="flex justify-between items-center mb-3">
+                <div>
+                  <b>{selectedUser.nombre}</b>
+                  <div className="text-gray-500 text-sm">Correo: {selectedUser.email}</div>
+                  <div>Rol: {selectedUser.rol}</div>
+                  <div>
+                    Estado:{" "}
+                    <span className={selectedUser.activo ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
+                      {selectedUser.activo ? "Activo" : "Inactivo"}
+                    </span>
+                  </div>
+                </div>
+                <img
+                  src={selectedUser.avatar || "/default-avatar.png"}
+                  className="w-16 h-16 rounded-full object-cover border-2 border-[#ff7e5a]"
+                />
               </div>
-              <img src={usuarioSeleccionado.avatar} alt={usuarioSeleccionado.nombre} className="avatar-grande" />
-            </div>
-            <table className="detalle-ordenes-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Fecha</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ordenesUsuario.map(ord => (
-                  <tr key={ord.id}>
-                    <td className="detalle-orden-id">{ord.id}</td>
-                    <td>{ord.fecha}</td>
-                    <td>S/{ord.total}.00</td>
+
+              <table className="w-full border-collapse mt-2">
+                <thead>
+                  <tr>
+                    <th className="text-left py-1">ID</th>
+                    <th className="text-left py-1">Fecha</th>
+                    <th className="text-left py-1">Total</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="dashboard-pagination">
-            <button>&lt;</button>
-            <button className="active">1</button>
-            <button>2</button>
-            <button>3</button>
-            <span>...</span>
-            <button>10</button>
-            <button>&gt;</button>
-          </div>
+                </thead>
+                <tbody>
+                  {ordenesUsuario.slice(0, 10).map((ord) => (
+                    <tr key={ord.id} className="border-b">
+                      <td className="py-1 text-[#ff7e5a] font-semibold">{ord.id}</td>
+                      <td className="py-1">{ord.fecha}</td>
+                      <td className="py-1">S/{ord.total}.00</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-gray-500 italic">Selecciona un usuario para ver su detalle.</p>
+          )}
         </div>
       </div>
 
-      <div className="dashboard-orders">
-        <span>Listado de órdenes</span>
-        <table>
-          <thead>
-            <tr>
-              <th>#ID</th>
-              <th>Usuario</th>
-              <th>Fecha de órden</th>
-              <th>Total</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ordenesDemo.map((ord, idx) => (
-              <tr key={idx}>
-                <td className="detalle-orden-id">{ord.id}</td>
-                <td>{ord.usuario}</td>
-                <td>{ord.fecha}</td>
-                <td>S/{ord.total}.00</td>
-                <td className="estado-entregado">Entregado</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="dashboard-pagination">
-          <button>&lt;</button>
-          <button className="active">1</button>
-          <button>2</button>
-          <button>3</button>
-          <span>...</span>
-          <button>10</button>
-          <button>&gt;</button>
-        </div>
-        <div className="dashboard-orders-actions">
-          <button className="btn-dashboard" onClick={() => navigate('/tabla')}>Ver productos</button>
-          <button className="btn-dashboard">Ver todas las órdenes</button>
+      {/* Tabla de órdenes */}
+      <div className="bg-white rounded-xl p-6 shadow">
+        <span className="font-semibold text-lg">Listado de órdenes</span>
+        <OrderTable ordenes={ordenes.slice(0, 5)} mostrarAcciones={false} />
+        <div className="flex justify-end gap-4 mt-4">
+          <button
+            onClick={() => navigate("/tabla")}
+            className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-4 py-2 rounded hover:bg-[#ff7e5a] hover:text-white transition"
+          >
+            Ver productos
+          </button>
+          <Link
+            to="/totalorderlist"
+            className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-4 py-2 rounded hover:bg-[#ff7e5a] hover:text-white transition"
+          >
+            Ver todas las órdenes
+          </Link>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default Dashboard;

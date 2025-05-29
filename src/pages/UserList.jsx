@@ -2,6 +2,7 @@ import { Title } from "../components/Title";
 import { UserRow } from "../components/UserRow";
 import { AuthContext } from "../context/AuthContext";
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import styles from "../styles/Alumno3Styles";
 
 export function UserList() {
@@ -12,7 +13,12 @@ export function UserList() {
     <>
       <div className="flex flex-col items-center h-screen">
         <Title text="Lista de Usuarios" />
-
+          <Link
+            to="/dashboard"
+            className="text-blue-700 hover:font-bold border my-3 rounded-2xl p-2 hover:border-2"
+          >
+            Volver al Dashboard
+          </Link>
         <table className="text-center">
           <thead>
             <tr className="bg-gray-200">

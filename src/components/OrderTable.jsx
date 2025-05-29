@@ -3,7 +3,7 @@ import { OrderRow } from "../components/OrderRow";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
-export function OrderTable({ ordenes }) {
+export function OrderTable({ ordenes, mostrarAcciones = true }) {
   const { user } = useContext(AuthContext);
 
   // Filtrar las órdenes si no es admin

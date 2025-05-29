@@ -6,8 +6,9 @@ const Footer = () => {
   const [mostrarPeluditos, setMostrarPeluditos] = useState(false);
 
   return (
-    <footer className="bg-blue-600 text-white mt-8 border-t">
-      <div className="max-w-6xl mx-auto py-10 px-4 grid grid-cols-1 md:grid-cols-3 text-sm items-start">
+    <footer className="bg-blue-600 text-white border-t">
+      
+      <div className="max-w-6xl mx-auto py-10 px-4 grid grid-cols-1 md:grid-cols-2 text-sm items-start">
 
         <div className="md:pr-6">
           <button
@@ -25,16 +26,6 @@ const Footer = () => {
               </Link>
             </div>
           )}
-        </div>
-
-        <div className="md:px-6 border-t md:border-t-0 md:border-l border-white/40">
-          <h3 className="font-semibold mb-2 md:pl-6">Enlaces útiles</h3>
-          <ul className="space-y-1 md:pl-6">
-            <li><Link to="#" className="hover:underline">Categorías</Link></li>
-            <li><Link to="#" className="hover:underline">Productos</Link></li>
-            <li><Link to="#" className="hover:underline">Soporte</Link></li>
-            <li><Link to="#" className="hover:underline">Términos y condiciones</Link></li>
-          </ul>
         </div>
 
         <div className="md:pl-6 border-t md:border-t-0 md:border-l border-white/40">

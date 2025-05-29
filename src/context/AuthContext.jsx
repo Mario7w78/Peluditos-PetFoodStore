@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { guardarUsuario, obtenerUsuarios } from '../data/usuarios';
 
 export const AuthContext = createContext();
@@ -7,13 +7,26 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [usuarios, setUsuarios] = useState(obtenerUsuarios());
 
+  useEffect(() => {
+    const usuarioGuardado = localStorage.getItem("user");
+    if (usuarioGuardado) {
+      setUser(JSON.parse(usuarioGuardado));
+    }
+  }, []);
+
   const login = (email, password) => {
     const usuario = usuarios.find(u => u.email === email && u.password === password);
     if (usuario) {
       setUser(usuario);
+      localStorage.setItem("user", JSON.stringify(usuario));
       return true;
     }
     return false;
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
   };
 
   const register = (nuevoUsuario) => {
@@ -21,7 +34,7 @@ export const AuthProvider = ({ children }) => {
       return { success: false, message: 'El correo ya está registrado' };
     }
     guardarUsuario(nuevoUsuario);
-    setUsuarios(obtenerUsuarios()); // Refrescar la lista de usuarios
+    setUsuarios(obtenerUsuarios());
     return { success: true };
   };
 
@@ -29,9 +42,10 @@ export const AuthProvider = ({ children }) => {
     const nuevosUsuarios = usuarios.map(u =>
       u.id === usuarioActualizado.id ? usuarioActualizado : u
     );
-    localStorage.setItem("usuariosRegistrados", JSON.stringify(nuevosUsuarios));
+    localStorage.setItem("usuarios", JSON.stringify(nuevosUsuarios));
     setUsuarios(nuevosUsuarios);
     setUser(usuarioActualizado);
+    localStorage.setItem("user", JSON.stringify(usuarioActualizado));
   };
 
   const deactivate = (id) => {
@@ -39,8 +53,6 @@ export const AuthProvider = ({ children }) => {
     setUsuarios(updatedUsuarios);
     localStorage.setItem('usuarios', JSON.stringify(updatedUsuarios));
   };
-
-  const logout = () => setUser(null);
 
   return (
     <AuthContext.Provider
@@ -52,7 +64,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         register,
-        actualizarUsuario, // <-- nuevo método
+        actualizarUsuario,
         deactivate
       }}
     >

@@ -13,7 +13,7 @@ export function UserDetail() {
       <Title text="Detalle del Usuario" />
       <div className="flex flex-col items-center ">
         <div className="flex justify-center gap-4 px-2 py-3 border border-blue-500 rounded-3xl w-[30%]">
-          <div className="text-9xl">🧑‍💼</div>
+          <div className="text-9xl">👤</div>
           {usuario ? (
             <div className="text-left [&_strong]:text-blue-700">
               <p>

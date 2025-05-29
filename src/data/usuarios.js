@@ -1,12 +1,12 @@
 const Admin = [
   {
     id: "admin",
-    nombre: "admin",
+    nombre: "Administrador",
     email: "admin@peluditos",
     password: "admin123",
-    age: "",
     dni: "",
-    admin: true,
+    age: "",
+    rol: "admin", 
   },
 ];
 
@@ -24,5 +24,3 @@ export const guardarUsuario = (usuario) => {
 export const obtenerUsuarios = () => {
   return JSON.parse(localStorage.getItem("usuarios")) || [];
 };
-
-//Coloca r el usuario del admin predefinido y un usuario pruebas

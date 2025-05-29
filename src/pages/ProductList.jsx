@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProductContext } from "../context/ProductContext";
+import { AuthContext } from "../context/AuthContext";
 
 function ProductList() {
   const navigate = useNavigate();
   const { productos, eliminarProducto } = useProductContext();
+  const { user } = useContext(AuthContext);
 
   const handleDelete = (id) => {
     eliminarProducto(id);
@@ -15,14 +17,17 @@ function ProductList() {
       <div className="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-md border">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-semibold text-gray-800">Lista de Productos</h2>
-          <div className="flex gap-2">
-            <button
-              onClick={() => navigate("/agregar-producto")}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm"
-            >
-              Agregar otro producto
-            </button>
-          </div>
+
+          {user?.rol === "admin" && (
+            <div className="flex gap-2">
+              <button
+                onClick={() => navigate("/agregar-producto")}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm"
+              >
+                Agregar otro producto
+              </button>
+            </div>
+          )}
         </div>
 
         {productos.length === 0 ? (
@@ -38,7 +43,9 @@ function ProductList() {
                   <th className="px-6 py-3 text-left">Descripción</th>
                   <th className="px-6 py-3 text-left">Categoría</th>
                   <th className="px-6 py-3 text-left">Stock</th>
-                  <th className="px-6 py-3 text-left">Acciones</th>
+                  {user?.rol === "admin" && (
+                    <th className="px-6 py-3 text-left">Acciones</th>
+                  )}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -60,20 +67,22 @@ function ProductList() {
                     <td className="px-6 py-4">{producto.descripcion}</td>
                     <td className="px-6 py-4">{producto.categoria}</td>
                     <td className="px-6 py-4">{producto.stock}</td>
-                    <td className="px-6 py-4 flex gap-2">
-                      <button
-                        className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded"
-                        onClick={() => navigate(`/editar-producto/${producto.id}`)}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded"
-                        onClick={() => handleDelete(producto.id)}
-                      >
-                        Eliminar
-                      </button>
-                    </td>
+                    {user?.rol === "admin" && (
+                      <td className="px-6 py-4 flex gap-2">
+                        <button
+                          className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded"
+                          onClick={() => navigate(`/editar-producto/${producto.id}`)}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded"
+                          onClick={() => handleDelete(producto.id)}
+                        >
+                          Eliminar
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

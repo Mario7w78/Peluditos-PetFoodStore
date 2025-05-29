@@ -9,51 +9,55 @@ const Registro = () => {
   const { register } = useContext(AuthContext);
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [age, setAge] = useState("");
-  const [error, setError] = useState("");
   const [dni, setDni] = useState("");
-  const [admin, setAdmin] = useState(false);
+  const [age, setAge] = useState("");
+  const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Validaciones
     if (password.length < 8) {
-      setError("La contraseña debe tener al menos 8 caracteres");
+      setError("La contraseña debe tener al menos 8 caracteres.");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Las contraseñas no coinciden");
+      setError("Las contraseñas no coinciden.");
       return;
     }
 
-    if (dni.length !== 8 || !/^\d+$/.test(dni)) {
-      setError("El DNI debe tener exactamente 8 dígitos numéricos");
+    if (!/^\d{8}$/.test(dni)) {
+      setError("El DNI debe tener exactamente 8 dígitos numéricos.");
       return;
     }
 
-    //Gnerar un ID unico para el nuevo usuario
-    const id = uuidv4();
-    // Nuevo usuario creado como objeto
-    setAdmin(false);
-    const nuevoUsuario = { id, nombre, email, password, age, dni, admin };
+    const nuevoUsuario = {
+      id: uuidv4(),
+      nombre,
+      email,
+      dni,
+      age,
+      password,
+      rol: "cliente", // ✅ Cliente por defecto
+    };
 
     const { success, message } = register(nuevoUsuario);
+
     if (success) {
       setSuccessMessage("¡Felicidades! Ya estás registrado/a 🎉");
+      setError("");
       setTimeout(() => {
         navigate("/login");
-      }, 2500); // redireccion al login luego de 2.5 segundos de registrado
+      }, 2500);
     } else {
       setError(message);
     }
   };
-
-  //Colocar un header de boton para vovler a la pagina principal.
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -62,8 +66,10 @@ const Registro = () => {
           <SuccessPopup message={successMessage} />
           {!successMessage && (
             <form onSubmit={handleSubmit} className={styles.form}>
-              <h2>Registro</h2>
+              <h2 className="text-xl font-semibold mb-4">Registro</h2>
+
               {error && <p className={styles.error}>{error}</p>}
+
               <input
                 type="text"
                 className={styles.input}
@@ -72,6 +78,7 @@ const Registro = () => {
                 onChange={(e) => setNombre(e.target.value)}
                 required
               />
+
               <input
                 type="email"
                 className={styles.input}
@@ -80,6 +87,7 @@ const Registro = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
+
               <input
                 type="text"
                 className={styles.input}
@@ -88,6 +96,7 @@ const Registro = () => {
                 onChange={(e) => setDni(e.target.value)}
                 required
               />
+
               <input
                 type="password"
                 className={styles.input}
@@ -96,6 +105,7 @@ const Registro = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+
               <input
                 type="password"
                 className={styles.input}
@@ -104,17 +114,20 @@ const Registro = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
+
               <input
                 type="date"
                 className={styles.input}
-                placeholder="Fecha de Nacimiento"
+                placeholder="Fecha de nacimiento"
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
                 required
               />
+
               <button type="submit" className={styles.button}>
                 Registrarse
               </button>
+
               <Link to="/login" className={styles.link}>
                 Ya tengo cuenta
               </Link>

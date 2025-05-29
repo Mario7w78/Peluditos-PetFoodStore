@@ -15,7 +15,7 @@ const styles = {
 
   //lista de usuarios
   tableHeader: "px-16 py-1",
-  deactivatebutton: "bg-white font-bold border-2 rounded-2xl px-2 py-1 my-2 text-blue-500 text-[14px] hover:bg-blue-500 hover:text-white hover:border"
+  deactivatebutton: "bg-white mx-2 font-bold border-2 rounded-2xl px-2 py-1 my-2 text-blue-500 text-[14px] hover:bg-blue-500 hover:text-white hover:border"
   
 };
 

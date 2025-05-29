@@ -8,6 +8,7 @@ const Admin = [
     dni: "",
     admin: true,
     fechaRegistro: new Date().toLocaleDateString(),
+    canlogin: true
   },
   {
     id: "12345678",
@@ -18,6 +19,7 @@ const Admin = [
     dni: "72761974",
     admin: false,
     fechaRegistro: "12/12/2012",
+    canlogin: true
   },
 ];
 

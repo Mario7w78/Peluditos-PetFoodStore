@@ -14,7 +14,6 @@ const Registro = () => {
   const [error, setError] = useState("");
   const [dni, setDni] = useState("");
   const [admin, setAdmin] = useState(false);
-  const [estado, setEstado] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
@@ -45,8 +44,9 @@ const Registro = () => {
       dni,
       age,
       password,
-      estado,
       admin,
+      canlogin: true,
+      fechaRegistro: new Date().toISOString(),
       rol: "cliente", 
     };
 

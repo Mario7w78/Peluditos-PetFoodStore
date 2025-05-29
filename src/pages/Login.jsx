@@ -1,24 +1,36 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Alumno3Styles";
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login, user } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loginSuccess, setLoginSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const success = login(email, password);
     if (success) {
-      navigate("/");
-    } else {
-      setError("Credenciales incorrectas. Intenta de nuevo.");
+      // Obtener el usuario logueado desde localStorage
+        setLoginSuccess(true);
+      } else {
+        setError("Credenciales incorrectas. Intenta de nuevo.");
     }
   };
+
+  useEffect(() => {
+    if (loginSuccess && user) {
+      if (user.admin) {
+        navigate("/dashboard");
+      } else {
+        navigate("/");
+      }
+    }
+  }, [loginSuccess, user, navigate]);
 
   return (
     <div className="min-h-screen flex flex-col">

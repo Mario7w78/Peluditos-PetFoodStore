@@ -8,7 +8,7 @@ export function OrderRow({ order, mostrarAcciones = true }) {
   const { eliminarOrden } = useOrderContext();
 
   const usuario = usuarios.find((u) => u.id === order.usuarioid);
-
+  
   const handleEliminar = () => {
     if (window.confirm("¿Estás seguro de eliminar esta orden?")) {
       eliminarOrden(order.id);
@@ -30,14 +30,13 @@ export function OrderRow({ order, mostrarAcciones = true }) {
             >
               Ver Detalle
             </Link>
-            {user.id === order.usuarioid && (
-              <button
+            <button
                 onClick={handleEliminar}
                 className="ml-2 text-red-600 hover:font-bold"
               >
-                Eliminar
+                Cancelar
               </button>
-            )}
+            
           </>
         )}
       </td>

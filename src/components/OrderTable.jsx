@@ -4,12 +4,6 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export function OrderTable({ ordenes, mostrarAcciones = true }) {
-  const { user } = useContext(AuthContext);
-
-  // Filtrar las órdenes si no es admin
-  const ordenesFiltradas = user?.rol === "admin"
-    ? ordenes
-    : ordenes.filter((orden) => orden.usuarioid === user.id);
 
   return (
     <table className="w-full text-center border border-gray-300">
@@ -23,8 +17,8 @@ export function OrderTable({ ordenes, mostrarAcciones = true }) {
         </tr>
       </thead>
       <tbody>
-        {ordenesFiltradas.length > 0 ? (
-          ordenesFiltradas.map((orden) => (
+        {ordenes.length > 0 ? (
+          ordenes.map((orden) => (
             <OrderRow key={orden.id} order={orden} />
           ))
         ) : (
@@ -38,4 +32,3 @@ export function OrderTable({ ordenes, mostrarAcciones = true }) {
     </table>
   );
 }
-

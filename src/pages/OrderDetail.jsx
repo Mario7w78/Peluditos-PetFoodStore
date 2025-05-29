@@ -2,11 +2,20 @@ import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { obtenerOrdenes } from "../data/ordenes";
 import { Title } from "../components/Title";
+import styles from "../styles/Alumno3Styles";
+import { useOrderContext } from "../context/orderContext";
 
 export const OrderDetail = () => {
   const { orderId } = useParams();
   const ordenes = obtenerOrdenes();
+  const { eliminarOrden } = useOrderContext();
   const orden = ordenes.find((orden) => orden.id === orderId);
+
+  const handleEliminar = () => {
+    if (window.confirm("¿Estás seguro de eliminar esta orden?")) {
+      eliminarOrden(orden.id);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center h-screen">
@@ -23,7 +32,10 @@ export const OrderDetail = () => {
             ))}
           </ul>
         <p><strong>Total:</strong> ${orden.total}</p>
+        <button onClick={handleEliminar} className={styles.button+" my-2"}>Cancelar orden</button>
         </div>
+        
+
       ) : (
         <p>No se encontró la orden.</p>
       )}

@@ -135,12 +135,12 @@ export const Dashboard = () => {
                     Estado:{" "}
                     <span
                       className={
-                        selectedUser.activo
+                        selectedUser.canlogin
                           ? "text-green-600 font-semibold"
                           : "text-red-600 font-semibold"
                       }
                     >
-                      {selectedUser.activo ? "Activo" : "Inactivo"}
+                      {selectedUser.canlogin ? "Activo" : "Inactivo"}
                     </span>
                   </div>
                 </div>

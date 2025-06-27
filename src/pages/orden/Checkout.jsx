@@ -9,9 +9,7 @@ El Checkout tendra un contenedor con direccion de envio que contendra:
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { guardarEnvio } from "../data/infoenvio";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import { guardarEnvio } from "@/data/infoenvio";
 import { Link } from "react-router-dom";
 
 const Checkout = () => {

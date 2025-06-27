@@ -1,9 +1,9 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { obtenerOrdenes } from "../data/ordenes";
-import { Title } from "../components/Title";
-import styles from "../styles/Alumno3Styles";
-import { useOrderContext } from "../context/orderContext";
+import { obtenerOrdenes } from "@/data/ordenes";
+import { Title } from "@/components/Title";
+import styles from "@/styles/Alumno3Styles";
+import { useOrderContext } from "@/context/orderContext";
 
 export const OrderDetail = () => {
   const { orderId } = useParams();

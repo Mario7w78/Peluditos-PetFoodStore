@@ -26,11 +26,9 @@ Ideas:
 
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useProductContext } from "../context/ProductContext";
-import { actualizarProductos } from "../data/productos";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import styles from "../styles/CarritoStyles";
+import { useProductContext } from "@/context/ProductContext";
+import { actualizarProductos } from "@/data/productos";
+import styles from "@/styles/CarritoStyles";
 
 const CarritoCompra = () => {
     // modificarProductos

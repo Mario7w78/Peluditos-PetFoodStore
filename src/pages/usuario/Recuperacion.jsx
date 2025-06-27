@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import styles from "../styles/Alumno3Styles";
-import Popup from "../components/popup";
+import styles from "@/styles/Alumno3Styles";
+import Popup from "@/components/popup";
 
 const Recuperacion = () => {
   const [email, setEmail] = useState("");

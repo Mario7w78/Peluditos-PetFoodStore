@@ -1,6 +1,6 @@
 import React from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { useProductContext } from "../context/ProductContext";
+import { useProductContext } from "@/context/ProductContext";
 
 const Buscar = () => {
   const { productos } = useProductContext();

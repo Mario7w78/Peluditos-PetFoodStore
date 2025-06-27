@@ -1,10 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState} from "react";
 import { useNavigate } from "react-router-dom";
-import { useProductContext } from "../context/ProductContext";
-import { AuthContext } from "../context/AuthContext";
-import ModalNuevaCategoria from "./ModalNuevaCategoria";
-import { useCategoriesStore } from "../context/CategoriesContext";
-import Home from "./Home";
+import { useProductContext } from "@/context/ProductContext";
+
 
 
 // En este caso, se realizara el cambio del tipo de dato del atributo stock de la funcion para añadir un producto

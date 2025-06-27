@@ -1,5 +1,5 @@
 import React from "react";
-import { useProductContext } from "../context/ProductContext";
+import { useProductContext } from "@/context/ProductContext";
 
 function ProductTable({ limit = 5 }) {
   const { productos } = useProductContext();

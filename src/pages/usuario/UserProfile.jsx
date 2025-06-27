@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import { obtenerOrdenes } from "../data/ordenes";
-import { OrderTable } from "../components/OrderTable";
-import Pagination from "../components/Pagination";
+import { AuthContext } from "@/context/AuthContext";
+import { obtenerOrdenes } from "@/data/ordenes";
+import { OrderTable } from "@/components/OrderTable";
+import Pagination from "@/components/Pagination";
 
 const UserProfile = () => {
   const { user, actualizarUsuario } = useContext(AuthContext);

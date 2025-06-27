@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "@/context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import styles from "../styles/Alumno3Styles";
-import SuccessPopup from "../components/popup";
+import styles from "@/styles/Alumno3Styles";
+import SuccessPopup from "@/components/popup";
 import { v4 as uuidv4 } from "uuid";
 
 const Registro = () => {

@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { guardarUsuario, obtenerUsuarios } from "../data/usuarios";
+import { guardarUsuario, obtenerUsuarios } from "@/data/usuarios";
 
 export const AuthContext = createContext();
 

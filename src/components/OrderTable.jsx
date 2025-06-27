@@ -1,7 +1,5 @@
-import styles from "../styles/Alumno3Styles";
-import { OrderRow } from "../components/OrderRow";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import styles from "@/styles/Alumno3Styles";
+import { OrderRow } from "@/components/OrderRow";
 
 export function OrderTable({ ordenes, mostrarAcciones = true }) {
 

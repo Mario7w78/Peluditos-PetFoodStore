@@ -1,9 +1,9 @@
 import { Link, useParams } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "@/context/AuthContext";
 import { useContext } from "react";
-import { Title } from "../components/Title";
-import { obtenerOrdenes } from "../data/ordenes";
-import { OrderTable } from "../components/OrderTable";
+import { Title } from "@/components/Title";
+import { obtenerOrdenes } from "@/data/ordenes";
+import { OrderTable } from "@/components/OrderTable";
 
 
 export function UserDetail() {

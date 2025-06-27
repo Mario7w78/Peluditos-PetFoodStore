@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "@/context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import styles from "../styles/Alumno3Styles";
+import styles from "@/styles/Alumno3Styles";
 
 const Login = () => {
   const { login, user } = useContext(AuthContext);

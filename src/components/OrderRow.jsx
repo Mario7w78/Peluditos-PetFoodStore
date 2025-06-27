@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { useOrderContext } from "../context/orderContext";
+import { AuthContext } from "@/context/AuthContext";
+import { useOrderContext } from "@/context/orderContext";
 
 export function OrderRow({ order, mostrarAcciones = true }) {
   const { usuarios, user, admin } = useContext(AuthContext);

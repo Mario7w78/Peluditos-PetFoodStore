@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
-import { obtenerOrdenes } from "../data/ordenes";
-import { Title } from "../components/Title";
-import { AuthContext } from "../context/AuthContext";
-import { OrderTable } from "../components/OrderTable";
+import { obtenerOrdenes } from "@/data/ordenes";
+import { Title } from "@/components/Title";
+import { AuthContext } from "@/context/AuthContext";
+import { OrderTable } from "@/components/OrderTable";
 
 export const OrderList = () => {
   const ordenestotales = obtenerOrdenes();

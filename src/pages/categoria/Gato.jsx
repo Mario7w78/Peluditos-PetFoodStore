@@ -1,31 +1,32 @@
 import React, { useState } from "react";
-import { useProductContext } from "../context/ProductContext";
-import Pagination from "../components/Pagination";
+import { useProductContext } from "@/context/ProductContext";
+import Pagination from "@/components/Pagination";
 import { Link } from "react-router-dom";
 
-const Perro = () => {
+const Gato = () => {
   const { productos } = useProductContext();
-  const productosPerro = productos.filter(
-    (producto) => producto.categoria?.toLowerCase() === "perros"
+  const productosGato = productos.filter(
+    (producto) => producto.categoria?.toLowerCase() === "gatos"
   );
 
   const [currentPage, setCurrentPage] = useState(1);
   const productosPorPagina = 6;
-  const totalPages = Math.ceil(productosPerro.length / productosPorPagina);
+
+  const totalPages = Math.ceil(productosGato.length / productosPorPagina);
   const inicio = (currentPage - 1) * productosPorPagina;
-  const productosMostrados = productosPerro.slice(inicio, inicio + productosPorPagina);
+  const productosMostrados = productosGato.slice(inicio, inicio + productosPorPagina);
 
   return (
     <main className="min-h-screen bg-gray-50 p-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-blue-700 mb-2">Todo para perros</h1>
+        <h1 className="text-3xl font-bold text-blue-700 mb-2">Todo para gatos</h1>
         <p className="text-gray-700 text-lg">
-          Encuentra productos ideales para tu perro: alimentos, juguetes, correas y más.
+          Encuentra productos ideales para tu gato: alimentos, juguetes, correas y más.
         </p>
       </div>
 
       {productosMostrados.length === 0 ? (
-        <p className="text-center text-gray-500">No hay productos para perros disponibles.</p>
+        <p className="text-center text-gray-500">No hay productos para gatos disponibles.</p>
       ) : (
         <>
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -67,4 +68,4 @@ const Perro = () => {
   );
 };
 
-export default Perro;
+export default Gato;

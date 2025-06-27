@@ -7,11 +7,8 @@
 3.- (Agregar algo adicional)
 */
 
-import React from "react";
 import { useNavigate, Link } from "react-router-dom";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { obtenerProductos } from "../data/productos";
+import { obtenerProductos } from "@/data/productos";
 
 const PedidoCompleto = () => {
     const navigate = useNavigate();

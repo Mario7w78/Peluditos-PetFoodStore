@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import { useOrderContext } from "../context/orderContext";
-import { useProductContext } from "../context/ProductContext";
-import { OrderTable } from "../components/OrderTable";
+import { AuthContext } from "@/context/AuthContext";
+import { useOrderContext } from "@/context/orderContext";
+import { useProductContext } from "@/context/ProductContext";
+import { OrderTable } from "@/components/OrderTable";
 
 export const Dashboard = () => {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useProductContext } from "../context/ProductContext";
-import Pagination from "../components/Pagination";
+import { useProductContext } from "@/context/ProductContext";
+import Pagination from "@/components/Pagination";
 import { Link } from "react-router-dom";
 
 const Hamster = () => {

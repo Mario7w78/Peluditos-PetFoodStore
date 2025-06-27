@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useProductContext } from "../context/ProductContext";
-import { AuthContext } from "../context/AuthContext";
+import { useProductContext } from "@/context/ProductContext";
+import { AuthContext } from "@/context/AuthContext";
 
 function ProductList() {
   const navigate = useNavigate();

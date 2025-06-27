@@ -1,5 +1,3 @@
-import React from "react";
-
 const Popup = ({ message }) => {
   if (!message) return null;
 

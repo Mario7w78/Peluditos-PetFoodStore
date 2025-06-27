@@ -1,9 +1,8 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { Link, Outlet, useNavigate, useLocation} from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import styles from "../styles/Alumno3Styles";
+import { AuthContext } from "@/context/AuthContext";
+import styles from "@/styles/Alumno3Styles";
 import Footer from "./Footer";
-import { useProductContext } from "../context/ProductContext"; // Asegúrate de que esta ruta sea correcta
 
 const Header = () => {
   const { user, logout } = useContext(AuthContext);

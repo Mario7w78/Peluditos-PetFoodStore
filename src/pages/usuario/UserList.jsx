@@ -1,9 +1,9 @@
-import { Title } from "../components/Title";
-import { UserRow } from "../components/UserRow";
-import { AuthContext } from "../context/AuthContext";
+import { Title } from "@/components/Title";
+import { UserRow } from "@/components/UserRow";
+import { AuthContext } from "@/context/AuthContext";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import styles from "../styles/Alumno3Styles";
+import styles from "@/styles/Alumno3Styles";
 
 export function UserList() {
   const { usuarios } = useContext(AuthContext);

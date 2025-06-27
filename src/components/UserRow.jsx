@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import styles from "../styles/Alumno3Styles";
+import styles from "@/styles/Alumno3Styles";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "@/context/AuthContext";
 
 export function UserRow({ usuario }) {
   const { deactivate, deleteuser } = useContext(AuthContext);

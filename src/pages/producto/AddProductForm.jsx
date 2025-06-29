@@ -2,14 +2,8 @@ import React, { useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { useProductContext } from "@/context/ProductContext";
 
-
-
-// En este caso, se realizara el cambio del tipo de dato del atributo stock de la funcion para añadir un producto
-// utilizando el hook useState("") a useState(0) como default;
-
-function AddProductForm() {
+function AddProductForm({agregarProducto, categorias}) {
   const navigate = useNavigate();
-  const { addProducto } = useProductContext();
   const [nombre, setNombre] = useState("");
   const [presentacion, setPresentacion] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -58,12 +52,12 @@ function AddProductForm() {
       presentacion,
       descripcion,
       stock,
-      precio: parseFloat(precio),
-      imagen: previewUrl,
+      precioUnitario: parseFloat(precio),
+      imgurl: previewUrl,
       categoria: categoriaSeleccionada,
     };
 
-    addProducto(nuevoProducto);
+    agregarProducto(nuevoProducto);
     navigate("/productos");
   };
 
@@ -121,9 +115,9 @@ function AddProductForm() {
                 onChange={(e) => setCategoriaSeleccionada(e.target.value)}
               >
                 <option value="">Seleccionar categoría</option>
-                <option value="Perros">Perros</option>
-                <option value="Gatos">Gatos</option>
-                <option value="Hámster">Hámster</option>
+                {categorias.map(categoria=>(
+                  <option key={categoria.id} value={categoria.id}>{categoria.nombre}</option>
+                ))}
               </select>
             </div>
 

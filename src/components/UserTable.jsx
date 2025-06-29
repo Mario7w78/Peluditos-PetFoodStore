@@ -1,9 +1,7 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-function UserTable({ limit = 5 }) {
-  const { usuarios } = useContext(AuthContext);
+function UserTable({ limit = 5, usuarios}) {
   const navigate = useNavigate();
   const usuariosAMostrar = limit ? usuarios.slice(0, limit) : usuarios;
 

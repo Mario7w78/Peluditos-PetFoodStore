@@ -3,7 +3,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "@/styles/Alumno3Styles";
 
-const Login = () => {
+const Login = ({usuarios}) => {
   const { login, user } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,7 +13,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const success = login(email, password);
+    const success = login(email, password, usuarios);
     if (success) {
       // Obtener el usuario logueado desde localStorage
         setLoginSuccess(true);

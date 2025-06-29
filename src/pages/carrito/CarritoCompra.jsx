@@ -1,33 +1,5 @@
-/*
-1.- Registrar Producto {
-    Pagina de producto: Ingresar valores por default en un js.
-    Obtendremos un contexto RegistrarProducto
-    Se mostrara una lista de productos en una pagina (Dos alternativas: Permitir el registro de productos en una pagina
-    o que cada producto tenga su pagina). Presionaremos el boton "Guardar al carro".
-    
-    }
-2.- Carrito de Compra (Obtener los valores de productos del contexto)
-3.- Checkout
------
-1.- Mostrar el Header
-2.- Carro {
-    Mostrar los productos seleccionados: Imagen, nombre, descripcion, precio,
-    eliminar del carro, aumentar o disminuir cantidad}
-3.- Resumen de compra {
-    Productos(numero total de productos)
-    Total de costo
-    Continuar compra a Checkout}
-Ideas:
- - Un contador de segundos que muestre una oferta por tiempo limitado utilizando un conteo con useEffect
- - 
-*/
-
-// En teoria se añadiria un contador por cada producto ingresado utilizando un useEffect()
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useProductContext } from "@/context/ProductContext";
-import { actualizarProductos } from "@/data/productos";
 import styles from "@/styles/CarritoStyles";
 
 const CarritoCompra = () => {

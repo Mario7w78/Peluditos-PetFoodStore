@@ -1,39 +1,36 @@
-const Admin = [
-  {
-    id: "admin",
-    nombre: "admin",
-    email: "admin@peluditos",
-    password: "admin123",
-    age: "",
-    dni: "",
-    admin: true,
-    fechaRegistro: new Date().toLocaleDateString(),
-    canlogin: true
-  },
-  {
-    id: "12345678",
-    nombre: "Pepito",
-    email: "pepe@flores",
-    password: "pepeflores23",
-    age: "2000-01-01",
-    dni: "72761974",
-    admin: false,
-    fechaRegistro: "12/12/2012",
-    canlogin: true
-  },
-];
+const API_URL = "http://localhost:3000"
 
-if (!localStorage.getItem("usuarios")) {
-  localStorage.setItem("usuarios", JSON.stringify(Admin));
+export async function crearUsuario(data) {
+  const res = await fetch(`${API_URL}/usuario`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  return res.json();
 }
 
-const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+export async function obtenerUsuarios() {
+  const res = await fetch(`${API_URL}/usuario`);
+  return res.json();
+}
 
-export const guardarUsuario = (usuario) => {
-  usuarios.push(usuario);
-  localStorage.setItem("usuarios", JSON.stringify(usuarios));
-};
+export async function obtenerUsuarioPorId(id) {
+  const res = await fetch(`${API_URL}/usuario/${id}`);
+  return res.json();
+}
 
-export const obtenerUsuarios = () => {
-  return JSON.parse(localStorage.getItem("usuarios")) || [];
-};
+export async function eliminarUsuario(id) {
+  const res = await fetch(`${API_URL}/usuario/${id}`, {
+    method: 'DELETE'
+  });
+  return res.text();
+}
+
+export async function desactivarUsuario(id, data) {
+  const res = await fetch(`${API_URL}/usuario/${id}/desactivar`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  return res.json();
+}

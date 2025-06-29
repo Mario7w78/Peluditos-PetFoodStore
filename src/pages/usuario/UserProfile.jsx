@@ -5,8 +5,8 @@ import { obtenerOrdenes } from "@/data/ordenes";
 import { OrderTable } from "@/components/OrderTable";
 import Pagination from "@/components/Pagination";
 
-const UserProfile = () => {
-  const { user, actualizarUsuario } = useContext(AuthContext);
+const UserProfile = ({ordenes}) => {
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [showChangeForm, setShowChangeForm] = useState(false);
@@ -18,8 +18,7 @@ const UserProfile = () => {
   const ordenesPorPagina = 10;
 
   useEffect(() => {
-    const todas = obtenerOrdenes();
-    const propias = todas.filter((o) => o.usuarioid === user.id);
+    const propias = ordenes.filter((o) => o.usuarioid === user.id);
 
     const filtradas = propias.filter((o) =>
       o.id.toLowerCase().includes(search.toLowerCase())

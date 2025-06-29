@@ -6,14 +6,12 @@ import SuccessPopup from "@/components/popup";
 import { v4 as uuidv4 } from "uuid";
 
 const Registro = () => {
-  const { register } = useContext(AuthContext);
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [age, setAge] = useState("");
+  const [fechaNacimiemto, setfechaNacimiemto] = useState("");
   const [error, setError] = useState("");
   const [dni, setDni] = useState("");
-  const [admin, setAdmin] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
@@ -38,28 +36,24 @@ const Registro = () => {
     }
 
     const nuevoUsuario = {
-      id: uuidv4(),
       nombre,
       email,
       dni,
-      age,
+      fechaNacimiemto,
       password,
-      admin,
-      canlogin: true,
-      fechaRegistro: new Date().toISOString(),
       rol: "cliente", 
     };
 
-    const { success, message } = register(nuevoUsuario);
+    const nuevo = agregarUsuario(nuevoUsuario)
 
-    if (success) {
+    if (nuevo) {
       setSuccessMessage("¡Felicidades! Ya estás registrado/a 🎉");
       setError("");
       setTimeout(() => {
         navigate("/login");
       }, 2500);
     } else {
-      setError(message);
+      setError("No se pud loguear, ingrese correctamente sus datos");
     }
   };
 

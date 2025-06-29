@@ -1,23 +1,36 @@
 import { Link, useParams } from "react-router-dom";
-import { AuthContext } from "@/context/AuthContext";
-import { useContext } from "react";
+import { useEffect, useState } from "react";
 import { Title } from "@/components/Title";
-import { obtenerOrdenes } from "@/data/ordenes";
 import { OrderTable } from "@/components/OrderTable";
 
-
-export function UserDetail() {
+export function UserDetail({ usuarioPorId, ordenesUsuario }) {
   const { id } = useParams();
+  const [usuario, setUsuario] = useState(null);
+  const [ordenes, setOrdenes] = useState([]);
 
-  const { usuarios } = useContext(AuthContext);
-  const ordenestotales = obtenerOrdenes();
-  const usuario = usuarios.find((user) => user.id === id);
-  const ordenes = ordenestotales.filter((orden) => orden.usuarioid === id).slice(0,10);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const usuario = await usuarioPorId(id);
+        const ordenes = await ordenesUsuario(id);
+
+        setUsuario(usuario);
+        setOrdenes(ordenes);
+      } catch (error) {
+        console.error("Error al obtener datos:", error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  console.log(usuario);
+  console.log(ordenes);
   return (
     <>
       <Title text="Detalle del Usuario" />
       <div className="flex flex-col items-center ">
-        <div className="flex justify-center gap-4 px-2 py-3 border border-blue-500 rounded-3xl w-[30%]">
+        <div className="flex justify-center gap-4 px-2 py-3 border border-blue-500 rounded-3xl ">
           <div className="text-9xl">🧑</div>
           {usuario ? (
             <div className="text-left [&_strong]:text-blue-700">
@@ -33,17 +46,20 @@ export function UserDetail() {
               </p>
               <p>
                 <strong>Fecha de Nacimiento:</strong>{" "}
-                {usuario.age ? usuario.age : "No disponible"}
+                {usuario.fechaNacimiento.substr(0, 10)}
+              </p>
+              <p>
+                <strong>Fecha de Registro:</strong>{" "}
+                {usuario.fechaRegistro.substr(0, 10)}
               </p>
               <p>
                 <strong>Rol:</strong>{" "}
                 {usuario.admin ? "Administrador" : "Usuario"}
               </p>
-              
-            <p>
-                <strong>Fecha de Registro:</strong>{" "}
-                {usuario.fechaRegistro}
-            </p>
+              <p>
+                <strong>Estado:</strong>{" "}
+                {usuario.canlogin ? "Activo" : "Desactivado"}
+              </p>
             </div>
           ) : (
             <p>No se encontró el usuario.</p>
@@ -58,11 +74,9 @@ export function UserDetail() {
       </div>
       <div className="flex flex-col items-center mt-6 h-screen">
         <Title text="Ordenes:" />
-        
-        <OrderTable ordenes = {ordenes}/>
-        
-      </div>
 
+        <OrderTable ordenes={ordenes} usuario={usuario}/>
+      </div>
     </>
   );
 }

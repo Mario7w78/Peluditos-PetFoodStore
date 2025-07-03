@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000"
+import { API_URL } from './config.js';
 
 export async function crearUsuario(data) {
   const res = await fetch(`${API_URL}/usuario`, {
@@ -11,6 +11,15 @@ export async function crearUsuario(data) {
 
 export async function obtenerUsuarios() {
   const res = await fetch(`${API_URL}/usuario`);
+  return res.json();
+}
+
+export async function loginUsuario(data) {
+  const res = await fetch(`${API_URL}/usuario/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
   return res.json();
 }
 

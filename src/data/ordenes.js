@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000"
+import { API_URL } from './config.js';
 
 export async function crearOrdenDesdeCarrito(usuarioId) {
   const res = await fetch(`${API_URL}/orden/desde-carrito/${usuarioId}`, {

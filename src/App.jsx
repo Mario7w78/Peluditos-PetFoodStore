@@ -33,6 +33,7 @@ import {
   crearUsuario,
   obtenerUsuarios,
   obtenerUsuarioPorId,
+  loginUsuario,
   eliminarUsuario,
   desactivarUsuario,
 } from "./data/usuarios";
@@ -107,6 +108,21 @@ function App() {
     }
   };
 
+  const login = async (email, password) => {
+    try {
+      const usuarioLogueado = await loginUsuario({email, password});
+      if (usuarioLogueado) {   
+        return usuarioEncontrado;
+      } else {  
+        console.error("Credenciales incorrectas");
+        return null;  
+      }
+    } catch (error) { 
+      console.error("Error al iniciar sesión:", error);
+      return null;
+      }
+    };
+
   const ordenesUsuario = async (usuarioId)=>{
     try{
       const orden = await obtenerOrdenesPorUsuario(usuarioId);
@@ -130,7 +146,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Header />}>
           <Route index element={<Home />} />
-          <Route path="/login" element={<Login usuarios={usuarios} />} />
+          <Route path="/login" element={<Login login = {login} />} />
           <Route path="/registro" element={<Registro agregarUsuario={agregarUsuario}/>} />
           <Route path="/recuperacion" element={<Recuperacion />} />
           <Route path="/perfil" element={<UserProfile ordenes={ordenes}/>} />

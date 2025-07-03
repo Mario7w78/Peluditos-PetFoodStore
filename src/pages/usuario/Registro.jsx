@@ -3,13 +3,13 @@ import { AuthContext } from "@/context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "@/styles/Alumno3Styles";
 import SuccessPopup from "@/components/popup";
-import { v4 as uuidv4 } from "uuid";
 
-const Registro = () => {
+
+const Registro = ({agregarUsuario}) => {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fechaNacimiemto, setfechaNacimiemto] = useState("");
+  const [fechaNacimiento, setfechaNacimiento] = useState("");
   const [error, setError] = useState("");
   const [dni, setDni] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -39,7 +39,7 @@ const Registro = () => {
       nombre,
       email,
       dni,
-      fechaNacimiemto,
+      fechaNacimiento,
       password,
       rol: "cliente", 
     };
@@ -53,7 +53,7 @@ const Registro = () => {
         navigate("/login");
       }, 2500);
     } else {
-      setError("No se pud loguear, ingrese correctamente sus datos");
+      setError("No se pudo loguear, ingrese correctamente sus datos");
     }
   };
 
@@ -113,8 +113,8 @@ const Registro = () => {
                 type="date"
                 className={styles.input}
                 placeholder="Fecha de nacimiento"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
+                value={fechaNacimiento}
+                onChange={(e) => setfechaNacimiento(e.target.value)}
                 required
               />
 

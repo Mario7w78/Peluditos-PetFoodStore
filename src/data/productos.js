@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:3000"
+import { API_URL } from './config.js';
+
 export async function crearProducto(data) {
   const res = await fetch(`${API_URL}/producto`, {
     method: 'POST',

@@ -1,11 +1,30 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "@/context/AuthContext";
-import { obtenerOrdenes } from "@/data/ordenes";
+import { API_URL } from "@/data/config";
 import { OrderTable } from "@/components/OrderTable";
 import Pagination from "@/components/Pagination";
 
-const UserProfile = ({ordenes}) => {
+const actualizarUsuario = async (usuarioActualizado) => {
+  try {
+    const res = await fetch(`${API_URL}/usuario/${usuarioActualizado.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(usuarioActualizado),
+    });
+
+    if (!res.ok) throw new Error("Error al actualizar usuario");
+
+    const updated = await res.json();
+    localStorage.setItem("user", JSON.stringify(updated));
+    alert("Usuario actualizado correctamente");
+  } catch (error) {
+    console.error("Error al actualizar:", error);
+    alert("No se pudo actualizar el usuario");
+  }
+};
+
+const UserProfile = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -15,18 +34,26 @@ const UserProfile = ({ordenes}) => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [ordenesFiltradas, setOrdenesFiltradas] = useState([]);
+  const [ordenes, setOrdenes] = useState([]);
   const ordenesPorPagina = 10;
 
+  // Obtener órdenes del usuario autenticado
   useEffect(() => {
-    const propias = ordenes.filter((o) => o.usuarioid === user.id);
+    if (user?.id) {
+      fetch(`${API_URL}/orden/${user.id}`)
+        .then((res) => res.json())
+        .then((data) => setOrdenes(data || []));
+    }
+  }, [user]);
 
+  useEffect(() => {
+    const propias = ordenes.filter((o) => o.usuarioId === user.id);
     const filtradas = propias.filter((o) =>
-      o.id.toLowerCase().includes(search.toLowerCase())
+      o.id.toString().toLowerCase().includes(search.toLowerCase())
     );
-
     setOrdenesFiltradas(filtradas);
     setCurrentPage(1);
-  }, [search, user]);
+  }, [search, user, ordenes]);
 
   if (!user) {
     return <p className="text-center mt-8">No has iniciado sesión.</p>;
@@ -37,12 +64,10 @@ const UserProfile = ({ordenes}) => {
       alert("La contraseña debe tener al menos 4 caracteres.");
       return;
     }
-
     if (newPassword !== confirmPassword) {
       alert("Las contraseñas no coinciden.");
       return;
     }
-
     const updatedUser = { ...user, password: newPassword };
     actualizarUsuario(updatedUser);
     alert("Contraseña actualizada con éxito.");
@@ -62,10 +87,8 @@ const UserProfile = ({ordenes}) => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 space-y-10">
-
       {/* Grid con bloque de perfil y bloque de contador */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-
         {/* Bloque de perfil */}
         <div className="bg-white p-8 rounded-lg shadow-md flex flex-col items-center text-center">
           <h2 className="text-2xl font-semibold mb-6 text-blue-700">👤 Perfil de Usuario</h2>

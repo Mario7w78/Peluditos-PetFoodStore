@@ -1,11 +1,10 @@
-import React, { useState, useContext } from "react";
-import { AuthContext } from "@/context/AuthContext";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "@/styles/Alumno3Styles";
 import SuccessPopup from "@/components/popup";
+import { API_URL } from "@/data/config";
 
-
-const Registro = ({agregarUsuario}) => {
+const Registro = () => {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +15,7 @@ const Registro = ({agregarUsuario}) => {
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validaciones
@@ -41,19 +40,27 @@ const Registro = ({agregarUsuario}) => {
       dni,
       fechaNacimiento,
       password,
-      rol: "cliente", 
+      rol: "cliente",
     };
 
-    const nuevo = agregarUsuario(nuevoUsuario)
+    try {
+      const res = await fetch(`${API_URL}/usuario`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nuevoUsuario),
+      });
 
-    if (nuevo) {
-      setSuccessMessage("¡Felicidades! Ya estás registrado/a 🎉");
-      setError("");
-      setTimeout(() => {
-        navigate("/login");
-      }, 2500);
-    } else {
-      setError("No se pudo loguear, ingrese correctamente sus datos");
+      if (res.ok) {
+        setSuccessMessage("¡Felicidades! Ya estás registrado/a 🎉");
+        setError("");
+        setTimeout(() => {
+          navigate("/login");
+        }, 2500);
+      } else {
+        setError("No se pudo registrar, ingrese correctamente sus datos");
+      }
+    } catch (error) {
+      setError("Error de red o servidor");
     }
   };
 

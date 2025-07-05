@@ -52,9 +52,9 @@ function ProductList() {
                 {productos.map((producto) => (
                   <tr key={producto.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4">
-                      {producto.imagen ? (
+                      {producto.imgurl ? (
                         <img
-                          src={producto.imagen}
+                          src={producto.imgurl}
                           alt={producto.nombre}
                           className="w-12 h-12 object-cover rounded"
                         />

@@ -2,8 +2,9 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Title } from "@/components/Title";
 import { OrderTable } from "@/components/OrderTable";
+import { API_URL } from "@/data/config";
 
-export function UserDetail({ usuarioPorId, ordenesUsuario }) {
+export function UserDetail() {
   const { id } = useParams();
   const [usuario, setUsuario] = useState(null);
   const [ordenes, setOrdenes] = useState([]);
@@ -11,21 +12,19 @@ export function UserDetail({ usuarioPorId, ordenesUsuario }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const usuario = await usuarioPorId(id);
-        const ordenes = await ordenesUsuario(id);
-
+        const resUser = await fetch(`${API_URL}/usuario/${id}`);
+        const usuario = await resUser.json();
+        const resOrdenes = await fetch(`${API_URL}/orden/${id}`);
+        const ordenes = await resOrdenes.json();
         setUsuario(usuario);
         setOrdenes(ordenes);
       } catch (error) {
         console.error("Error al obtener datos:", error);
       }
     };
-
     fetchData();
   }, [id]);
 
-  console.log(usuario);
-  console.log(ordenes);
   return (
     <>
       <Title text="Detalle del Usuario" />
@@ -41,41 +40,32 @@ export function UserDetail({ usuarioPorId, ordenesUsuario }) {
                 <strong>Email:</strong> {usuario.email}
               </p>
               <p>
-                <strong>DNI:</strong>{" "}
-                {usuario.dni ? usuario.dni : "No disponible"}
+                <strong>DNI:</strong> {usuario.dni ? usuario.dni : "No disponible"}
               </p>
               <p>
-                <strong>Fecha de Nacimiento:</strong>{" "}
-                {usuario.fechaNacimiento.substr(0, 10)}
+                <strong>Fecha de Nacimiento:</strong> {usuario.fechaNacimiento?.substr(0, 10)}
               </p>
               <p>
-                <strong>Fecha de Registro:</strong>{" "}
-                {usuario.fechaRegistro.substr(0, 10)}
+                <strong>Fecha de Registro:</strong> {usuario.fechaRegistro?.substr(0, 10)}
               </p>
               <p>
-                <strong>Rol:</strong>{" "}
-                {usuario.admin ? "Administrador" : "Usuario"}
+                <strong>Rol:</strong> {usuario.admin ? "Administrador" : "Usuario"}
               </p>
               <p>
-                <strong>Estado:</strong>{" "}
-                {usuario.canlogin ? "Activo" : "Desactivado"}
+                <strong>Estado:</strong> {usuario.canlogin ? "Activo" : "Inactivo"}
               </p>
             </div>
           ) : (
-            <p>No se encontró el usuario.</p>
+            <p>Cargando usuario...</p>
           )}
         </div>
-        <Link
-          className="text-blue-700 hover:font-bold border my-3 rounded-2xl p-2 hover:border-2"
-          to="/userlist"
-        >
+        <div className="w-full max-w-2xl mt-6">
+          <h3 className="text-lg font-semibold mb-2">Órdenes del usuario</h3>
+          <OrderTable ordenes={ordenes} />
+        </div>
+        <Link to="/userlist" className="mt-4 text-blue-700 hover:underline">
           Volver a la lista de usuarios
         </Link>
-      </div>
-      <div className="flex flex-col items-center mt-6 h-screen">
-        <Title text="Ordenes:" />
-
-        <OrderTable ordenes={ordenes} usuario={usuario}/>
       </div>
     </>
   );

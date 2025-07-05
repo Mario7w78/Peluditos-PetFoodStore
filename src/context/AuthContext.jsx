@@ -1,5 +1,5 @@
-import React, { createContext, useState } from "react";
-
+import React, { createContext, useState, useEffect } from "react";
+import { API_URL } from "@/data/config";
 
 export const AuthContext = createContext();
 
@@ -8,17 +8,35 @@ export const AuthProvider = ({ children }) => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
+  const [usuarios, setUsuarios] = useState([]);
 
-  const login = (email, password, usuarios) => {
-    const usuario = usuarios.find(
-      (u) => u.email === email && u.password === password
-    );
-    if (usuario && usuario.canlogin) {
-      setUser(usuario);
-      localStorage.setItem("user", JSON.stringify(usuario));
-      return true;
+  // Obtener usuarios del backend
+  useEffect(() => {
+    fetch(`${API_URL}/usuario`)
+      .then((res) => res.json())
+      .then((data) => setUsuarios(data))
+      .catch(() => setUsuarios([]));
+  }, []);
+
+  // Login usando el backend
+  const login = async (email, password) => {
+    try {
+      const res = await fetch(`${API_URL}/usuario/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      if (!res.ok) return false;
+      const usuario = await res.json();
+      if (usuario && usuario.canlogin) {
+        setUser(usuario);
+        localStorage.setItem("user", JSON.stringify(usuario));
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
     }
-    return false;
   };
 
   const logout = () => {
@@ -26,31 +44,23 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
-  // const actualizarUsuario = (usuarioActualizado) => {
-  //   const nuevosUsuarios = usuarios.map((u) =>
-  //     u.id === usuarioActualizado.id ? usuarioActualizado : u
-  //   );
-  //   localStorage.setItem("usuarios", JSON.stringify(nuevosUsuarios));
-  //   setUsuarios(nuevosUsuarios);
-  //   setUser(usuarioActualizado);
-  //   localStorage.setItem("user", JSON.stringify(usuarioActualizado));
-  // };
+  // Desactivar usuario
+  const deactivate = async (id) => {
+    await fetch(`${API_URL}/usuario/${id}/desactivar`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ canlogin: false }),
+    });
+    setUsuarios((prev) =>
+      prev.map((u) => (u.id === id ? { ...u, canlogin: false } : u))
+    );
+  };
 
-  // const deleteuser = (id) => {
-  //   const updatedUsuarios = usuarios.filter((usuario) => usuario.id !== id);
-  //   setUsuarios(updatedUsuarios);
-  //   localStorage.setItem("usuarios", JSON.stringify(updatedUsuarios));
-  // };
-
-  // const deactivate = (id) => {
-  //   const updatedUsuarios = usuarios.map((usuario) =>
-  //     usuario.id === id ? { ...usuario, canlogin: !usuario.canlogin } : usuario
-  //   );
-
-  //   setUsuarios(updatedUsuarios);
-  //   console.log("Usuarios actualizados:", updatedUsuarios);
-  //   localStorage.setItem("usuarios", JSON.stringify(updatedUsuarios));
-  // };
+  // Eliminar usuario
+  const deleteuser = async (id) => {
+    await fetch(`${API_URL}/usuario/${id}`, { method: "DELETE" });
+    setUsuarios((prev) => prev.filter((u) => u.id !== id));
+  };
 
   return (
     <AuthContext.Provider
@@ -59,9 +69,9 @@ export const AuthProvider = ({ children }) => {
         setUser,
         login,
         logout,
-        // actualizarUsuario,
-        // deactivate,
-        // deleteuser,
+        usuarios,
+        deactivate,
+        deleteuser,
       }}
     >
       {children}

@@ -7,15 +7,34 @@
 3.- (Agregar algo adicional)
 */
 
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { obtenerProductos } from "@/data/productos";
+import { API_URL } from "@/data/config";
 
 const PedidoCompleto = () => {
+    const [orden, setOrden] = useState(null);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
-    const productos = obtenerProductos() || []; // Asegurar que es un array válido
-    const numeroPedido = Math.floor(Math.random() * 90000) + 10000; // Número aleatorio de pedido
+    const user = JSON.parse(localStorage.getItem("usuario"));
     const fechaEntrega = new Date();
     fechaEntrega.setDate(fechaEntrega.getDate() + 3); // Simulación de entrega en 3 días
+
+    useEffect(() => {
+        if (!user) return;
+        // Obtener la última orden del usuario
+        fetch(`${API_URL}/orden/${user.id}`)
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data) && data.length > 0) {
+                    // Tomar la última orden
+                    setOrden(data[data.length - 1]);
+                }
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+    }, [user]);
+
+    if (loading) return <p className="text-center mt-10 text-gray-500">Cargando...</p>;
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -26,32 +45,33 @@ const PedidoCompleto = () => {
 
                 <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
                     <h2 className="text-xl font-semibold mb-4">Detalles del Pedido</h2>
-                    <p><strong>Número de Pedido:</strong> #{numeroPedido}</p>
-                    <p><strong>Fecha Estimada de Entrega:</strong> {fechaEntrega.toLocaleDateString()}</p>
+                    {orden ? (
+                        <>
+                            <p><strong>Número de Pedido:</strong> #{orden.id}</p>
+                            <p><strong>Fecha Estimada de Entrega:</strong> {fechaEntrega.toLocaleDateString()}</p>
 
-                    <h3 className="text-lg font-semibold mt-4">Productos en tu pedido:</h3>
-                    <ul className="space-y-3">
-                        {productos.map((prod) => (
-                            <li key={prod.id} className="flex items-center gap-4 border-b pb-2">
-                                {/* Mostrar imagen del producto */}
-                                <img src={prod.imagen} alt={prod.nombre} width={80} className="rounded" />
-                                <div>
-                                    <p><strong>{prod.nombre}</strong></p>
-                                    {/* Mostrar cantidad, por defecto 1 si no existe */}
-                                    <p>Cantidad: {prod.cantidad ? parseInt(prod.cantidad, 10) : 1}</p>
-                                    {/* Mostrar precio total, por defecto solo el precio si no hay cantidad */}
-                                    <p>
-                                        Precio Total: $
-                                        {prod.precio && prod.cantidad
-                                            ? (prod.precio * parseInt(prod.cantidad, 10)).toFixed(2)
-                                            : prod.precio
-                                                ? Number(prod.precio).toFixed(2)
-                                                : "0.00"}
-                                    </p>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+                            <h3 className="text-lg font-semibold mt-4">Productos en tu pedido:</h3>
+                            <ul className="space-y-3">
+                                {orden.productos.map((prod) => (
+                                    <li key={prod.id} className="flex items-center gap-4 border-b pb-2">
+                                        {/* Mostrar imagen del producto */}
+                                        <img src={prod.imgurl} alt={prod.nombre} width={80} className="rounded" />
+                                        <div>
+                                            <p><strong>{prod.nombre}</strong></p>
+                                            {/* Mostrar cantidad, por defecto 1 si no existe */}
+                                            <p>Cantidad: {prod.DetalleOrden?.cantidad || 1}</p>
+                                            {/* Mostrar precio total, por defecto solo el precio si no hay cantidad */}
+                                            <p>
+                                                Precio Total: S/ {prod.DetalleOrden?.subtotal ? Number(prod.DetalleOrden.subtotal).toFixed(2) : "0.00"}
+                                            </p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                    ) : (
+                        <p>No se encontró la orden.</p>
+                    )}
                 </div>
                 {/* Botón para volver al menú principal */}
                 <Link to="/">

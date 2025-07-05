@@ -6,7 +6,7 @@ export function ProtectedRoutes() {
     const { user } = useContext(AuthContext); // Obtener el usuario desde el contexto
     console.log("ProtectedRoutes user:", user);
 
-    if (!user || user.admin !== true) {
+    if (!user) {
         return <Navigate to="/"/>;
     }
     return <Outlet />;

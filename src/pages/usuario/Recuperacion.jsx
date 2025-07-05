@@ -1,17 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "@/styles/Alumno3Styles";
 import Popup from "@/components/popup";
+import { API_URL } from "@/data/config";
 
 const Recuperacion = () => {
   const [email, setEmail] = useState("");
   const [mensaje, setMensaje] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setMensaje(
-      "Si el correo es válido, recibirás un enlace para restablecer tu contraseña. 🔍"
-    );
+    setMensaje("");
+    try {
+      const res = await fetch(`${API_URL}/usuario/recuperar`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      setMensaje(data.mensaje || "Revisa tu correo");
+    } catch (error) {
+      setMensaje("Error de red o servidor");
+    }
   };
 
   return (

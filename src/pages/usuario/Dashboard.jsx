@@ -1,20 +1,30 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "@/context/AuthContext";
-import { useOrderContext } from "@/context/orderContext";
-import { useProductContext } from "@/context/ProductContext";
 import { OrderTable } from "@/components/OrderTable";
+import { API_URL } from "@/data/config";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
   const { usuarios, deactivate, deleteuser } = useContext(AuthContext);
-  const { ordenes } = useOrderContext();
-  const { productos } = useProductContext();
+  const [ordenes, setOrdenes] = useState([]);
   const [selectedUser, setSelectedUser] = useState(usuarios[0]);
+
+  // Obtener órdenes en tiempo real del backend
+  useEffect(() => {
+    fetch(`${API_URL}/orden`)
+      .then((res) => res.json())
+      .then((data) => setOrdenes(data));
+  }, []);
+
   // Resumen
   const totalOrdenes = ordenes.length;
   const totalUsuarios = usuarios.length;
-  const totalIngresos = ordenes.reduce((acc, orden) => acc + orden.total, 0);
+  const totalIngresos = ordenes.reduce(
+    (acc, orden) => acc + (orden.total || 0),
+    0
+  );
+
   const handleDeactivate = (usuario) => {
     if (usuario.admin) {
       alert("No puedes desactivar a un administrador");
@@ -32,7 +42,7 @@ export const Dashboard = () => {
   };
 
   const ordenesUsuario = ordenes.filter(
-    (ord) => ord.usuarioid === selectedUser?.id
+    (ord) => ord.usuarioId === selectedUser?.id || ord.usuarioid === selectedUser?.id
   );
 
   return (
@@ -104,10 +114,16 @@ export const Dashboard = () => {
                     >
                       Ver detalle
                     </button>
-                    <button onClick={()=>handleDeactivate(user)} className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-3 py-1 rounded hover:bg-[#ff7e5a] hover:text-white transition">
+                    <button
+                      onClick={() => handleDeactivate(user)}
+                      className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-3 py-1 rounded hover:bg-[#ff7e5a] hover:text-white transition"
+                    >
                       Desactivar
                     </button>
-                    <button onClick={()=>handleDelete(user)} className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-3 py-1 rounded hover:bg-[#ff7e5a] hover:text-white transition">
+                    <button
+                      onClick={() => handleDelete(user)}
+                      className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-3 py-1 rounded hover:bg-[#ff7e5a] hover:text-white transition"
+                    >
                       Eliminar
                     </button>
                   </td>
@@ -165,7 +181,9 @@ export const Dashboard = () => {
                         {ord.id}
                       </td>
                       <td className="py-1">{ord.fecha}</td>
-                      <td className="py-1">S/{ord.total}.00</td>
+                      <td className="py-1">
+                        S/{ord.total ? ord.total.toFixed(2) : "0.00"}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

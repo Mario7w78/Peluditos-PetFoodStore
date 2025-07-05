@@ -1,20 +1,31 @@
 // CategoriesContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
+import { API_URL } from "@/data/config";
 
 const CategoriesContext = createContext();
 
 export const CategoriesProvider = ({ children }) => {
   const [categorias, setCategorias] = useState([]);
 
+  // Obtener categorías del backend al montar
   useEffect(() => {
-    const guardadas = JSON.parse(localStorage.getItem("categorias")) || [];
-    setCategorias(guardadas);
+    fetch(`${API_URL}/categoria`)
+      .then((res) => res.json())
+      .then((data) => setCategorias(data || []))
+      .catch(() => setCategorias([]));
   }, []);
 
-  const addCategoria = (nuevaCategoria) => {
-    const nuevas = [...categorias, nuevaCategoria];
-    setCategorias(nuevas);
-    localStorage.setItem("categorias", JSON.stringify(nuevas));
+  // Agregar categoría al backend y actualizar estado
+  const addCategoria = async (nuevaCategoria) => {
+    const res = await fetch(`${API_URL}/categoria`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(nuevaCategoria),
+    });
+    if (res.ok) {
+      const creada = await res.json();
+      setCategorias((prev) => [...prev, creada]);
+    }
   };
 
   return (

@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { API_URL } from "@/data/config";
 
 const OrderContext = createContext();
 
 export const ContextProvider = ({ children }) => {
-
-    const [productos, setProductos] = useState(() => {
+  const [productos, setProductos] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("productos")) || [];
     } catch (error) {
@@ -22,40 +22,40 @@ export const ContextProvider = ({ children }) => {
     }
   });
 
-  // Órdenes
-  const [ordenes, setOrdenes] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("ordenes")) || [];
-    } catch (error) {
-      console.error("Error al obtener órdenes:", error);
-      return [];
+  const [ordenes, setOrdenes] = useState([]);
+
+  // Obtener órdenes del backend al montar
+  useEffect(() => {
+    fetch(`${API_URL}/orden`)
+      .then((res) => res.json())
+      .then((data) => setOrdenes(data || []))
+      .catch(() => setOrdenes([]));
+  }, []);
+
+  // Métodos para agregar y eliminar órdenes en el backend
+  const agregarOrden = async (nuevaOrden) => {
+    const res = await fetch(
+      `${API_URL}/orden/desde-carrito/${nuevaOrden.usuarioId}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nuevaOrden),
+      }
+    );
+    if (res.ok) {
+      const ordenCreada = await res.json();
+      setOrdenes((prev) => [...prev, ordenCreada]);
     }
-  });
+  };
 
-  useEffect(() => {
-    localStorage.setItem("productos", JSON.stringify(productos));
-  }, [productos]);
+  const eliminarOrden = async (id) => {
+    await fetch(`${API_URL}/orden/${id}`, { method: "DELETE" });
+    setOrdenes((prev) => prev.filter((orden) => orden.id !== id));
+  };
 
-  useEffect(() => {
-    localStorage.setItem("envioGuardar", JSON.stringify(envios));
-  }, [envios]);
-
-  useEffect(() => {
-    localStorage.setItem("ordenes", JSON.stringify(ordenes));
-  }, [ordenes]);
-
+  // Métodos locales para productos y envíos (puedes adaptarlos si tienes endpoints)
   const guardarProducto = (producto) => {
     setProductos((prev) => [...prev, producto]);
-  };
-
-  const agregarOrden = (nuevaOrden) => {
-    const nuevas = [...ordenes, nuevaOrden];
-    setOrdenes(nuevas);
-  };
-
-  const eliminarOrden = (id) => {
-    const actualizadas = ordenes.filter((orden) => orden.id !== id);
-    setOrdenes(actualizadas);
   };
 
   return (

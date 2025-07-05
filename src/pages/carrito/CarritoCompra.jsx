@@ -1,89 +1,107 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { API_URL } from "@/data/config";
 import styles from "@/styles/CarritoStyles";
 
 const CarritoCompra = () => {
-    // modificarProductos
-    const { productos, eliminarProducto, setProductos } = useProductContext();
-    // console.log(productos); 
-    // Contador de oferta con tiempo limitado que comienza desde el segundo 30
+    const [productos, setProductos] = useState([]);
+    const [carritoId, setCarritoId] = useState(null);
     const [contador, setContador] = useState(30);
 
-    // Utilizaremos useEffect con setInterval para realizar un contador con segunderos
-    // de tiempo para la oferta y va bajando por cada 1000 milisegundos.
+    // Obtener usuario logueado
+    const user = JSON.parse(localStorage.getItem("usuario"));
+
+    // Obtener carrito del backend al montar
+    useEffect(() => {
+        if (!user) return;
+        fetch(`${API_URL}/carrito/usuario/${user.id}`)
+            .then(res => res.json())
+            .then(data => {
+                setCarritoId(data.id);
+                // Mapear productos con cantidad y datos necesarios
+                setProductos(
+                    (data.productos || []).map(p => ({
+                        ...p,
+                        cantidad: p.DetalleCarrito?.cantidad || 1,
+                        precioUnitario: p.DetalleCarrito?.precioUnitario || p.precioUnitario,
+                        imgurl: p.imgurl
+                    }))
+                );
+            });
+    }, [user]);
+
+    // Contador de oferta
     useEffect(() => {
         if (contador > 0) {
-            const timer = setInterval(() =>
-                setContador((prev) => prev - 1), 1000);
-            return () => clearInterval(timer); // Limpieza del intervalo
+            const timer = setInterval(() => setContador(prev => prev - 1), 1000);
+            return () => clearInterval(timer);
         }
-    }, [contador]); // Esto indica los cambios de efectos inclinados hacia contador
+    }, [contador]);
 
-    // ¿Realizar un localStorage para las subidas y bajadas de las cantidades
-    // como un reemplazo de un array dinamico?
-    // El contador de Incrementos podria estar adherido a la funcion de actualizar cantidad, si incremento
-    // fuese menor a 0 entonces sube reduc, de otra manera, sube incr
-
-    // Función para aumentar o disminuir cantidad
-    const actualizarCantidad = (id, incremento) => {
-        // ...prod utiliza un operador de propagacion para que obtenga las propiedades de prod, unicamente que
-        // cambia la cantidad
-        const nuevosProductos = productos.map((prod) => {
-            if (prod.id === id) {
-                // No permitir menos de 1
-                const nuevaCantidad = Math.max(1, prod.stock + incremento);
-                return { ...prod, stock: nuevaCantidad };
-            }
-            return prod;
+    // Actualizar cantidad en backend
+    const actualizarCantidad = async (productoId, incremento) => {
+        const prod = productos.find(p => p.id === productoId);
+        if (!prod) return;
+        const nuevaCantidad = Math.max(1, prod.cantidad + incremento);
+        // Aquí deberías tener un endpoint para actualizar cantidad, por ahora eliminamos y volvemos a agregar
+        await fetch(`${API_URL}/carrito/${carritoId}/producto/${productoId}`, { method: "DELETE" });
+        await fetch(`${API_URL}/carrito/${carritoId}/producto`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ productoId, cantidad: nuevaCantidad, precioUnitario: prod.precioUnitario })
         });
-        setProductos(nuevosProductos);
-        actualizarProductos(nuevosProductos);
+        // Refrescar productos
+        fetch(`${API_URL}/carrito/usuario/${user.id}`)
+            .then(res => res.json())
+            .then(data => {
+                setProductos(
+                    (data.productos || []).map(p => ({
+                        ...p,
+                        cantidad: p.DetalleCarrito?.cantidad || 1,
+                        precioUnitario: p.DetalleCarrito?.precioUnitario || p.precioUnitario,
+                        imgurl: p.imgurl
+                    }))
+                );
+            });
     };
 
-    // Funcion para obtener el precio total de los productos
+    // Eliminar producto del carrito
+    const eliminarProducto = async (productoId) => {
+        await fetch(`${API_URL}/carrito/${carritoId}/producto/${productoId}`, { method: "DELETE" });
+        setProductos(productos.filter(p => p.id !== productoId));
+    };
+
+    // Calcular total
     const calcularTotal = () => {
-        return productos.reduce((acc, prod) => acc + prod.precio * prod.stock, 0);
+        return productos.reduce((acc, prod) => acc + prod.precioUnitario * prod.cantidad, 0);
     };
 
     return (
         <div className="min-h-screen flex flex-col">
-
             <main className="flex-grow p-6">
                 <h1 className="text-2xl font-bold mb-4">Carro de Compra</h1>
-
-                {/* Contenedor principal con Flexbox */}
                 <div className="flex gap-6">
-                    {/* Columna izquierda: Productos seleccionados */}
                     <div className="w-2/3 bg-white p-6 rounded-lg shadow-lg">
                         <h2 className="text-xl font-semibold mb-4">Productos Seleccionados</h2>
                         {productos.length > 0 ? (
                             <ul className="space-y-4">
                                 {productos.map((prod) => (
                                     <li key={prod.id} className="flex items-center gap-4 border-b pb-2 mb-2">
-                                        <img src={prod.imagen} alt={prod.nombre} width={80} className="rounded" />
+                                        <img src={prod.imgurl} alt={prod.nombre} width={80} className="rounded" />
                                         <div>
                                             <p className="font-semibold">{prod.nombre}</p>
-                                            {/*La funcion toFixed() sirve para redondear valores*/}
-                                            <p>Precio: ${prod.precio.toFixed(2)}</p>
-                                            <p>Cantidad: {prod.stock}</p>
-                                            {/* Botones de cantidad */}
+                                            <p>Precio: S/ {prod.precioUnitario.toFixed(2)}</p>
+                                            <p>Cantidad: {prod.cantidad}</p>
                                             <div className="flex gap-2 mt-2">
                                                 <button
                                                     className="bg-gray-300 px-2 py-1 rounded"
                                                     onClick={() => actualizarCantidad(prod.id, -1)}
-                                                >
-                                                    -
-                                                </button>
+                                                >-</button>
                                                 <button
                                                     className="bg-gray-300 px-2 py-1 rounded"
                                                     onClick={() => actualizarCantidad(prod.id, 1)}
-                                                >
-                                                    +
-                                                </button>
-                                                {/* <button>Prueba</button> */}
+                                                >+</button>
                                             </div>
-
-                                            {/* Botón para eliminar */}
                                             <button onClick={() => eliminarProducto(prod.id)}
                                                 className="text-red-500 mt-2">Eliminar</button>
                                         </div>
@@ -94,13 +112,10 @@ const CarritoCompra = () => {
                             <p>No hay productos en el carrito.</p>
                         )}
                     </div>
-
-                    {/* Columna derecha: Resumen de compra */}
                     <div className="w-1/3 bg-gray-100 p-6 rounded-lg shadow-lg">
                         <h2 className="text-xl font-semibold mb-4">Resumen de la compra</h2>
                         <p><strong>Productos:</strong> {productos.length}</p>
-                        <p><strong>Total:</strong> ${calcularTotal().toFixed(2)}</p>
-
+                        <p><strong>Total:</strong> S/ {calcularTotal().toFixed(2)}</p>
                         <Link to="/checkout">
                             <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500">
                                 Continuar a Checkout
@@ -110,9 +125,6 @@ const CarritoCompra = () => {
                 </div>
             </main>
             <aside>
-                {/*La razon del por que utilizamos {} es por el formato de js en una declaracion de jsx*/}
-                {/*En el caso de que el contador llegase a cero, simplemente desapareceria. El problema*/}
-                {/* es que detiene todas las funcionalidades de los botones*/}
                 <img src="src/images/Limited-offer.jpg" alt="centered image" className={styles.image_offer} />
                 {contador > 0 && (
                     <div className="bg-red-500 text-white p-4 rounded-md text-center font-bold mb-4">

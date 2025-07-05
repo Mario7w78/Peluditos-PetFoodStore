@@ -5,7 +5,8 @@ import { useProductContext } from "@/context/ProductContext";
 const ProductDetail = () => {
   const { id } = useParams();
   const { productos } = useProductContext();
-  const producto = productos.find((p) => p.id === id);
+  // Convertimos id a número para evitar problemas de tipo
+  const producto = productos.find((p) => p.id == id);
 
   if (!producto) {
     return <p className="text-center mt-10 text-gray-500">Producto no encontrado</p>;
@@ -15,7 +16,7 @@ const ProductDetail = () => {
     <div className="min-h-screen bg-gray-50 flex justify-center items-center p-6">
       <div className="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row max-w-4xl w-full">
         <img
-          src={producto.imagen}
+          src={producto.imgurl}
           alt={producto.nombre}
           className="w-full md:w-1/2 h-60 object-cover rounded mb-4 md:mb-0 md:mr-6"
         />
@@ -25,7 +26,7 @@ const ProductDetail = () => {
             <strong>Presentación:</strong> {producto.presentacion}
           </p>
           <p className="text-gray-700 mb-4">{producto.descripcion}</p>
-          <p className="text-blue-600 font-bold text-xl mb-4">S/ {producto.precio}</p>
+          <p className="text-blue-600 font-bold text-xl mb-4">S/ {producto.precioUnitario}</p>
           <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">
             Agregar al carrito
           </button>

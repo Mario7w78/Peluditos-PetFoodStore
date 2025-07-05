@@ -1,28 +1,36 @@
-import { useContext, useState } from "react";
-import { obtenerOrdenes } from "@/data/ordenes";
+import { useContext, useEffect, useState } from "react";
 import { Title } from "@/components/Title";
 import { AuthContext } from "@/context/AuthContext";
 import { OrderTable } from "@/components/OrderTable";
+import { API_URL } from "@/data/config";
 
 export const OrderList = () => {
-  const ordenestotales = obtenerOrdenes();
-  const [ordenes, setOrdenes] = useState(ordenestotales);
-  const {usuarios} = useContext(AuthContext);
+  const [ordenes, setOrdenes] = useState([]);
+  const { usuarios } = useContext(AuthContext);
+
+  // Obtener órdenes en tiempo real del backend
+  useEffect(() => {
+    fetch(`${API_URL}/orden`)
+      .then((res) => res.json())
+      .then((data) => setOrdenes(data));
+  }, []);
 
   const handleSearch = (e) => {
     const busqueda = e.target.value.toLowerCase();
-    const usuario = usuarios.find((user)=>user.nombre.toLowerCase().includes(busqueda))
-    const id = usuario ? usuario.id : null;
-    const filtro = ordenestotales.filter(
-      (orden) =>
-        orden.id?.toString().includes(busqueda) || 
-        orden.productos?.some((producto) =>
-          producto.nombre?.toLowerCase().includes(busqueda) 
-        )||
-        orden.usuarioid === id 
-        
+    const usuario = usuarios.find((user) =>
+      user.nombre.toLowerCase().includes(busqueda)
     );
-    setOrdenes(filtro);
+    const id = usuario ? usuario.id : null;
+    setOrdenes((prev) =>
+      prev.filter(
+        (orden) =>
+          orden.id?.toString().includes(busqueda) ||
+          orden.productos?.some((producto) =>
+            producto.nombre?.toLowerCase().includes(busqueda)
+          ) ||
+          orden.usuarioId === id
+      )
+    );
   };
 
   return (
@@ -37,8 +45,6 @@ export const OrderList = () => {
         />
         <OrderTable ordenes={ordenes} />
       </div>
-
-      
     </>
   );
 };

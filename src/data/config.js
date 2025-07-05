@@ -1,1 +1,1 @@
-export const API_URL = "https://backend-peludiltos-proyecto-f7fyfgf3frhvc6fc.canadacentral-01.azurewebsites.net/"
+export const API_URL = "https://backend-peludiltos-proyecto-f7fyfgf3frhvc6fc.canadacentral-01.azurewebsites.net"

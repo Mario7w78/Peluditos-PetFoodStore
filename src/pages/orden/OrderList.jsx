@@ -3,6 +3,7 @@ import { obtenerOrdenes } from "@/data/ordenes";
 import { Title } from "@/components/Title";
 import { AuthContext } from "@/context/AuthContext";
 import { OrderTable } from "@/components/OrderTable";
+import { Link } from "react-router-dom";
 
 export const OrderList = () => {
   const ordenestotales = obtenerOrdenes();
@@ -36,6 +37,12 @@ export const OrderList = () => {
           className="mb-4 p-2 border border-gray-300 rounded"
         />
         <OrderTable ordenes={ordenes} />
+        <Link
+            to="/dashboard"
+            className="text-blue-700 hover:font-bold border my-3 rounded-2xl p-2 hover:border-2"
+          >
+            Volver al Dashboard
+        </Link>
       </div>
 
       

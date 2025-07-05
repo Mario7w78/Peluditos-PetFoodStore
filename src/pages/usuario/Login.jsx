@@ -3,7 +3,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "@/styles/Alumno3Styles";
 
-const Login = ({usuarios, login}) => {
+const Login = ({login}) => {
   const { user } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,14 +11,13 @@ const Login = ({usuarios, login}) => {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = login(email, password, usuarios);
+    const success = await login(email, password);
     if (success) {
-      // Obtener el usuario logueado desde localStorage
-        setLoginSuccess(true);
-      } else {
-        setError("Credenciales incorrectas. Intenta de nuevo.");
+      setLoginSuccess(true);
+    } else {
+      setError("Credenciales incorrectas. Intenta de nuevo.");
     }
   };
 

@@ -14,12 +14,13 @@ export async function obtenerUsuarios() {
   return res.json();
 }
 
-export async function loginUsuario(data) {
+export async function loginUsuario({ email, password }) {
   const res = await fetch(`${API_URL}/usuario/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
+    body: JSON.stringify({email, password})
   });
+  console.log({email, password});
   return res.json();
 }
 

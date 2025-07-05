@@ -1,20 +1,19 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { AuthContext } from "@/context/AuthContext";
-import { useOrderContext } from "@/context/orderContext";
-import { useProductContext } from "@/context/ProductContext";
 import { OrderTable } from "@/components/OrderTable";
 
-export const Dashboard = () => {
+export const Dashboard = ({ usuarios = [], ordenes = [], productos = [], deactivate, deleteuser }) => {
   const navigate = useNavigate();
-  const { usuarios, deactivate, deleteuser } = useContext(AuthContext);
-  const { ordenes } = useOrderContext();
-  const { productos } = useProductContext();
-  const [selectedUser, setSelectedUser] = useState(usuarios[0]);
+  if (!Array.isArray(usuarios) || !Array.isArray(ordenes)) {
+  return <div>Cargando datos del dashboard...</div>;
+}
+
+  const [selectedUser, setSelectedUser] = useState(usuarios[0] || null);
   // Resumen
   const totalOrdenes = ordenes.length;
   const totalUsuarios = usuarios.length;
   const totalIngresos = ordenes.reduce((acc, orden) => acc + orden.total, 0);
+
   const handleDeactivate = (usuario) => {
     if (usuario.admin) {
       alert("No puedes desactivar a un administrador");
@@ -185,7 +184,7 @@ export const Dashboard = () => {
         <OrderTable ordenes={ordenes.slice(0, 5)} mostrarAcciones={false} />
         <div className="flex justify-end gap-4 mt-4">
           <button
-            onClick={() => navigate("/tabla")}
+            onClick={() => navigate("/productos")}
             className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-4 py-2 rounded hover:bg-[#ff7e5a] hover:text-white transition"
           >
             Ver productos

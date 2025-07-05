@@ -51,13 +51,15 @@ import {
   cancelarOrden,
 } from "./data/ordenes";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "./context/AuthContext";
 
 function App() {
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [ordenes, setOrdenes] = useState([]);
+  const { setUser } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -107,12 +109,14 @@ function App() {
       console.error("Error al agregar usuarios:", error);
     }
   };
+  
 
   const login = async (email, password) => {
     try {
       const usuarioLogueado = await loginUsuario({email, password});
-      if (usuarioLogueado) {   
-        return usuarioEncontrado;
+      if (usuarioLogueado) {
+        setUser(usuarioLogueado);
+        return usuarioLogueado;
       } else {  
         console.error("Credenciales incorrectas");
         return null;  
@@ -161,7 +165,7 @@ function App() {
 
           <Route element={<ProtectedRoutes />}>
             <Route path="/userlist" element={<UserList usuarios={usuarios} />} />
-            <Route path="/dashboard" element={<Dashboard usuarios={usuarios} />} />
+            <Route path="/dashboard" element={<Dashboard usuarios={usuarios} ordenes={ordenes} productos={productos} deleteuser={eliminarUsuario} deactivate={desactivarUsuario} />} />
             <Route
               path="/agregar-producto"
               element={

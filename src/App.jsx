@@ -164,7 +164,7 @@ function App() {
           <Route path="nosotros" element={<Nosotros />} />
 
           <Route element={<ProtectedRoutes />}>
-            <Route path="/userlist" element={<UserList usuarios={usuarios} />} />
+            <Route path="/userlist" element={<UserList usuarios={usuarios}  deleteuser={eliminarUsuario} deactivate={desactivarUsuario}  />} />
             <Route path="/dashboard" element={<Dashboard usuarios={usuarios} ordenes={ordenes} productos={productos} deleteuser={eliminarUsuario} deactivate={desactivarUsuario} />} />
             <Route
               path="/agregar-producto"

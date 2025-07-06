@@ -1,12 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import styles from "@/styles/Alumno3Styles";
-import { useContext } from "react";
-import { AuthContext } from "@/context/AuthContext";
 
-export function UserRow({ usuario }) {
-  const { deactivate, deleteuser } = useContext(AuthContext);
+export function UserRow({ usuario, deactivate, deleteuser }) {
   const navigate = useNavigate();
-
   const handleDeactivate = () => {
     if (usuario.admin) {
       alert("No puedes desactivar a un administrador");

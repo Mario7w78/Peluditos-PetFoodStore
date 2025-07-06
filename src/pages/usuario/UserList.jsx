@@ -3,7 +3,7 @@ import { UserRow } from "@/components/UserRow";
 import { Link } from "react-router-dom";
 import styles from "@/styles/Alumno3Styles";
 
-export function UserList({usuarios}) {
+export function UserList({usuarios, deactivate, deleteuser}) {
   return (
     <>
       <div className="flex flex-col items-center h-screen">
@@ -30,7 +30,7 @@ export function UserList({usuarios}) {
               </tr>
             ) : (
               usuarios.map((usuario) => (
-                <UserRow usuario={usuario} key={usuario.id} />
+                <UserRow usuario={usuario} deactivate={deactivate} deleteuser={deleteuser} key={usuario.id} />
               ))
             )}
           </tbody>

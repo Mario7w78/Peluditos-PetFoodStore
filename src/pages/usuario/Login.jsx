@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import styles from "@/styles/Alumno3Styles";
 
 const Login = ({login}) => {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -14,6 +14,7 @@ const Login = ({login}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const success = await login(email, password);
+    setUser(success)
     if (success) {
       setLoginSuccess(true);
     } else {

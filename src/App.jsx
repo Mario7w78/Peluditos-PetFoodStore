@@ -7,14 +7,13 @@ import { UserList } from "./pages/usuario/UserList";
 import { UserDetail } from "./pages/usuario/UserDetail";
 import AddProductForm from "./pages/producto/AddProductForm";
 import ProductList from "./pages/producto/ProductList";
+import ProductDetail from "./pages/producto/ProductDetail";
 import UserProfile from "./pages/usuario/UserProfile";
 import Header from "@/components/Header";
 import Dashboard from "./pages/usuario/Dashboard";
 import Nosotros from "./pages/home/Nosotros";
-import Perro from "./pages/categoria/Perro";
-import Gato from "./pages/categoria/Gato";
-import Hamster from "./pages/categoria/Hamster";
 import Buscar from "./pages/producto/Buscar";
+import { Catalogo } from "./pages/producto/Catalogo";
 import { ProtectedRoutes } from "./pages/usuario/ProtectedRoutes";
 import CarritoCompra from "./pages/carrito/CarritoCompra";
 import Checkout from "./pages/orden/Checkout";
@@ -110,7 +109,30 @@ function App() {
     }
   };
   
+  const deactivateUser = async (id, data) => {
+    try {
+      await desactivarUsuario(id, data);
+      setUsuarios((prevUsuarios) =>
+        prevUsuarios.map((usuario) =>
+          usuario.id === id ? { ...usuario, ...data } : usuario
+        )
+      );
+    } catch (error) {
+      console.error("Error al agregar usuarios:", error);
+    }
+  };
 
+  const deleteUser = async (id) => {
+    try {
+      await eliminarUsuario(id);
+      const actualizado = usuarios.filter((u)=>u.id !== id)
+      setUsuarios(actualizado);
+    } catch (error) {
+      console.error("Error al agregar usuarios:", error);
+    }
+  };
+
+  
   const login = async (email, password) => {
     try {
       const usuarioLogueado = await loginUsuario({email, password});
@@ -148,7 +170,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Header />}>
+        <Route path="/" element={<Header categorias={categorias}/>}>
           <Route index element={<Home />} />
           <Route path="/login" element={<Login login = {login} />} />
           <Route path="/registro" element={<Registro agregarUsuario={agregarUsuario}/>} />
@@ -157,15 +179,15 @@ function App() {
           <Route path="/carrito" element={<CarritoCompra />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/pedido" element={<PedidoCompleto />} />
-          <Route path="categorias/perro" element={<Perro />} />
-          <Route path="categorias/gato" element={<Gato />} />
-          <Route path="categorias/hamster" element={<Hamster />} />
-          <Route path="buscar" element={<Buscar />} />
           <Route path="nosotros" element={<Nosotros />} />
-
+          <Route path="/userdetail/:id" element={<UserDetail usuarioPorId={usuarioPorId} ordenesUsuario={ordenesUsuario}/>} />
+          <Route path="/productos" element={<Catalogo productos={productos}/>} />
+          <Route path="/productdetail/:productoId" element={<ProductDetail obtenerProductoPorId={obtenerProductoPorId} />} />
+          <Route path="/totalorderlist" element={<OrderList />} />
+          <Route path="/orderdetail/:orderId" element={<OrderDetail />} />
           <Route element={<ProtectedRoutes />}>
-            <Route path="/userlist" element={<UserList usuarios={usuarios}  deleteuser={eliminarUsuario} deactivate={desactivarUsuario}  />} />
-            <Route path="/dashboard" element={<Dashboard usuarios={usuarios} ordenes={ordenes} productos={productos} deleteuser={eliminarUsuario} deactivate={desactivarUsuario} />} />
+            <Route path="/userlist" element={<UserList usuarios={usuarios}  deleteuser={deleteUser} deactivate={deactivateUser}  />} />
+            <Route path="/dashboard" element={<Dashboard usuarios={usuarios} ordenes={ordenes} productos={productos} deleteuser={deleteUser} deactivate={deactivateUser} />} />
             <Route
               path="/agregar-producto"
               element={
@@ -176,10 +198,7 @@ function App() {
                 />
               }
             />
-            <Route path="/userdetail/:id" element={<UserDetail usuarioPorId={usuarioPorId} ordenesUsuario={ordenesUsuario}/>} />
-            <Route path="/productos" element={<ProductList />} />
-            <Route path="/totalorderlist" element={<OrderList />} />
-            <Route path="/orderdetail/:orderId" element={<OrderDetail />} />
+
           </Route>
         </Route>
       </Routes>

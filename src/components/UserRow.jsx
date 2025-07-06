@@ -8,7 +8,7 @@ export function UserRow({ usuario, deactivate, deleteuser }) {
       alert("No puedes desactivar a un administrador");
       return;
     }
-    deactivate(usuario.id);
+    deactivate(usuario.id, {canlogin: !usuario.canlogin});
   };
 
   const handleDelete = () => {

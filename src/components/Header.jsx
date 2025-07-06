@@ -1,10 +1,10 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
-import { Link, Outlet, useNavigate, useLocation} from "react-router-dom";
+import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "@/context/AuthContext";
 import styles from "@/styles/Alumno3Styles";
 import Footer from "./Footer";
 
-const Header = () => {
+const Header = ({categorias}) => {
   const { user, logout } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mostrarCategorias, setMostrarCategorias] = useState(false);
@@ -18,7 +18,7 @@ const Header = () => {
     setMenuOpen(false);
     navigate("/login");
   };
- 
+
   const irAlPerfil = () => {
     setMenuOpen(false);
     navigate("/perfil");
@@ -26,17 +26,20 @@ const Header = () => {
 
   const handleBuscar = (e) => {
     if (e.key === "Enter" && busqueda.trim()) {
-      navigate(`/buscar?q=${encodeURIComponent(busqueda.trim())}`);
+      navigate(`/productos?busqueda=${busqueda}`);
       setBusqueda("");
+    } else {
+      if (!busqueda.trim()) {
+        navigate(`/productos`);
+      }
     }
   };
 
   //Cambiar mas adelante la dirección
   const irListaOrdenes = () => {
     setMenuOpen(false);
-    navigate("/"); 
+    navigate("/");
   };
-
 
   // Cierra el menú si se hace clic fuera
   useEffect(() => {
@@ -71,32 +74,22 @@ const Header = () => {
               onClick={() => setMostrarCategorias(!mostrarCategorias)}
               className="text-white hover:underline flex items-center gap-1"
             >
-              Categorías <span className="text-xs">{mostrarCategorias ? "▲" : "▼"}</span>
+              Categorías{" "}
+              <span className="text-xs">{mostrarCategorias ? "▲" : "▼"}</span>
             </button>
 
             {mostrarCategorias && (
               <div className="absolute bg-white text-black mt-2 shadow-md rounded z-50 w-40 flex flex-col">
-                <Link
-                  to="/categorias/perro"
-                  onClick={() => setMostrarCategorias(false)}
-                  className="px-4 py-2 hover:bg-gray-100"
-                >
-                  Perro
-                </Link>
-                <Link
-                  to="/categorias/gato"
-                  onClick={() => setMostrarCategorias(false)}
-                  className="px-4 py-2 hover:bg-gray-100"
-                >
-                  Gato
-                </Link>
-                <Link
-                  to="/categorias/hamster"
-                  onClick={() => setMostrarCategorias(false)}
-                  className="px-4 py-2 hover:bg-gray-100"
-                >
-                  Hámster
-                </Link>
+               {categorias.map((c)=>(
+                 <Link
+                 to={`/productos?categoria=${c.id}`}
+                 onClick={() => setMostrarCategorias(false)}
+                 className="px-4 py-2 hover:bg-gray-100"
+               >
+                 {c.nombre}
+               </Link>
+               ))}
+
               </div>
             )}
           </div>

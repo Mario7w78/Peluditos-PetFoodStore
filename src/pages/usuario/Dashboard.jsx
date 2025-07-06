@@ -19,7 +19,7 @@ export const Dashboard = ({ usuarios = [], ordenes = [], productos = [], deactiv
       alert("No puedes desactivar a un administrador");
       return;
     }
-    deactivate(usuario.id);
+    deactivate(usuario.id, {canlogin: !usuario.canlogin});
   };
 
   const handleDelete = (usuario) => {

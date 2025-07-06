@@ -24,11 +24,11 @@ export async function crearCarrito(usuarioId) {
     return res.json();
   }
   
-  export async function agregarProductoACarrito(carritoId, data) {
+  export async function agregarProductoACarrito(carritoId, { productoId, cantidad, precioUnitario }) {
     const res = await fetch(`${API_URL}/carrito/${carritoId}/producto`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify({ productoId, cantidad, precioUnitario })
     });
     return res.text();
   }

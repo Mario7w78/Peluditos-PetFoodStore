@@ -1,6 +1,6 @@
 import { Item } from "./Item";
 import { useLocation } from "react-router-dom";
-export const Catalogo = ({ productos }) => {
+export const Catalogo = ({ productos, AgregarAlCarrito }) => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const busqueda = params.get("busqueda");
@@ -15,7 +15,7 @@ export const Catalogo = ({ productos }) => {
   return (
     <div className="m-10 flex gap-4 justify-center flex-wrap">
       {lista.map((p) => (
-        <Item producto={p} />
+        <Item producto={p} AgregarAlCarrito ={AgregarAlCarrito} />
       ))}
     </div>
   );

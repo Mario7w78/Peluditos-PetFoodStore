@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
+export const Item = ({ producto, AgregarAlCarrito }) => {
 
-export const Item = ({ producto }) => {
   const navigate = useNavigate();
   return (
     <div className="border max-w-[200px] min-w-[200px] p-2 py-4 flex flex-col">
@@ -15,7 +15,7 @@ export const Item = ({ producto }) => {
         >
           Ver detalle
         </button>
-        <button className="bg-blue-500 font-bold text-white p-2">
+        <button onClick={()=>AgregarAlCarrito(producto)} className="bg-blue-500 font-bold text-white p-2">
           Agregar al Carrito
         </button>
       </div>

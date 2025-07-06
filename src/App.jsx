@@ -12,7 +12,6 @@ import UserProfile from "./pages/usuario/UserProfile";
 import Header from "@/components/Header";
 import Dashboard from "./pages/usuario/Dashboard";
 import Nosotros from "./pages/home/Nosotros";
-import Buscar from "./pages/producto/Buscar";
 import { Catalogo } from "./pages/producto/Catalogo";
 import { ProtectedRoutes } from "./pages/usuario/ProtectedRoutes";
 import CarritoCompra from "./pages/carrito/CarritoCompra";
@@ -37,8 +36,6 @@ import {
   desactivarUsuario,
 } from "./data/usuarios";
 import {
-  crearCarrito,
-  obtenerCarritos,
   obtenerCarritoPorUsuario,
   eliminarProductoDelCarrito,
   agregarProductoACarrito,
@@ -58,7 +55,7 @@ function App() {
   const [categorias, setCategorias] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [ordenes, setOrdenes] = useState([]);
-  const { setUser } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -167,6 +164,29 @@ function App() {
     }
   }
 
+  const carritoPorUsuario = async (usuarioId)=>{
+    try{
+      const carrito = await obtenerCarritoPorUsuario(usuarioId);
+      return carrito
+    }catch(e){
+      console.error(e)
+    }
+  }
+
+
+  const AgregarAlCarrito = async (producto) => {
+    try {
+      const carrito = await carritoPorUsuario(user.id); 
+      await agregarProductoACarrito(carrito.id, {
+        productoId: producto.id,
+        cantidad: 1,
+        precioUnitario: producto.precioUnitario,
+      });
+      alert("Producto agregado al carrito");
+    } catch (error) {
+      alert("Error al agregar el producto al carrito");
+    }
+  };
   return (
     <>
       <Routes>
@@ -181,7 +201,7 @@ function App() {
           <Route path="/pedido" element={<PedidoCompleto />} />
           <Route path="nosotros" element={<Nosotros />} />
           <Route path="/userdetail/:id" element={<UserDetail usuarioPorId={usuarioPorId} ordenesUsuario={ordenesUsuario}/>} />
-          <Route path="/productos" element={<Catalogo productos={productos}/>} />
+          <Route path="/productos" element={<Catalogo productos={productos} AgregarAlCarrito={AgregarAlCarrito}/>} />
           <Route path="/productdetail/:productoId" element={<ProductDetail obtenerProductoPorId={obtenerProductoPorId} />} />
           <Route path="/totalorderlist" element={<OrderList />} />
           <Route path="/orderdetail/:orderId" element={<OrderDetail />} />

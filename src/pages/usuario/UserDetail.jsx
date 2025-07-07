@@ -38,7 +38,22 @@ export function UserDetail({ usuarioPorId, ordenesUsuario }) {
                 <strong>Nombre:</strong> {usuario.nombre}
               </p>
               <p>
+                <strong>Nombres Completos</strong> {usuario.nombresCompletos}
+              </p>
+              <p>
+                <strong>Apellidos Completos</strong> {usuario.apellidosCompletos}
+              </p>
+              <p>
                 <strong>Email:</strong> {usuario.email}
+              </p>
+              <p>
+                <strong>N° Telefono</strong> {usuario.telefono}
+              </p>
+              <p>
+                <strong>Departamento</strong> {usuario.direccion}
+              </p>
+              <p>
+                <strong>Direccion</strong> {usuario.direccion}
               </p>
               <p>
                 <strong>DNI:</strong>{" "}

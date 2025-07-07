@@ -9,6 +9,16 @@ export async function crearUsuario(data) {
   return res.json();
 }
 
+export async function actualizarUsuario(data, id) {
+  const res = await fetch(`${API_URL}/usuario/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  return res.json();
+}
+
+
 export async function obtenerUsuarios() {
   const res = await fetch(`${API_URL}/usuario`);
   return res.json();

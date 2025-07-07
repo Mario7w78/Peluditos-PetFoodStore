@@ -34,6 +34,7 @@ import {
   loginUsuario,
   eliminarUsuario,
   desactivarUsuario,
+  actualizarUsuario
 } from "./data/usuarios";
 import {
   obtenerCarritoPorUsuario,
@@ -109,6 +110,18 @@ function App() {
     }
   };
   
+  const actualizarDatosUsuario = async (data, id) =>{
+    try{
+      await actualizarUsuario(data, id)
+      setUsuarios((u)=>u.map((usuario)=>{
+        if(usuario.id === id){
+          usuario = {...usuario, data}
+        }
+      }))
+    }catch(e){
+      console.error("Error al modificar usuario", error);
+    }
+  }
   const deactivateUser = async (id, data) => {
     try {
       await desactivarUsuario(id, data);
@@ -214,7 +227,7 @@ function App() {
           <Route path="nosotros" element={<Nosotros />} />
           <Route path="/userdetail/:id" element={<UserDetail usuarioPorId={usuarioPorId} ordenesUsuario={ordenesUsuario} />} />
           <Route path="/productos" element={<Catalogo productos={productos} AgregarAlCarrito={AgregarAlCarrito}/>} />
-          <Route path="/productdetail/:productoId" element={<ProductDetail obtenerProductoPorId={obtenerProductoPorId} />} />
+          <Route path="/productdetail/:productoId" element={<ProductDetail obtenerProductoPorId={obtenerProductoPorId} AgregarAlCarrito={AgregarAlCarrito} />} />
           <Route path="/orderdetail/:orderId" element={<OrderDetail />} />
           <Route element={<ProtectedRoutes />}>
             <Route path="/userlist" element={<UserList usuarios={usuarios}  deleteuser={deleteUser} deactivate={deactivateUser}  />} />

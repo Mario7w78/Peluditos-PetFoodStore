@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-const ProductDetail = ({ obtenerProductoPorId }) => {
+const ProductDetail = ({ obtenerProductoPorId, AgregarAlCarrito }) => {
   const { productoId } = useParams();
   const [producto, setProducto] = useState({})
 
@@ -44,7 +44,7 @@ const ProductDetail = ({ obtenerProductoPorId }) => {
           <p className="text-blue-600 font-bold text-xl mb-4">
             S/ {producto.precioUnitario}
           </p>
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">
+          <button onClick={()=>AgregarAlCarrito(producto)} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">
             Agregar al carrito
           </button>
         </div>

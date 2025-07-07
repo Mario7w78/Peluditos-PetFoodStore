@@ -23,7 +23,13 @@ export async function crearCarrito(usuarioId) {
     });
     return res.json();
   }
-  
+
+  export async function obtenerDetalleCarrito(carritoId) {
+    const res = await fetch(`${API_URL}/carrito/${carritoId}/detalle`);
+    return res.json();
+  }
+
+
   export async function agregarProductoACarrito(carritoId, { productoId, cantidad, precioUnitario }) {
     const res = await fetch(`${API_URL}/carrito/${carritoId}/producto`, {
       method: 'POST',

@@ -173,6 +173,14 @@ function App() {
     }
   }
 
+  const obtenerDetallePorIdCarrito = async (carritoId)=>{
+    try{
+      const detalle = await obtenerDetalleCarrito(carritoId);
+      return detalle
+    }catch(e){
+      console.error(e)
+    }
+  }
 
   const AgregarAlCarrito = async (producto) => {
     try {
@@ -196,11 +204,11 @@ function App() {
           <Route path="/registro" element={<Registro agregarUsuario={agregarUsuario}/>} />
           <Route path="/recuperacion" element={<Recuperacion />} />
           <Route path="/perfil" element={<UserProfile ordenes={ordenes}/>} />
-          <Route path="/carrito" element={<CarritoCompra />} />
+          <Route path="/carrito" element={<CarritoCompra carritoPorUsuario={carritoPorUsuario} obtenerDetallePorIdCarrito={obtenerDetallePorIdCarrito} />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/pedido" element={<PedidoCompleto />} />
           <Route path="nosotros" element={<Nosotros />} />
-          <Route path="/userdetail/:id" element={<UserDetail usuarioPorId={usuarioPorId} ordenesUsuario={ordenesUsuario}/>} />
+          <Route path="/userdetail/:id" element={<UserDetail usuarioPorId={usuarioPorId} ordenesUsuario={ordenesUsuario} />} />
           <Route path="/productos" element={<Catalogo productos={productos} AgregarAlCarrito={AgregarAlCarrito}/>} />
           <Route path="/productdetail/:productoId" element={<ProductDetail obtenerProductoPorId={obtenerProductoPorId} />} />
           <Route path="/totalorderlist" element={<OrderList />} />

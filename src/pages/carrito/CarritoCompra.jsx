@@ -1,13 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import styles from "@/styles/CarritoStyles";
+import { AuthContext } from "../../context/AuthContext";
+import {
+    obtenerCarritoPorUsuario,
+    eliminarProductoDelCarrito,
+} from "../../data/carrito";
 
-const CarritoCompra = () => {
+const CarritoCompra = (obtenerDetallePorIdCarrito) => {
+    const {user} = useContext(AuthContext);
+    const [carrito, setCarrito] = useState(null);
+    const [detalleCarrito, setDetalleCarrito] = useState([]);
     // modificarProductos
-    const { productos, eliminarProducto, setProductos } = useProductContext();
+    //->const { productos, eliminarProducto, setProductos } = useProductContext();
     // console.log(productos); 
     // Contador de oferta con tiempo limitado que comienza desde el segundo 30
     const [contador, setContador] = useState(30);
+
+    // Obtener el carrito del usuario al cargar el componente
+    useEffect(() => {
+        const cargarCarrito = async () => {
+            try {
+                const data = await obtenerCarritoPorUsuario(user.id);
+                setCarrito(data);
+            } catch (error) {
+                console.error("Error al obtener el carrito:", error);
+            }
+        };
+        if (user) {
+            cargarCarrito();
+        }
+    }, [user]);
 
     // Utilizaremos useEffect con setInterval para realizar un contador con segunderos
     // de tiempo para la oferta y va bajando por cada 1000 milisegundos.
@@ -25,7 +48,8 @@ const CarritoCompra = () => {
     // fuese menor a 0 entonces sube reduc, de otra manera, sube incr
 
     // Función para aumentar o disminuir cantidad
-    const actualizarCantidad = (id, incremento) => {
+    /*
+    const actualizarCantidad = async (productoid, incremento) => {
         // ...prod utiliza un operador de propagacion para que obtenga las propiedades de prod, unicamente que
         // cambia la cantidad
         const nuevosProductos = productos.map((prod) => {
@@ -39,10 +63,39 @@ const CarritoCompra = () => {
         setProductos(nuevosProductos);
         actualizarProductos(nuevosProductos);
     };
+    */
+    
+    // Nuevo Actualizar cantidad
+    const actualizarCantidad = async (productoid, incremento) => {
+        const item = carrito.productos.find((prod) => prod.id === productoid);
+        if (!item) return;
+        const nuevaCantidad = Math.max(1, item.DetalleCarrito.cantidad + incremento);
+        try {
+
+            const data = await obtenerDetallePorIdCarrito(carrito.id);
+            setCarrito(data);
+        } catch (error) {
+            console.error("Error al actualizar la cantidad:", error);
+        }
+    };
+
+    // Función para eliminar un producto del carrito
+    const eliminarProducto = async (productoId) => {
+        try {
+            await eliminarProductoDelCarrito(carrito.id, productoId);
+            // Actualizar el carrito después de eliminar el producto
+            const data = await obtenerCarritoPorUsuario(user.id);
+            setCarrito(data);
+        } catch (error) {
+            console.error("Error al eliminar el producto:", error);
+        }
+    };
+
 
     // Funcion para obtener el precio total de los productos
     const calcularTotal = () => {
-        return productos.reduce((acc, prod) => acc + prod.precio * prod.stock, 0);
+        if (!carrito) return 0;
+        return carrito.productos.reduce((acc, prod) => acc + prod.DetalleCarrito.subtotal, 0);
     };
 
     return (
@@ -56,16 +109,16 @@ const CarritoCompra = () => {
                     {/* Columna izquierda: Productos seleccionados */}
                     <div className="w-2/3 bg-white p-6 rounded-lg shadow-lg">
                         <h2 className="text-xl font-semibold mb-4">Productos Seleccionados</h2>
-                        {productos.length > 0 ? (
+                        {carrito && carrito.productos.length > 0 ? (
                             <ul className="space-y-4">
-                                {productos.map((prod) => (
+                                {carrito.productos.map((prod) => (
                                     <li key={prod.id} className="flex items-center gap-4 border-b pb-2 mb-2">
                                         <img src={prod.imagen} alt={prod.nombre} width={80} className="rounded" />
                                         <div>
                                             <p className="font-semibold">{prod.nombre}</p>
                                             {/*La funcion toFixed() sirve para redondear valores*/}
-                                            <p>Precio: ${prod.precio.toFixed(2)}</p>
-                                            <p>Cantidad: {prod.stock}</p>
+                                            <p>Precio: ${prod.DetalleCarrito.precioUnitario.toFixed(2)}</p>
+                                            <p>Cantidad: {prod.DetalleCarrito.cantidad}</p>
                                             {/* Botones de cantidad */}
                                             <div className="flex gap-2 mt-2">
                                                 <button
@@ -98,7 +151,7 @@ const CarritoCompra = () => {
                     {/* Columna derecha: Resumen de compra */}
                     <div className="w-1/3 bg-gray-100 p-6 rounded-lg shadow-lg">
                         <h2 className="text-xl font-semibold mb-4">Resumen de la compra</h2>
-                        <p><strong>Productos:</strong> {productos.length}</p>
+                        <p><strong>Productos:</strong> {carrito?.productos.length || 0}</p>
                         <p><strong>Total:</strong> ${calcularTotal().toFixed(2)}</p>
 
                         <Link to="/checkout">

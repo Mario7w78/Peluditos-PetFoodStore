@@ -15,8 +15,13 @@ export const ProductProvider = ({ children }) => {
     setProductos((prev) => [...prev, producto]);
   };
 
+  //Eliminar producto por id
+  const eliminarProducto = (id) => {
+    setProductos((prev) => prev.filter((producto) => producto.id !== id));
+  };
+
   return (
-    <ProductContext.Provider value={{ productos, addProducto }}>
+    <ProductContext.Provider value={{ productos, addProducto, eliminarProducto, setProductos }}>
       {children}
     </ProductContext.Provider>
   );

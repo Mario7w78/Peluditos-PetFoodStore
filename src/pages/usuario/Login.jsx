@@ -15,12 +15,13 @@ const Login = ({login}) => {
     e.preventDefault();
     const success = await login(email, password);
     setUser(success)
-    if (success) {
+    if (success && success.canlogin) {
       setLoginSuccess(true);
     } else {
       setError("Credenciales incorrectas. Intenta de nuevo.");
     }
   };
+
 
   useEffect(() => {
     if (loginSuccess && user) {

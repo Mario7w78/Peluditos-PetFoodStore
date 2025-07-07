@@ -13,7 +13,7 @@ const CarritoCompra = ({ obtenerDetallePorIdCarrito }) => {
   const [detalleCarrito, setDetalleCarrito] = useState([]);
   const [contador, setContador] = useState(30);
 
-  // Obtener el carrito del usuario al cargar el componente
+  
   useEffect(() => {
     const cargarCarrito = async () => {
       try {
@@ -27,6 +27,9 @@ const CarritoCompra = ({ obtenerDetallePorIdCarrito }) => {
     };
     if (user) {
       cargarCarrito();
+    }else{
+    return(<h1 className="text-4xl text-center">DEBE INICIAR SESION PARA AGREGAR PRODUCTOS AL CARRITO</h1>)  
+    
     }
   }, [user]);
 

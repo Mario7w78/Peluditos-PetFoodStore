@@ -20,8 +20,8 @@ function AddProductForm({agregarProducto, categorias}) {
       nombre.trim() === "" ||
       presentacion.trim() === "" ||
       descripcion.trim() === "" ||
-      stock.trim() === "" ||
-      precio.trim() === "" ||
+      stock === "" ||
+      precio === "" ||
       categoriaSeleccionada === "" ||
       !imagenBase64 
     ) {
@@ -92,10 +92,7 @@ function AddProductForm({agregarProducto, categorias}) {
                 value={presentacion}
                 onChange={(e) => {
                   const value = e.target.value;
-                  if (/^[0-9.,kgKG]*$/.test(value)) {
-                    setPresentacion(value);
-                    validarPresentacion(value);
-                  }
+                  setPresentacion(value);
                 }}
               />
               {presentacionError && (
@@ -131,15 +128,13 @@ function AddProductForm({agregarProducto, categorias}) {
             <div>
               <label className="block mb-1 font-medium text-sm">Precio (S/)</label>
               <input
-                type="text"
+                type="number"
                 placeholder="Ej: 4.90"
                 className="w-full border rounded px-3 py-2 text-sm"
                 value={precio}
                 onChange={(e) => {
                   const val = e.target.value;
-                  if (/^\d*[.,]?\d{0,2}$/.test(val)) {
-                    setPrecio(val);
-                  }
+                  setPrecio(parseFloat(val));
                 }}
               />
             </div>
@@ -164,15 +159,13 @@ function AddProductForm({agregarProducto, categorias}) {
               <div className="w-full">
                 <label className="block mb-1 font-medium text-sm">Stock</label>
                 <input
-                  type="text"
+                  type="number"
                   placeholder="Cantidad en stock"
                   className="w-full border rounded px-3 py-2 text-sm"
                   value={stock}
                   onChange={(e) => {
                     const value = e.target.value;
-                    if (value === "" || /^\d+$/.test(value)) {
-                      setStock(value);
-                    }
+                    setStock(parseInt(value));
                   }}
                 />
               </div>

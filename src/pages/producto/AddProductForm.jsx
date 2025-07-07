@@ -1,6 +1,5 @@
 import React, { useState} from "react";
 import { useNavigate } from "react-router-dom";
-import { useProductContext } from "@/context/ProductContext";
 
 function AddProductForm({agregarProducto, categorias}) {
   const navigate = useNavigate();
@@ -15,22 +14,7 @@ function AddProductForm({agregarProducto, categorias}) {
   const [presentacionError, setPresentacionError] = useState("");
   const [camposIncompletos, setCamposIncompletos] = useState(false);
 
-  const validarPresentacion = (value) => {
-    const val = value.toLowerCase().trim();
-    const gramos = /^(100|[1-8][0-9]{2}|900)g$/;
-    const kilos = /^(1|1\.5|2|2\.5|3|3\.5|4|4\.5|5|5\.5|6|6\.5|7|7\.5|8|8\.5|9)kg$/;
-
-    if (!gramos.test(val) && !kilos.test(val)) {
-      setPresentacionError("");
-      return false;
-    } else {
-      setPresentacionError("");
-      return true;
-    }
-  };
-
   const handleCrearProducto = () => {
-    const presentacionValida = validarPresentacion(presentacion);
 
     if (
       nombre.trim() === "" ||
@@ -39,22 +23,20 @@ function AddProductForm({agregarProducto, categorias}) {
       stock.trim() === "" ||
       precio.trim() === "" ||
       categoriaSeleccionada === "" ||
-      !previewUrl ||
-      !presentacionValida
+      !previewUrl 
     ) {
       setCamposIncompletos(true);
       return;
     }
 
     const nuevoProducto = {
-      id: crypto.randomUUID(),
       nombre,
       presentacion,
       descripcion,
       stock,
       precioUnitario: parseFloat(precio),
       imgurl: previewUrl,
-      categoria: categoriaSeleccionada,
+      categoriaId: categoriaSeleccionada,
     };
 
     agregarProducto(nuevoProducto);

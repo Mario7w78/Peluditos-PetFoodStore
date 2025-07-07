@@ -111,7 +111,7 @@ function App() {
   };
   
   const actualizarDatosUsuario = async (data, id) =>{
-    try{
+    try{  
       await actualizarUsuario(data, id)
       setUsuarios((u)=>u.map((usuario)=>{
         if(usuario.id === id){
@@ -222,7 +222,7 @@ function App() {
           <Route path="/recuperacion" element={<Recuperacion />} />
           <Route path="/perfil" element={<UserProfile ordenes={ordenes}/>} />
           <Route path="/carrito" element={<CarritoCompra carritoPorUsuario={carritoPorUsuario} obtenerDetallePorIdCarrito={obtenerDetalleCarritoporId}/>} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout" element={<Checkout actualizarDatosUsuario = {actualizarDatosUsuario} />} />
           <Route path="/pedido" element={<PedidoCompleto />} />
           <Route path="nosotros" element={<Nosotros />} />
           <Route path="/userdetail/:id" element={<UserDetail usuarioPorId={usuarioPorId} ordenesUsuario={ordenesUsuario} />} />

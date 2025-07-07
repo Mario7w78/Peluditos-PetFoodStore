@@ -15,12 +15,12 @@ import { obtenerCarritoPorUsuario } from "../../data/carrito.js";
 import { AuthContext } from "../../context/AuthContext";
 import { obtenerDetalleCarrito } from "../../data/carrito.js";
 
-const Checkout = () => {
+const Checkout = ({actualizarDatosUsuario}) => {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const [datosEnvio, setDatosEnvio] = useState({
-        nombre: "",
-        apellido: "",
+        nombresCompletos: "",
+        apellidosCompletos: "",
         ciudad: "",
         departamento: "",
         direccion: "",

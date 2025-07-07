@@ -214,7 +214,6 @@ function App() {
           <Route path="/userdetail/:id" element={<UserDetail usuarioPorId={usuarioPorId} ordenesUsuario={ordenesUsuario} />} />
           <Route path="/productos" element={<Catalogo productos={productos} AgregarAlCarrito={AgregarAlCarrito}/>} />
           <Route path="/productdetail/:productoId" element={<ProductDetail obtenerProductoPorId={obtenerProductoPorId} />} />
-          <Route path="/totalorderlist" element={<OrderList />} />
           <Route path="/orderdetail/:orderId" element={<OrderDetail />} />
           <Route element={<ProtectedRoutes />}>
             <Route path="/userlist" element={<UserList usuarios={usuarios}  deleteuser={deleteUser} deactivate={deactivateUser}  />} />
@@ -229,6 +228,8 @@ function App() {
                 />
               }
             />
+            <Route path="/totalorderlist" element={<OrderList ordenes={ordenes} />} />
+
 
           </Route>
         </Route>

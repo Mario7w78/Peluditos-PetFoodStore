@@ -12,11 +12,15 @@ export async function obtenerOrdenesPorUsuario(usuarioId) {
   return res.json();
 }
 
+export async function obtenerOrdenesPorId(ordenId) {
+  const res = await fetch(`${API_URL}/orden/detalle/${ordenId}`);
+  return res.json();
+}
+
 export async function obtenerOrdenes() {
   const res = await fetch(`${API_URL}/orden`);
   return res.json();
 }
-
 export async function cancelarOrden(ordenId) {
   const res = await fetch(`${API_URL}/orden/${ordenId}`, {
     method: 'DELETE'

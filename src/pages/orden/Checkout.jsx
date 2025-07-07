@@ -15,7 +15,7 @@ import { obtenerCarritoPorUsuario } from "../../data/carrito.js";
 import { AuthContext } from "../../context/AuthContext";
 import { obtenerDetalleCarrito } from "../../data/carrito.js";
 
-const Checkout = ({actualizarDatosUsuario}) => {
+const Checkout = ({actualizarDatosUsuario, crearOrdenes}) => {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const [datosEnvio, setDatosEnvio] = useState({
@@ -57,10 +57,11 @@ const Checkout = ({actualizarDatosUsuario}) => {
     
 
     // Enviar información y redirigir a PedidoCompleto
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        guardarEnvio(datosEnvio);
-        navigate("/pedido");
+        await actualizarDatosUsuario(datosEnvio, user.id);
+        const orderId = await crearOrdenes(user.id)
+        navigate(`/pedido/${orderId.id}`);
     };
 
 
@@ -72,8 +73,8 @@ const Checkout = ({actualizarDatosUsuario}) => {
                 <div className="flex gap-6">
                 <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md space-y-4">
                     <h2 className="text-lg font-semibold">Dirección de Envío</h2>
-                    <input type="text" name="nombre" placeholder="Nombre" value={datosEnvio.nombre} onChange={handleChange} required />
-                    <input type="text" name="apellido" placeholder="Apellido" value={datosEnvio.apellido} onChange={handleChange} required />
+                    <input type="text" name="nombresCompletos" placeholder="Nombre" value={datosEnvio.nombresCompletos} onChange={handleChange} required />
+                    <input type="text" name="apellidosCompletos" placeholder="Apellido" value={datosEnvio.apellidosCompletos} onChange={handleChange} required />
                     <input type="text" name="ciudad" placeholder="Ciudad" value={datosEnvio.ciudad} onChange={handleChange} required />
                     <input type="text" name="departamento" placeholder="Departamento" value={datosEnvio.departamento} onChange={handleChange} required />
                     <input type="text" name="direccion" placeholder="Dirección" value={datosEnvio.direccion} onChange={handleChange} required />

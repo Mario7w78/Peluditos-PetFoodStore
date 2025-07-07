@@ -1,52 +1,54 @@
-/*
-1.- Mostrar el Header
-2.- Mensaje de Orden Completada{
-    Indicar los productos
-    Mensaje de agradecimiento
-    Boton para volver al menu}
-3.- (Agregar algo adicional)
-*/
+import { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 
-import { useNavigate, Link } from "react-router-dom";
-import { obtenerProductos } from "@/data/productos";
+const PedidoCompleto = ({ ordenesPorId }) => {
+    const [ordenes, setOrdenes] = useState([])
+    const { id } = useParams()
 
-const PedidoCompleto = () => {
-    const navigate = useNavigate();
-    const productos = obtenerProductos() || []; // Asegurar que es un array válido
-    const numeroPedido = Math.floor(Math.random() * 90000) + 10000; // Número aleatorio de pedido
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const ordenes = await ordenesPorId(id);
+                setOrdenes(ordenes)
+                console.log(ordenes)
+            } catch (error) {
+                console.error("Error al obtener datos:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
     const fechaEntrega = new Date();
     fechaEntrega.setDate(fechaEntrega.getDate() + 3); // Simulación de entrega en 3 días
 
     return (
         <div className="min-h-screen flex flex-col">
-            
+
             <main className="flex-grow p-6 text-center">
                 <h1 className="text-2xl font-bold mb-4">Pedido Completado</h1>
                 <p className="text-lg mb-4">¡Gracias por tu compra! Tu pedido ha sido procesado con éxito.</p>
 
                 <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
                     <h2 className="text-xl font-semibold mb-4">Detalles del Pedido</h2>
-                    <p><strong>Número de Pedido:</strong> #{numeroPedido}</p>
+                    <p><strong>Número de Pedido:</strong> #{ordenes.id}</p>
                     <p><strong>Fecha Estimada de Entrega:</strong> {fechaEntrega.toLocaleDateString()}</p>
 
                     <h3 className="text-lg font-semibold mt-4">Productos en tu pedido:</h3>
                     <ul className="space-y-3">
-                        {productos.map((prod) => (
+                        {ordenes.productos?.map((prod) => (
                             <li key={prod.id} className="flex items-center gap-4 border-b pb-2">
                                 {/* Mostrar imagen del producto */}
-                                <img src={prod.imagen} alt={prod.nombre} width={80} className="rounded" />
+                                <img src={prod.imgurl} alt={prod.nombre} width={80} className="rounded" />
                                 <div>
                                     <p><strong>{prod.nombre}</strong></p>
                                     {/* Mostrar cantidad, por defecto 1 si no existe */}
-                                    <p>Cantidad: {prod.cantidad ? parseInt(prod.cantidad, 10) : 1}</p>
+                                    <p>Cantidad: {prod.DetalleOrden.cantidad}</p>
                                     {/* Mostrar precio total, por defecto solo el precio si no hay cantidad */}
                                     <p>
                                         Precio Total: $
-                                        {prod.precio && prod.cantidad
-                                            ? (prod.precio * parseInt(prod.cantidad, 10)).toFixed(2)
-                                            : prod.precio
-                                                ? Number(prod.precio).toFixed(2)
-                                                : "0.00"}
+                                        {prod.DetalleOrden.subtotal}
                                     </p>
                                 </div>
                             </li>
@@ -60,7 +62,7 @@ const PedidoCompleto = () => {
                     </button>
                 </Link>
             </main>
-            
+
         </div>
     );
 };

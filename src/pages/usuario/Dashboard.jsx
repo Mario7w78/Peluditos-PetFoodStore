@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { OrderTable } from "@/components/OrderTable";
-import {Title} from "@/components/Title"
 export const Dashboard = ({
   usuarios = [],
   ordenes = [],
@@ -14,6 +13,8 @@ export const Dashboard = ({
     const hoy = new Date();
     return hoy.toISOString().split("T")[0];
   });
+
+  // OBTENER ORDENES DEBE CONTENER PEDIDOS CAMBIAR ESO DESPUES
 
   if (!Array.isArray(usuarios) || !Array.isArray(ordenes)) {
     return <div>Cargando datos del dashboard...</div>;
@@ -107,10 +108,6 @@ export const Dashboard = ({
               {usuariosFiltrados.slice(0, 5).map((user) => (
                 <tr key={user.id} className="border-b">
                   <td className="py-2 flex items-center gap-2">
-                    <img
-                      src={user.avatar || "/default-avatar.png"}
-                      className="w-7 h-7 rounded-full object-cover"
-                    />
                     {user.nombre}
                   </td>
                   <td className="py-2">

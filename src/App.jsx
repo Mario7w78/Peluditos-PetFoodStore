@@ -47,6 +47,7 @@ import {
   obtenerOrdenes,
   crearOrdenDesdeCarrito,
   obtenerOrdenesPorUsuario,
+  obtenerOrdenesPorId,
   cancelarOrden,
 } from "./data/ordenes";
 
@@ -113,13 +114,8 @@ function App() {
   const actualizarDatosUsuario = async (data, id) =>{
     try{  
       await actualizarUsuario(data, id)
-      setUsuarios((u)=>u.map((usuario)=>{
-        if(usuario.id === id){
-          usuario = {...usuario, data}
-        }
-      }))
     }catch(e){
-      console.error("Error al modificar usuario", error);
+      console.error("Error al modificar usuario", e);
     }
   }
   const deactivateUser = async (id, data) => {
@@ -162,15 +158,6 @@ function App() {
       }
     };
 
-  const ordenesUsuario = async (usuarioId)=>{
-    try{
-      const orden = await obtenerOrdenesPorUsuario(usuarioId);
-      return orden
-    }catch(e){
-      console.error(e)
-    }
-    
-  }
   const usuarioPorId = async (usuarioId)=>{
     try{
       const usuario = await obtenerUsuarioPorId(usuarioId);
@@ -212,6 +199,33 @@ function App() {
     }
   };
 
+  const ordenesUsuario = async (usuarioId)=>{
+    try{
+      const orden = await obtenerOrdenesPorUsuario(usuarioId);
+      return orden
+    }catch(e){
+      console.error(e)
+    }
+  }
+
+  const ordenesPorId = async (ordenId)=>{
+    try{
+      const orden = await obtenerOrdenesPorId(ordenId);
+      return orden
+    }catch(e){
+      console.error(e)
+    }
+  }
+
+  const crearOrdenes = async (usuarioId)=>{
+    try{
+      const ordenid = await crearOrdenDesdeCarrito(usuarioId);
+      return ordenid
+    }catch(e){
+      console.error(e)
+    }
+  }
+
   return (
     <>
       <Routes>
@@ -222,8 +236,8 @@ function App() {
           <Route path="/recuperacion" element={<Recuperacion />} />
           <Route path="/perfil" element={<UserProfile ordenes={ordenes}/>} />
           <Route path="/carrito" element={<CarritoCompra carritoPorUsuario={carritoPorUsuario} obtenerDetallePorIdCarrito={obtenerDetalleCarritoporId}/>} />
-          <Route path="/checkout" element={<Checkout actualizarDatosUsuario = {actualizarDatosUsuario} />} />
-          <Route path="/pedido" element={<PedidoCompleto />} />
+          <Route path="/checkout" element={<Checkout actualizarDatosUsuario = {actualizarDatosUsuario} crearOrdenes={crearOrdenes}/>} />
+          <Route path="/pedido/:id" element={<PedidoCompleto ordenesPorId={ordenesPorId} />} />
           <Route path="nosotros" element={<Nosotros />} />
           <Route path="/userdetail/:id" element={<UserDetail usuarioPorId={usuarioPorId} ordenesUsuario={ordenesUsuario} />} />
           <Route path="/productos" element={<Catalogo productos={productos} AgregarAlCarrito={AgregarAlCarrito}/>} />

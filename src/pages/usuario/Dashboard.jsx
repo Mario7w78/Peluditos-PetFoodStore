@@ -1,17 +1,34 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { OrderTable } from "@/components/OrderTable";
-
-export const Dashboard = ({ usuarios = [], ordenes = [], productos = [], deactivate, deleteuser }) => {
+import {Title} from "@/components/Title"
+export const Dashboard = ({
+  usuarios = [],
+  ordenes = [],
+  productos = [],
+  deactivate,
+  deleteuser,
+}) => {
   const navigate = useNavigate();
+  const [fechaFiltro, setFechaFiltro] = useState(() => {
+    const hoy = new Date();
+    return hoy.toISOString().split("T")[0];
+  });
+
   if (!Array.isArray(usuarios) || !Array.isArray(ordenes)) {
-  return <div>Cargando datos del dashboard...</div>;
-}
+    return <div>Cargando datos del dashboard...</div>;
+  }
 
   const [selectedUser, setSelectedUser] = useState(usuarios[0] || null);
   // Resumen
   const totalOrdenes = ordenes.length;
-  const totalUsuarios = usuarios.length;
+  const usuariosFiltrados = fechaFiltro
+  ? usuarios.filter((u) => {
+      const fechaUsuario = new Date(u.fechaRegistro).toISOString().split("T")[0];
+      return fechaUsuario === fechaFiltro;
+    })
+  : usuarios;
+  const totalUsuarios = usuariosFiltrados.length;
   const totalIngresos = ordenes.reduce((acc, orden) => acc + orden.total, 0);
 
   const handleDeactivate = (usuario) => {
@@ -19,7 +36,7 @@ export const Dashboard = ({ usuarios = [], ordenes = [], productos = [], deactiv
       alert("No puedes desactivar a un administrador");
       return;
     }
-    deactivate(usuario.id, {canlogin: !usuario.canlogin});
+    deactivate(usuario.id, { canlogin: !usuario.canlogin });
   };
 
   const handleDelete = (usuario) => {
@@ -36,19 +53,30 @@ export const Dashboard = ({ usuarios = [], ordenes = [], productos = [], deactiv
 
   return (
     <div className="p-8 bg-[#fafbfc] min-h-screen font-sans">
-      <h1 className="text-3xl font-bold mb-6 text-[#222]">Dashboard</h1>
+      <h1 className="text-blue-600 font-bold text-2xl text-center">Dashboard</h1>
+      <div className="flex flex-col items-center">
+      <label htmlFor="fechafiltro" className="mb-2 font-semibold">
+        Filtrar por fecha de registro:
+      </label>
+      <input
+        name="fechafiltro"
+        type="date"
+        value={fechaFiltro}
+        onChange={(e) => setFechaFiltro(e.target.value)}
+        className="mb-6 border border-gray-300 rounded px-3 py-1"
+      />
 
-      {/* Cards */}
+      </div>
       <div className="flex flex-col sm:flex-row gap-6 mb-8">
-        <div className="flex-1 bg-[#ff7e5a] text-white rounded-xl p-6 shadow text-center">
+        <div className="flex-1 bg-blue-600 text-white rounded-xl p-6 shadow text-center">
           <span>Órdenes</span>
           <h2 className="text-4xl font-bold">{totalOrdenes}</h2>
         </div>
-        <div className="flex-1 bg-[#ff7e5a] text-white rounded-xl p-6 shadow text-center">
+        <div className="flex-1 bg-blue-600 text-white rounded-xl p-6 shadow text-center">
           <span>Usuarios nuevos</span>
           <h2 className="text-4xl font-bold">{totalUsuarios}</h2>
         </div>
-        <div className="flex-1 bg-[#ff7e5a] text-white rounded-xl p-6 shadow text-center">
+        <div className="flex-1 bg-blue-600 text-white rounded-xl p-6 shadow text-center">
           <span>Ingresos totales</span>
           <h2 className="text-4xl font-bold">S/{totalIngresos.toFixed(2)}</h2>
         </div>
@@ -62,7 +90,7 @@ export const Dashboard = ({ usuarios = [], ordenes = [], productos = [], deactiv
             <span className="font-semibold text-lg">Usuarios registrados</span>
             <Link
               to="/userlist"
-              className="bg-[#ff7e5a] text-white rounded-md px-4 py-2 font-semibold hover:bg-[#ff5a36]"
+              className="bg-blue-600 text-white rounded-md px-4 py-2 font-semibold hover:bg-blue-700"
             >
               Ver todos los usuarios
             </Link>
@@ -76,7 +104,7 @@ export const Dashboard = ({ usuarios = [], ordenes = [], productos = [], deactiv
               </tr>
             </thead>
             <tbody>
-              {usuarios.slice(0, 5).map((user) => (
+              {usuariosFiltrados.slice(0, 5).map((user) => (
                 <tr key={user.id} className="border-b">
                   <td className="py-2 flex items-center gap-2">
                     <img
@@ -99,14 +127,20 @@ export const Dashboard = ({ usuarios = [], ordenes = [], productos = [], deactiv
                   <td className="py-2 flex gap-2">
                     <button
                       onClick={() => setSelectedUser(user)}
-                      className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-3 py-1 rounded hover:bg-[#ff7e5a] hover:text-white transition"
+                      className="border border-blue-600 text-blue-600 font-semibold px-3 py-1 rounded hover:bg-blue-600 hover:text-white transition"
                     >
                       Ver detalle
                     </button>
-                    <button onClick={()=>handleDeactivate(user)} className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-3 py-1 rounded hover:bg-[#ff7e5a] hover:text-white transition">
+                    <button
+                      onClick={() => handleDeactivate(user)}
+                      className="border border-blue-600 text-blue-600 font-semibold px-3 py-1 rounded hover:bg-blue-600 hover:text-white transition"
+                    >
                       Desactivar
                     </button>
-                    <button onClick={()=>handleDelete(user)} className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-3 py-1 rounded hover:bg-[#ff7e5a] hover:text-white transition">
+                    <button
+                      onClick={() => handleDelete(user)}
+                      className="border border-blue-600 text-blue-600 font-semibold px-3 py-1 rounded hover:bg-blue-600 hover:text-white transition"
+                    >
                       Eliminar
                     </button>
                   </td>
@@ -160,7 +194,7 @@ export const Dashboard = ({ usuarios = [], ordenes = [], productos = [], deactiv
                 <tbody>
                   {ordenesUsuario.slice(0, 10).map((ord) => (
                     <tr key={ord.id} className="border-b">
-                      <td className="py-1 text-[#ff7e5a] font-semibold">
+                      <td className="py-1 text-blue-600 font-semibold">
                         {ord.id}
                       </td>
                       <td className="py-1">{ord.fecha}</td>
@@ -185,13 +219,13 @@ export const Dashboard = ({ usuarios = [], ordenes = [], productos = [], deactiv
         <div className="flex justify-end gap-4 mt-4">
           <button
             onClick={() => navigate("/productos")}
-            className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-4 py-2 rounded hover:bg-[#ff7e5a] hover:text-white transition"
+            className="border border-blue-600 text-blue-600 font-semibold px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition"
           >
             Ver productos
           </button>
           <Link
             to="/totalorderlist"
-            className="border border-[#ff7e5a] text-[#ff7e5a] font-semibold px-4 py-2 rounded hover:bg-[#ff7e5a] hover:text-white transition"
+            className="border border-blue-600 text-blue-600 font-semibold px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition"
           >
             Ver todas las órdenes
           </Link>

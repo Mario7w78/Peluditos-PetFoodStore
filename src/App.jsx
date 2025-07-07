@@ -51,6 +51,7 @@ import {
 
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
+import { NuevaCategoria } from "./pages/categoria/NuevaCategoria";
 
 function App() {
   const [productos, setProductos] = useState([]);
@@ -218,6 +219,7 @@ function App() {
           <Route element={<ProtectedRoutes />}>
             <Route path="/userlist" element={<UserList usuarios={usuarios}  deleteuser={deleteUser} deactivate={deactivateUser}  />} />
             <Route path="/dashboard" element={<Dashboard usuarios={usuarios} ordenes={ordenes} productos={productos} deleteuser={deleteUser} deactivate={deactivateUser} />} />
+            <Route path="agregar-categoria" element={<NuevaCategoria agregarCategoria={agregarCategoria}/>}/>
             <Route
               path="/agregar-producto"
               element={

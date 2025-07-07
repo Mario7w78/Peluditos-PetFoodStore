@@ -127,7 +127,7 @@ const CarritoCompra = ({ obtenerDetallePorIdCarrito }) => {
               <strong>Productos:</strong> {carrito?.productos.length || 0}
             </p>
             <p>
-              <strong>Total:</strong> ${calcularTotal().toFixed(2)}
+              <strong>Total:</strong> S/.{calcularTotal().toFixed(2)}
             </p>
 
             <Link to="/checkout">

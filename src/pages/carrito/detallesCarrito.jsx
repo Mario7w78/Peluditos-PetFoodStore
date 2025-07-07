@@ -32,11 +32,11 @@ export const DetallesCarrito = ({ prod, eliminarProducto, actualizarCantidadProd
 
   return (
     <li key={prod.id} className="flex items-center gap-4 border-b pb-2 mb-2">
-      <img src={prod.imagen} alt={prod.nombre} width={80} className="rounded" />
+      <img src={prod.imgurl} alt={prod.nombre} width={80} className="rounded" />
       <div>
         <p className="font-semibold">{prod.nombre}</p>
 
-        <p>Precio: ${prod.DetalleCarrito.precioUnitario.toFixed(2)}</p>
+        <p>Precio: S/.{prod.DetalleCarrito.precioUnitario.toFixed(2)}</p>
         <p>Cantidad: {cantidadProductos}</p>
 
         <div className="flex gap-2 mt-2">

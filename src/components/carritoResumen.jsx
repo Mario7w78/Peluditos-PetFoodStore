@@ -10,7 +10,7 @@ const CarritoResumen = ({ total, cantidadProductos }) => {
         <strong>Productos:</strong> {cantidadProductos || 0}
       </p>
       <p>
-        <strong>Total:</strong> ${total.toFixed(2)}
+        <strong>Total:</strong> S/.{total.toFixed(2)}
       </p>
     </div>
   );

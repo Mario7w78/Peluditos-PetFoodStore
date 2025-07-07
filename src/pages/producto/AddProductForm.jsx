@@ -9,7 +9,7 @@ function AddProductForm({agregarProducto, categorias}) {
   const [stock, setStock] = useState("");
   const [precio, setPrecio] = useState("");
   const [imagen, setImagen] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
+  const [imagenBase64, setImagenBase64] = useState(null);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
   const [presentacionError, setPresentacionError] = useState("");
   const [camposIncompletos, setCamposIncompletos] = useState(false);
@@ -23,7 +23,7 @@ function AddProductForm({agregarProducto, categorias}) {
       stock.trim() === "" ||
       precio.trim() === "" ||
       categoriaSeleccionada === "" ||
-      !previewUrl 
+      !imagenBase64 
     ) {
       setCamposIncompletos(true);
       return;
@@ -35,7 +35,7 @@ function AddProductForm({agregarProducto, categorias}) {
       descripcion,
       stock,
       precioUnitario: parseFloat(precio),
-      imgurl: previewUrl,
+      imgurl: imagenBase64,
       categoriaId: categoriaSeleccionada,
     };
 
@@ -43,13 +43,27 @@ function AddProductForm({agregarProducto, categorias}) {
     navigate("/productos");
   };
 
-  const handleImagenChange = (e) => {
+  const convertirABase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImagenChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImagen(file);
-      setPreviewUrl(URL.createObjectURL(file));
+      try {
+        const base64 = await convertirABase64(file);
+        setImagenBase64(base64);
+      } catch (error) {
+        console.error('Error al convertir imagen:', error);
+      }
     }
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -133,8 +147,8 @@ function AddProductForm({agregarProducto, categorias}) {
 
           <div className="space-y-4 flex flex-col justify-between">
             <div className="border-dashed border-2 border-gray-300 rounded-lg flex items-center justify-center p-6 text-center relative h-85">
-              {previewUrl ? (
-                <img src={previewUrl} alt="Vista previa" className="max-h-full object-contain mx-auto" />
+              {imagenBase64 ? (
+                <img src={imagenBase64} alt="Vista previa" className="max-h-full object-contain mx-auto" />
               ) : (
                 <div className="text-gray-500 text-sm">Arrastra tu imagen o haz clic aquí</div>
               )}

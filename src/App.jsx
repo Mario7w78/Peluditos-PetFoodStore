@@ -101,7 +101,7 @@ function App() {
   const agregarUsuario = async (usuario) => {
     try {
       const nuevoUsuario = await crearUsuario(usuario);
-      setProductos([...usuarios, nuevoUsuario]);
+      setUsuarios([...usuarios, nuevoUsuario]);
       return nuevoUsuario;
     } catch (error) {
       console.error("Error al agregar usuarios:", error);

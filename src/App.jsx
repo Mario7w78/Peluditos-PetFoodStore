@@ -38,6 +38,8 @@ import {
 import {
   obtenerCarritoPorUsuario,
   eliminarProductoDelCarrito,
+  obtenerDetalleCarrito,
+  actualizarCantidad,
   agregarProductoACarrito,
 } from "./data/carrito";
 import {
@@ -173,7 +175,7 @@ function App() {
     }
   }
 
-  const obtenerDetallePorIdCarrito = async (carritoId)=>{
+  const obtenerDetalleCarritoporId = async (carritoId)=>{
     try{
       const detalle = await obtenerDetalleCarrito(carritoId);
       return detalle
@@ -195,6 +197,7 @@ function App() {
       alert("Error al agregar el producto al carrito");
     }
   };
+
   return (
     <>
       <Routes>
@@ -204,7 +207,7 @@ function App() {
           <Route path="/registro" element={<Registro agregarUsuario={agregarUsuario}/>} />
           <Route path="/recuperacion" element={<Recuperacion />} />
           <Route path="/perfil" element={<UserProfile ordenes={ordenes}/>} />
-          <Route path="/carrito" element={<CarritoCompra carritoPorUsuario={carritoPorUsuario} obtenerDetallePorIdCarrito={obtenerDetallePorIdCarrito} />} />
+          <Route path="/carrito" element={<CarritoCompra carritoPorUsuario={carritoPorUsuario} obtenerDetallePorIdCarrito={obtenerDetalleCarritoporId}/>} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/pedido" element={<PedidoCompleto />} />
           <Route path="nosotros" element={<Nosotros />} />

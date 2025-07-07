@@ -39,3 +39,11 @@ export async function crearCarrito(usuarioId) {
     return res.text();
   }
   
+  export async function actualizarCantidad(detalleId, cantidad) {
+    const res = await fetch(`${API_URL}/carrito/detalle/${detalleId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cantidad })
+    });
+    return res.text();
+  }

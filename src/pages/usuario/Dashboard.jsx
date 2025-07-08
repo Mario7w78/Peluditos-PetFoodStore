@@ -75,15 +75,15 @@ export const Dashboard = ({
 
       </div>
       <div className="flex flex-col sm:flex-row gap-6 mb-8">
-        <div className="flex-1 bg-blue-600 text-white rounded-xl p-6 shadow text-center">
+        <div className="flex-1 bg-gradient-to-b from-purple-400 via-pink-500 to-red-400 text-white rounded-xl p-6 shadow text-center">
           <span>Órdenes</span>
           <h2 className="text-4xl font-bold">{totalOrdenes}</h2>
         </div>
-        <div className="flex-1 bg-blue-600 text-white rounded-xl p-6 shadow text-center">
+        <div className="flex-1 bg-gradient-to-b from-purple-400 via-pink-500 to-red-400 text-white rounded-xl p-6 shadow text-center">
           <span>Usuarios nuevos</span>
           <h2 className="text-4xl font-bold">{totalUsuarios}</h2>
         </div>
-        <div className="flex-1 bg-blue-600 text-white rounded-xl p-6 shadow text-center">
+        <div className="flex-1 bg-gradient-to-b from-purple-400 via-pink-500 to-red-400 text-white rounded-xl p-6 shadow text-center">
           <span>Ingresos totales</span>
           <h2 className="text-4xl font-bold">S/{totalIngresos.toFixed(2)}</h2>
         </div>

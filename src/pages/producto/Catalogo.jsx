@@ -13,7 +13,7 @@ export const Catalogo = ({ productos, AgregarAlCarrito }) => {
   ? productos.filter((p) => p.categoriaId == categoria)
   : productos;
   return (
-    <div className="m-10 flex gap-4 justify-center flex-wrap">
+    <div className="h-screen m-10 flex gap-4 justify-center flex-wrap">
       {lista.map((p) => (
         <Item producto={p} AgregarAlCarrito ={AgregarAlCarrito} />
       ))}

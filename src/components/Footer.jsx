@@ -6,7 +6,7 @@ const Footer = () => {
   const [mostrarPeluditos, setMostrarPeluditos] = useState(false);
 
   return (
-    <footer className="bg-blue-600 text-white border-t">
+    <footer className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white border-t">
       
       <div className="max-w-6xl mx-auto py-10 px-4 grid grid-cols-1 md:grid-cols-2 text-sm items-start">
 

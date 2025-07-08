@@ -1,9 +1,10 @@
-import { MasVendido } from "../../components/MasVendido";
-
+import { MasVendido } from "@/components/MasVendido";
 function Home({AgregarAlCarrito}) {
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-grow flex flex-col items-center text-center p-8 bg-gray-50">
+        
+
         <h1 className="text-5xl font-extrabold mb-6 text-blue-700">
           Bienvenido a Peluditos Pet Food Store
         </h1>

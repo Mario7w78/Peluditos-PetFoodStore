@@ -4,6 +4,7 @@ import { AuthContext } from "@/context/AuthContext";
 import styles from "@/styles/Alumno3Styles";
 import Footer from "./Footer";
 
+
 const Header = ({ categorias }) => {
   const { user, logout } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -56,7 +57,7 @@ const Header = ({ categorias }) => {
   return (
     <>
       <header
-        className="bg-blue-600 text-white flex items-center justify-between p-4 shadow-md relative"
+        className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white flex items-center justify-between p-4 shadow-md relative"
         ref={menuRef}
       >
         <div className="flex items-center gap-2 text-xl font-bold">
@@ -190,14 +191,6 @@ const Header = ({ categorias }) => {
           )}
         </div>
       </header>
-
-      {location.pathname === "/" && (
-        <img
-          src="/BANNER.png"
-          alt="Super Oferta"
-          className="w-full object-cover h-32"
-        />
-      )}
 
       <Outlet />
       <Footer />

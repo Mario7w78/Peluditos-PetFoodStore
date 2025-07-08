@@ -3,7 +3,7 @@ export const Item = ({ producto, AgregarAlCarrito }) => {
 
   const navigate = useNavigate();
   return (
-    <div className="border max-w-[200px] min-w-[200px] p-2 py-4 flex flex-col">
+    <div className="border max-h-[400px] max-w-[200px] min-w-[200px] p-2 py-4 flex flex-col">
       <img className="aspect-square" src={producto.imgurl} />
       <p className="font-bold text-blue-600">{producto.nombre}</p>
       <p>Precio: S/.{producto.precioUnitario}</p>

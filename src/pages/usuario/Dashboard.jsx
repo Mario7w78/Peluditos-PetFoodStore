@@ -21,15 +21,22 @@ export const Dashboard = ({
 
   const [selectedUser, setSelectedUser] = useState(usuarios[0] || null);
   // Resumen
-  const totalOrdenes = ordenes.length;
+  
   const usuariosFiltrados = fechaFiltro
   ? usuarios.filter((u) => {
       const fechaUsuario = new Date(u.fechaRegistro).toISOString().split("T")[0];
       return fechaUsuario === fechaFiltro;
     })
   : usuarios;
+  const ordenesFiltrados = fechaFiltro
+  ? ordenes.filter((o) => {
+      const fechaOrden = new Date(o.fecha).toISOString().split("T")[0];
+      return fechaOrden === fechaFiltro;
+    })
+  : usuarios;
+  const totalOrdenes = ordenesFiltrados.length;
   const totalUsuarios = usuariosFiltrados.length;
-  const totalIngresos = ordenes.reduce((acc, orden) => acc + orden.total, 0);
+  const totalIngresos = ordenesFiltrados.reduce((acc, orden) => acc + orden.total, 0);
 
   const handleDeactivate = (usuario) => {
     if (usuario.admin) {

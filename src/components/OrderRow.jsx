@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { useOrderContext } from "@/context/orderContext";
 
-export function OrderRow({ order, mostrarAcciones = true, usuario }) {
+export function OrderRow({ order, mostrarAcciones = true, cancelarOrdenPorId }) {
   const { eliminarOrden } = useOrderContext();
   
   const handleEliminar = () => {
@@ -15,11 +15,11 @@ export function OrderRow({ order, mostrarAcciones = true, usuario }) {
   return (
     <tr className="p-3">
       <td>{order.id}</td>
-      <td>{usuario?.nombre}</td>
+      <td className="flex justify-center">{order.productos.map((p) =><img className="w-16" src={p.imgurl}/>)}</td>
       <td>{order.fecha.substr(0,10)}</td>
       <td>{order.estado}</td>
-      <td>{order.productos.map((p) => p.nombre).join(", ")}</td>
       <td>
+        
         {mostrarAcciones && (
           <>
             <Link
@@ -29,7 +29,7 @@ export function OrderRow({ order, mostrarAcciones = true, usuario }) {
               Ver Detalle
             </Link>
             <button
-                onClick={handleEliminar}
+                onClick={()=>cancelarOrdenPorId(order.id)}
                 className="ml-2 text-red-600 hover:font-bold"
               >
                 Cancelar

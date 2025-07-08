@@ -7,14 +7,13 @@ export const Dashboard = ({
   productos = [],
   deactivate,
   deleteuser,
+  cancelarOrdenPorId
 }) => {
   const navigate = useNavigate();
   const [fechaFiltro, setFechaFiltro] = useState(() => {
     const hoy = new Date();
     return hoy.toISOString().split("T")[0];
   });
-
-  // OBTENER ORDENES DEBE CONTENER PEDIDOS CAMBIAR ESO DESPUES
 
   if (!Array.isArray(usuarios) || !Array.isArray(ordenes)) {
     return <div>Cargando datos del dashboard...</div>;
@@ -212,7 +211,7 @@ export const Dashboard = ({
       {/* Tabla de órdenes */}
       <div className="bg-white rounded-xl p-6 shadow">
         <span className="font-semibold text-lg">Listado de órdenes</span>
-        <OrderTable ordenes={ordenes.slice(0, 5)} mostrarAcciones={false} />
+        <OrderTable ordenes={ordenes.slice(0, 5)} mostrarAcciones={false} cancelarOrdenPorId={cancelarOrdenPorId}/>
         <div className="flex justify-end gap-4 mt-4">
           <button
             onClick={() => navigate("/productos")}

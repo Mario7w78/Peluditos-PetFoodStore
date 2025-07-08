@@ -4,7 +4,7 @@ import { AuthContext } from "@/context/AuthContext";
 import styles from "@/styles/Alumno3Styles";
 import Footer from "./Footer";
 
-const Header = ({categorias}) => {
+const Header = ({ categorias }) => {
   const { user, logout } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mostrarCategorias, setMostrarCategorias] = useState(false);
@@ -68,6 +68,45 @@ const Header = ({categorias}) => {
           <Link to="/">Peluditos PetFoodStore</Link>
         </div>
 
+        {user?.admin && (
+          <details className="ml-4 text-white">
+            <summary className="cursor-pointer hover:underline">
+              Opciones de admin
+            </summary>
+            <div className="mt-2 flex flex-col bg-white text-black rounded shadow-md absolute z-50 w-48">
+              <Link
+                to="/agregar-producto"
+                className="px-4 py-2 hover:bg-gray-100"
+              >
+                Agregar Producto
+              </Link>
+              <Link
+                to="/agregar-categoria"
+                className="px-4 py-2 hover:bg-gray-100"
+              >
+                Agregar Categoría
+              </Link>
+              <Link
+                to="/dashboard"
+                className="px-4 py-2 hover:bg-gray-100"
+              >
+                Dashboard
+              </Link>
+              <Link
+                to="/userlist"
+                className="px-4 py-2 hover:bg-gray-100"
+              >
+                Lista de usuarios
+              </Link>
+              <Link
+                to="/totalorderlist"
+                className="px-4 py-2 hover:bg-gray-100"
+              >
+                Lista de ordenes
+              </Link>
+            </div>
+          </details>
+        )}
         <nav className={`${styles.navLinks} relative flex gap-4`}>
           <div className="relative">
             <button
@@ -80,16 +119,15 @@ const Header = ({categorias}) => {
 
             {mostrarCategorias && (
               <div className="absolute bg-white text-black mt-2 shadow-md rounded z-50 w-40 flex flex-col">
-               {categorias.map((c)=>(
-                 <Link
-                 to={`/productos?categoria=${c.id}`}
-                 onClick={() => setMostrarCategorias(false)}
-                 className="px-4 py-2 hover:bg-gray-100"
-               >
-                 {c.nombre}
-               </Link>
-               ))}
-
+                {categorias.map((c) => (
+                  <Link
+                    to={`/productos?categoria=${c.id}`}
+                    onClick={() => setMostrarCategorias(false)}
+                    className="px-4 py-2 hover:bg-gray-100"
+                  >
+                    {c.nombre}
+                  </Link>
+                ))}
               </div>
             )}
           </div>

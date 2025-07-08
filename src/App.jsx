@@ -141,7 +141,16 @@ function App() {
     }
   };
 
-  
+  const cancelarOrdenPorId = async (id) => {
+    try {
+      await cancelarOrden(id);
+      const actualizado = ordenes.filter((u)=>u.id !== id)
+      setOrdenes(actualizado);
+    } catch (error) {
+      console.error("Error al agregar usuarios:", error);
+    }
+  };
+
   const login = async (email, password) => {
     try {
       const usuarioLogueado = await loginUsuario({email, password});
@@ -242,10 +251,10 @@ function App() {
           <Route path="/userdetail/:id" element={<UserDetail usuarioPorId={usuarioPorId} ordenesUsuario={ordenesUsuario} />} />
           <Route path="/productos" element={<Catalogo productos={productos} AgregarAlCarrito={AgregarAlCarrito}/>} />
           <Route path="/productdetail/:productoId" element={<ProductDetail obtenerProductoPorId={obtenerProductoPorId} AgregarAlCarrito={AgregarAlCarrito} />} />
-          <Route path="/orderdetail/:orderId" element={<OrderDetail />} />
+          <Route path="/orderdetail/:orderId" element={<OrderDetail ordenesPorId={ordenesPorId} cancelarOrdenPorId={cancelarOrdenPorId}/>} />
           <Route element={<ProtectedRoutes />}>
             <Route path="/userlist" element={<UserList usuarios={usuarios}  deleteuser={deleteUser} deactivate={deactivateUser}  />} />
-            <Route path="/dashboard" element={<Dashboard usuarios={usuarios} ordenes={ordenes} productos={productos} deleteuser={deleteUser} deactivate={deactivateUser} />} />
+            <Route path="/dashboard" element={<Dashboard usuarios={usuarios} ordenes={ordenes} productos={productos} deleteuser={deleteUser} deactivate={deactivateUser} cancelarOrdenPorId= {cancelarOrdenPorId} />} />
             <Route path="agregar-categoria" element={<NuevaCategoria agregarCategoria={agregarCategoria}/>}/>
             <Route
               path="/agregar-producto"

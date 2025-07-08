@@ -1,24 +1,23 @@
 import styles from "@/styles/Alumno3Styles";
 import { OrderRow } from "@/components/OrderRow";
 
-export function OrderTable({ ordenes, usuario }) {
+export function OrderTable({ ordenes, usuario, cancelarOrdenPorId }) {
 
   return (
     <table className="w-full text-center border border-gray-300">
       <thead>
         <tr className="bg-gray-200">
           <th className={styles.tableHeader}>ID</th>
-          <th className={styles.tableHeader}>Usuario</th>
+          <th className={styles.tableHeader}>Producto</th>
           <th className={styles.tableHeader}>Fecha</th>
           <th className={styles.tableHeader}>Estado</th>
-          <th className={styles.tableHeader}>Productos</th>
           <th className={styles.tableHeader}>Acciones</th>
         </tr>
       </thead>
       <tbody>
         {ordenes.length > 0 ? (
           ordenes.map((orden) => (
-            <OrderRow key={orden.id} order={orden} usuario={usuario}/>
+            <OrderRow key={orden.id} order={orden} usuario={usuario} cancelarOrdenPorId={cancelarOrdenPorId}/>
           ))
         ) : (
           <tr>

@@ -1,4 +1,6 @@
-function Home() {
+import { MasVendido } from "../../components/MasVendido";
+
+function Home({AgregarAlCarrito}) {
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-grow flex flex-col items-center text-center p-8 bg-gray-50">
@@ -11,6 +13,9 @@ function Home() {
         <h2 className="text-4xl font-bold text-blue-700">
           Lo más vendido
         </h2>
+        <MasVendido AgregarAlCarrito={AgregarAlCarrito} />
+
+
       </main>
     </div>
   );

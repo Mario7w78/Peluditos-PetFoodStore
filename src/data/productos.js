@@ -28,3 +28,9 @@ export async function obtenerProductosPorCategoria(idCategoria) {
   const res = await fetch(`${API_URL}/categoria/${idCategoria}/producto`);
   return res.json();
 }
+
+
+export async function obtenerProductosMasVendidos() {
+  const res = await fetch(`${API_URL}/producto/masvendido`);
+  return res.json();
+}

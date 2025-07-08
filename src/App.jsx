@@ -239,7 +239,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Header categorias={categorias}/>}>
-          <Route index element={<Home />} />
+          <Route index element={<Home AgregarAlCarrito={AgregarAlCarrito}/>} />
           <Route path="/login" element={<Login login = {login} />} />
           <Route path="/registro" element={<Registro agregarUsuario={agregarUsuario}/>} />
           <Route path="/recuperacion" element={<Recuperacion />} />

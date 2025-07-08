@@ -266,7 +266,7 @@ function App() {
                 />
               }
             />
-            <Route path="/totalorderlist" element={<OrderList ordenes={ordenes} />} />
+            <Route path="/totalorderlist" element={<OrderList ordenes={ordenes} usuarios={usuarios}/>} />
 
 
           </Route>

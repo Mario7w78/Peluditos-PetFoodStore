@@ -1,12 +1,14 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Title } from "@/components/Title";
 import { OrderTable } from "@/components/OrderTable";
+import { AuthContext } from "@/context/AuthContext";
 
-export function UserDetail({ usuarioPorId, ordenesUsuario }) {
+export function UserDetail({ ordenesUsuario }) {
   const { id } = useParams();
   const [usuario, setUsuario] = useState(null);
   const [ordenes, setOrdenes] = useState([]);
+  const {usuarioPorId} = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {

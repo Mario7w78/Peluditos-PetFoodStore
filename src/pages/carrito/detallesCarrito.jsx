@@ -1,11 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { actualizarCantidad } from "@/data/carrito";
+import { CartContext } from "@/context/CartContext";
+import { ProductContext } from "../../context/ProductContext";
 
-export const DetallesCarrito = ({ prod, eliminarProducto, actualizarCantidadProducto}) => {
+export const DetallesCarrito = ({ prod }) => {
+  const { actualizarCantidad, eliminarProductoDelCarrito } = useContext(CartContext);
+
   const [cantidadProductos, setCantidadProductos] = useState(
     prod.DetalleCarrito.cantidad
   );
   const [isUpdating, setIsUpdating] = useState(false);
+
   useEffect(() => {
     if (
       cantidadProductos !== prod.DetalleCarrito.cantidad &&
@@ -15,7 +20,6 @@ export const DetallesCarrito = ({ prod, eliminarProducto, actualizarCantidadProd
         try {
           setIsUpdating(true);
           await actualizarCantidad(prod.DetalleCarrito.id, cantidadProductos);
-          actualizarCantidadProducto(prod.DetalleCarrito.id, cantidadProductos)
         } catch (error) {
           console.error("Error al actualizar cantidad:", error);
           setCantidadProductos(prod.DetalleCarrito.cantidad);
@@ -47,7 +51,7 @@ export const DetallesCarrito = ({ prod, eliminarProducto, actualizarCantidadProd
                 if (c === 1) {
                   return c;
                 }
-                return c-1
+                return c - 1;
               })
             }
           >
@@ -61,7 +65,7 @@ export const DetallesCarrito = ({ prod, eliminarProducto, actualizarCantidadProd
           </button>
         </div>
         <button
-          onClick={() => eliminarProducto(prod.id)}
+          onClick={() => eliminarProductoDelCarrito(prod.id)}
           className="text-red-500 mt-2"
         >
           Eliminar

@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "@/context/AuthContext";
-import { useOrderContext } from "@/context/orderContext";
+import { OrderContext } from "@/context/orderContext";
 
-export function OrderRow({ order, mostrarAcciones = true, cancelarOrdenPorId }) {
-  const { eliminarOrden } = useOrderContext();
+export function OrderRow({ order, mostrarAcciones = true }) {
+  const { cancelarOrdenPorId } = useContext(OrderContext);
   
   const handleEliminar = () => {
     if (window.confirm("¿Estás seguro de eliminar esta orden?")) {
-      eliminarOrden(order.id);
+      cancelarOrdenPorId(order.id);
     }
   };
 
@@ -29,7 +28,7 @@ export function OrderRow({ order, mostrarAcciones = true, cancelarOrdenPorId }) 
               Ver Detalle
             </Link>
             <button
-                onClick={()=>cancelarOrdenPorId(order.id)}
+                onClick={handleEliminar}
                 className="ml-2 text-red-600 hover:font-bold"
               >
                 Cancelar

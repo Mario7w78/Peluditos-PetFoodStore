@@ -1,12 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "@/context/AuthContext";
-import { obtenerOrdenes } from "@/data/ordenes";
 import { OrderTable } from "@/components/OrderTable";
 import Pagination from "@/components/Pagination";
+import { OrderContext } from "../../context/orderContext";
 
-const UserProfile = ({ordenes}) => {
+const UserProfile = () => {
   const { user } = useContext(AuthContext);
+  const { ordenes } = useContext(OrderContext);
   const navigate = useNavigate();
 
   const [showChangeForm, setShowChangeForm] = useState(false);

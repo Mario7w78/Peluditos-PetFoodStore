@@ -3,8 +3,8 @@ import { AuthContext } from "@/context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "@/styles/Alumno3Styles";
 
-const Login = ({login}) => {
-  const { user, setUser } = useContext(AuthContext);
+const Login = () => {
+  const { user, setUser, login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

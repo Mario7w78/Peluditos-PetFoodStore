@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import { useState, useContext} from "react";
 import { useNavigate } from "react-router-dom";
+import { CategoriesContext } from "@/context/CategoriesContext";
 
-export function NuevaCategoria({agregarCategoria}) {
+export function NuevaCategoria() {
   const [nombre, setNombre] = useState("");
+  const { agregarCategoria } = useContext(CategoriesContext);
   const navigate = useNavigate()
   const handleSubmit = () => {
     if (nombre.trim() === "") return;
@@ -22,7 +24,7 @@ export function NuevaCategoria({agregarCategoria}) {
   };
 
   return (
-    <div className="flex items-center justify-center z-50">
+    <div className="flex items-center justify-center min-h-screen ">
       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
         <h2 className="text-lg font-bold mb-4">Nueva categoría</h2>
 

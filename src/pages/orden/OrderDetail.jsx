@@ -1,11 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Title } from "@/components/Title";
 import styles from "@/styles/Alumno3Styles";
+import { OrderContext } from "@/context/OrderContext";
 
-export const OrderDetail = ({ordenesPorId, cancelarOrdenPorId}) => {
+export const OrderDetail = () => {
   const { orderId } = useParams();
   const [orden, setOrden] = useState([])
+  const { cancelarOrdenPorId, ordenesPorId } = useContext(OrderContext);
+  
+
   useEffect(() => {
       const fetchData = async () => {
         try {

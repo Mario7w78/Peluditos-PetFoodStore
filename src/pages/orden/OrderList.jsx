@@ -1,11 +1,16 @@
 import { Title } from "@/components/Title";
 import { OrderTable } from "@/components/OrderTable";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "@/context/AuthContext";
+import { OrderContext } from "@/context/OrderContext";
 
-export const OrderList = ({ordenes, usuarios}) => {
+export const OrderList = () => {
   const [filtro, setFiltro] = useState("");
+  const { usuarios } = useContext(AuthContext);
+  const { ordenes } = useContext(OrderContext);
 
+  //Esto realizar con backend
   const ordenesFiltradas = ordenes.filter((orden) => {
     const filtroLower = filtro.toLowerCase();
 

@@ -31,6 +31,6 @@ export async function obtenerProductosPorCategoria(idCategoria) {
 
 
 export async function obtenerProductosMasVendidos() {
-  const res = await fetch(`${API_URL}/masvendidos`);
+  const res = await fetch(`${API_URL}/producto/masvendidos`);
   return res.json();
 }

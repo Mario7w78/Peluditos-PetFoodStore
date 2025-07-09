@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
+import { OrderContext } from "@/context/OrderContext";
 
-const PedidoCompleto = ({ ordenesPorId }) => {
+const PedidoCompleto = () => {
     const [ordenes, setOrdenes] = useState([])
+    const { ordenesPorId } = useContext(OrderContext);
     const { id } = useParams()
 
     useEffect(() => {

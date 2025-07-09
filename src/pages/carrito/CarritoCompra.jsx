@@ -1,24 +1,23 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import styles from "@/styles/CarritoStyles";
-import { AuthContext } from "../../context/AuthContext";
-import {
-  obtenerCarritoPorUsuario,
-  eliminarProductoDelCarrito,
-} from "../../data/carrito";
 import { DetallesCarrito } from "./detallesCarrito";
-const CarritoCompra = ({ obtenerDetallePorIdCarrito }) => {
+import { AuthContext } from "../../context/AuthContext";
+import { CartContext } from "../../context/CartContext";
+
+const CarritoCompra = () => {
   const { user } = useContext(AuthContext);
+  const {obtenerDetalleCarritoporId, carritoPorUsuario, eliminarProductoDelCarrito} = useContext(CartContext);
+
   const [carrito, setCarrito] = useState(null);
   const [detalleCarrito, setDetalleCarrito] = useState([]);
   const [contador, setContador] = useState(30);
 
-  
   useEffect(() => {
     const cargarCarrito = async () => {
       try {
-        const data = await obtenerCarritoPorUsuario(user.id);
-        const detalles = await obtenerDetallePorIdCarrito(data.id);
+        const data = await carritoPorUsuario(user.id);
+        const detalles = await obtenerDetalleCarritoporId(data.id);
         setCarrito(data);
         setDetalleCarrito(detalles);
       } catch (error) {

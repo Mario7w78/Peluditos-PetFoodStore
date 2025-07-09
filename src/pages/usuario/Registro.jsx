@@ -1,11 +1,11 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "@/styles/Alumno3Styles";
 import SuccessPopup from "@/components/popup";
 
 
-const Registro = ({agregarUsuario}) => {
+const Registro = () => {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,6 +15,7 @@ const Registro = ({agregarUsuario}) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
+  const { agregarUsuario } = useContext(AuthContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();

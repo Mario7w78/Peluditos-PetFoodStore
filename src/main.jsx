@@ -7,15 +7,17 @@ import { AuthProvider } from "./context/AuthContext";
 import { ContextProvider } from "./context/orderContext";
 import { ProductProvider } from "./context/ProductContext";
 import { CategoriesProvider } from "./context/CategoriesContext";
-
+import { CartProvider } from "./context/CartContext";
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
   <AuthProvider>
     <CategoriesProvider>
       <ProductProvider>
+        <CartProvider>
         <ContextProvider>
           <App />
         </ContextProvider>
+        </CartProvider>
       </ProductProvider>
     </CategoriesProvider>
   </AuthProvider>

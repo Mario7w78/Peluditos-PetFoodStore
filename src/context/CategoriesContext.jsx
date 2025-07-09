@@ -1,28 +1,38 @@
 // CategoriesContext.jsx
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { obtenerCategorias, crearCategoria } from "@/data/categorias";
 
-const CategoriesContext = createContext();
+export const CategoriesContext = createContext();
 
 export const CategoriesProvider = ({ children }) => {
   const [categorias, setCategorias] = useState([]);
 
   useEffect(() => {
-    const guardadas = JSON.parse(localStorage.getItem("categorias")) || [];
-    setCategorias(guardadas);
+    const fetchData = async () => {
+      try {
+        const categoriasData = await obtenerCategorias();
+        setCategorias(categoriasData);
+      } catch (error) {
+        console.error("Error al obtener datos:", error);
+      }
+    };
+    fetchData();
   }, []);
 
-  const addCategoria = (nuevaCategoria) => {
-    const nuevas = [...categorias, nuevaCategoria];
-    setCategorias(nuevas);
-    localStorage.setItem("categorias", JSON.stringify(nuevas));
-  };
+   const agregarCategoria = async (categoria) => {
+      try {
+        const nuevaCategoria = await crearCategoria(categoria);
+        setCategorias([...categorias, nuevaCategoria]);
+      } catch (error) {
+        console.error("Error al agregar producto:", error);
+      }
+    };
+  
 
   return (
-    <CategoriesContext.Provider value={{ categorias, addCategoria }}>
-      {children}
+    <CategoriesContext.Provider value={{ categorias, agregarCategoria}}>
+          {children}
     </CategoriesContext.Provider>
   );
 };
 
-// Hook personalizado
-export const useCategoriesStore = () => useContext(CategoriesContext);

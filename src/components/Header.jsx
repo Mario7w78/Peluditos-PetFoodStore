@@ -3,10 +3,12 @@ import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "@/context/AuthContext";
 import styles from "@/styles/Alumno3Styles";
 import Footer from "./Footer";
+import { CategoriesContext } from "@/context/CategoriesContext";
 
-
-const Header = ({ categorias }) => {
+const Header = () => {
   const { user, logout } = useContext(AuthContext);
+  const { categorias } = useContext(CategoriesContext);
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [mostrarCategorias, setMostrarCategorias] = useState(false);
   const [busqueda, setBusqueda] = useState("");

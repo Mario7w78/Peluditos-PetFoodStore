@@ -11,13 +11,16 @@ import React, { useState , useContext, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import CarritoResumen from "@/components/carritoResumen";
-import { obtenerCarritoPorUsuario } from "../../data/carrito.js";
-import { AuthContext } from "../../context/AuthContext";
-import { obtenerDetalleCarrito } from "../../data/carrito.js";
+import { obtenerCarritoPorUsuario } from "@/data/carrito.js";
+import { AuthContext } from "@/context/AuthContext";
+import { obtenerDetalleCarrito } from "@/data/carrito.js";
+import { OrderContext } from "@/context/OrderContext";
 
-const Checkout = ({actualizarDatosUsuario, crearOrdenes}) => {
+const Checkout = () => {
     const navigate = useNavigate();
-    const { user } = useContext(AuthContext);
+    const { crearOrdenes } = useContext(OrderContext);
+
+    const { user, actualizarDatosUsuario } = useContext(AuthContext);
     const [datosEnvio, setDatosEnvio] = useState({
         nombresCompletos: "",
         apellidosCompletos: "",

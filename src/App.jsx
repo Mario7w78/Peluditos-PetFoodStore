@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Home from "./pages/home/Home";
 import Login from "./pages/usuario/Login";
 import Registro from "./pages/usuario/Registro";
@@ -19,256 +20,35 @@ import Checkout from "./pages/orden/Checkout";
 import PedidoCompleto from "./pages/orden/PedidoCompleto";
 import { OrderList } from "./pages/orden/OrderList";
 import { OrderDetail } from "./pages/orden/OrderDetail";
-import {
-  crearProducto,
-  obtenerProductos,
-  obtenerProductoPorNombre,
-  obtenerProductoPorId,
-  obtenerProductosPorCategoria,
-} from "./data/productos";
-import { obtenerCategorias, crearCategoria } from "./data/categorias";
-import {
-  crearUsuario,
-  obtenerUsuarios,
-  obtenerUsuarioPorId,
-  loginUsuario,
-  eliminarUsuario,
-  desactivarUsuario,
-  actualizarUsuario
-} from "./data/usuarios";
-import {
-  obtenerCarritoPorUsuario,
-  eliminarProductoDelCarrito,
-  obtenerDetalleCarrito,
-  actualizarCantidad,
-  agregarProductoACarrito,
-} from "./data/carrito";
-import {
-  obtenerOrdenes,
-  crearOrdenDesdeCarrito,
-  obtenerOrdenesPorUsuario,
-  obtenerOrdenesPorId,
-  cancelarOrden,
-} from "./data/ordenes";
-
-import { useState, useEffect, useContext } from "react";
-import { AuthContext } from "./context/AuthContext";
 import { NuevaCategoria } from "./pages/categoria/NuevaCategoria";
 
 function App() {
-  const [productos, setProductos] = useState([]);
-  const [categorias, setCategorias] = useState([]);
-  const [usuarios, setUsuarios] = useState([]);
-  const [ordenes, setOrdenes] = useState([]);
-  const { user, setUser } = useContext(AuthContext);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [productosData, categoriasData, usuariosData, ordenesData] = await Promise.all([
-          obtenerProductos(),
-          obtenerCategorias(),
-          obtenerUsuarios(),
-          obtenerOrdenes(),
-        ]);
-        setProductos(productosData);
-        setCategorias(categoriasData);
-        setUsuarios(usuariosData)
-        setOrdenes(ordenesData)
-      } catch (error) {
-        console.error("Error al obtener datos:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const agregarCategoria = async (categoria) => {
-    try {
-      const nuevaCategoria = await crearCategoria(categoria);
-      setCategorias([...categorias, nuevaCategoria]);
-    } catch (error) {
-      console.error("Error al agregar producto:", error);
-    }
-  };
-
-  const agregarProducto = async (producto) => {
-    try {
-      const nuevoProducto = await crearProducto(producto);
-      setProductos([...productos, nuevoProducto]);
-    } catch (error) {
-      console.error("Error al agregar producto:", error);
-    }
-  };
-
-  const agregarUsuario = async (usuario) => {
-    try {
-      const nuevoUsuario = await crearUsuario(usuario);
-      setUsuarios([...usuarios, nuevoUsuario]);
-      return nuevoUsuario;
-    } catch (error) {
-      console.error("Error al agregar usuarios:", error);
-    }
-  };
-  
-  const actualizarDatosUsuario = async (data, id) =>{
-    try{  
-      await actualizarUsuario(data, id)
-    }catch(e){
-      console.error("Error al modificar usuario", e);
-    }
-  }
-  const deactivateUser = async (id, data) => {
-    try {
-      await desactivarUsuario(id, data);
-      setUsuarios((prevUsuarios) =>
-        prevUsuarios.map((usuario) =>
-          usuario.id === id ? { ...usuario, ...data } : usuario
-        )
-      );
-    } catch (error) {
-      console.error("Error al agregar usuarios:", error);
-    }
-  };
-
-  const deleteUser = async (id) => {
-    try {
-      await eliminarUsuario(id);
-      const actualizado = usuarios.filter((u)=>u.id !== id)
-      setUsuarios(actualizado);
-    } catch (error) {
-      console.error("Error al agregar usuarios:", error);
-    }
-  };
-
-  const cancelarOrdenPorId = async (id) => {
-    try {
-      await cancelarOrden(id);
-      const actualizado = ordenes.filter((u)=>u.id !== id)
-      setOrdenes(actualizado);
-    } catch (error) {
-      console.error("Error al agregar usuarios:", error);
-    }
-  };
-
-  const login = async (email, password) => {
-    try {
-      const usuarioLogueado = await loginUsuario({email, password});
-      if (usuarioLogueado) {
-        setUser(usuarioLogueado);
-        return usuarioLogueado;
-      } else {  
-        console.error("Credenciales incorrectas");
-        return null;  
-      }
-    } catch (error) { 
-      console.error("Error al iniciar sesión:", error);
-      return null;
-      }
-    };
-
-  const usuarioPorId = async (usuarioId)=>{
-    try{
-      const usuario = await obtenerUsuarioPorId(usuarioId);
-      return usuario
-    }catch(e){
-      console.error(e)
-    }
-  }
-
-  const carritoPorUsuario = async (usuarioId)=>{
-    try{
-      const carrito = await obtenerCarritoPorUsuario(usuarioId);
-      return carrito
-    }catch(e){
-      console.error(e)
-    }
-  }
-
-  const obtenerDetalleCarritoporId = async (carritoId)=>{
-    try{
-      const detalle = await obtenerDetalleCarrito(carritoId);
-      return detalle
-    }catch(e){
-      console.error(e)
-    }
-  }
-
-  const AgregarAlCarrito = async (producto) => {
-    try {
-      const carrito = await carritoPorUsuario(user.id); 
-      await agregarProductoACarrito(carrito.id, {
-        productoId: producto.id,
-        cantidad: 1,
-        precioUnitario: producto.precioUnitario,
-      });
-      alert("Producto agregado al carrito");
-    } catch (error) {
-      alert("Error al agregar el producto al carrito");
-    }
-  };
-
-  const ordenesUsuario = async (usuarioId)=>{
-    try{
-      const orden = await obtenerOrdenesPorUsuario(usuarioId);
-      return orden
-    }catch(e){
-      console.error(e)
-    }
-  }
-
-  const ordenesPorId = async (ordenId)=>{
-    try{
-      const orden = await obtenerOrdenesPorId(ordenId);
-      return orden
-    }catch(e){
-      console.error(e)
-    }
-  }
-
-  const crearOrdenes = async (usuarioId)=>{
-    try{
-      const ordenid = await crearOrdenDesdeCarrito(usuarioId);
-      return ordenid
-    }catch(e){
-      console.error(e)
-    }
-  }
-
   return (
     <>
       <Routes>
-        <Route path="/" element={<Header categorias={categorias}/>}>
-          <Route index element={<Home AgregarAlCarrito={AgregarAlCarrito}/>} />
-          <Route path="/login" element={<Login login = {login} />} />
-          <Route path="/registro" element={<Registro agregarUsuario={agregarUsuario}/>} />
+        <Route path="/" element={<Header />}>
+          <Route index element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/registro" element={<Registro />} />
           <Route path="/recuperacion" element={<Recuperacion />} />
-          <Route path="/perfil" element={<UserProfile ordenes={ordenes}/>} />
-          <Route path="/carrito" element={<CarritoCompra carritoPorUsuario={carritoPorUsuario} obtenerDetallePorIdCarrito={obtenerDetalleCarritoporId}/>} />
-          <Route path="/checkout" element={<Checkout actualizarDatosUsuario = {actualizarDatosUsuario} crearOrdenes={crearOrdenes}/>} />
-          <Route path="/pedido/:id" element={<PedidoCompleto ordenesPorId={ordenesPorId} />} />
+          <Route path="/perfil" element={<UserProfile />} />
+          <Route path="/carrito" element={<CarritoCompra />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/pedido/:id" element={<PedidoCompleto />} />
           <Route path="nosotros" element={<Nosotros />} />
-          <Route path="/userdetail/:id" element={<UserDetail usuarioPorId={usuarioPorId} ordenesUsuario={ordenesUsuario} />} />
-          <Route path="/productos" element={<Catalogo productos={productos} AgregarAlCarrito={AgregarAlCarrito}/>} />
-          <Route path="/productdetail/:productoId" element={<ProductDetail obtenerProductoPorId={obtenerProductoPorId} AgregarAlCarrito={AgregarAlCarrito} />} />
-          <Route path="/orderdetail/:orderId" element={<OrderDetail ordenesPorId={ordenesPorId} cancelarOrdenPorId={cancelarOrdenPorId}/>} />
+          <Route path="/userdetail/:id" element={<UserDetail />} />
+          <Route path="/productos" element={<Catalogo />} />
+          <Route
+            path="/productdetail/:productoId"
+            element={<ProductDetail />}
+          />
+          <Route path="/orderdetail/:orderId" element={<OrderDetail />} />
           <Route element={<ProtectedRoutes />}>
-            <Route path="/userlist" element={<UserList usuarios={usuarios}  deleteuser={deleteUser} deactivate={deactivateUser}  />} />
-            <Route path="/dashboard" element={<Dashboard usuarios={usuarios} ordenes={ordenes} productos={productos} deleteuser={deleteUser} deactivate={deactivateUser} cancelarOrdenPorId= {cancelarOrdenPorId} />} />
-            <Route path="agregar-categoria" element={<NuevaCategoria agregarCategoria={agregarCategoria}/>}/>
-            <Route
-              path="/agregar-producto"
-              element={
-                <AddProductForm
-                  agregarProducto={agregarProducto}
-                  agregarCategoria={agregarCategoria}
-                  categorias={categorias}
-                />
-              }
-            />
-            <Route path="/totalorderlist" element={<OrderList ordenes={ordenes} usuarios={usuarios}/>} />
-
-
+            <Route path="/userlist" element={<UserList />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="agregar-categoria" element={<NuevaCategoria />} />
+            <Route path="/agregar-producto" element={<AddProductForm />} />
+            <Route path="/totalorderlist" element={<OrderList />} />
           </Route>
         </Route>
       </Routes>

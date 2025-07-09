@@ -1,6 +1,10 @@
 import { useNavigate } from "react-router-dom";
-export const Item = ({ producto, AgregarAlCarrito }) => {
-
+import { useContext } from "react";
+import { CartContext } from "@/context/CartContext";
+import { AuthContext } from "../../context/AuthContext";
+export const Item = ({ producto }) => {
+  const { AgregarAlCarrito } = useContext(CartContext);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   return (
     <div className="max-h-[400px] max-w-[200px] min-w-[200px] p-3 py-4 flex flex-col shadow-2xl shadow-purple-400 rounded-2xl">
@@ -15,7 +19,7 @@ export const Item = ({ producto, AgregarAlCarrito }) => {
         >
           Ver detalle
         </button>
-        <button onClick={()=>AgregarAlCarrito(producto)} className="bg-gradient-to-b from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 font-bold rounded-2xl w-[90%] text-white p-2">
+        <button onClick={()=>AgregarAlCarrito(producto, user.id)} className="bg-gradient-to-b from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 font-bold rounded-2xl w-[90%] text-white p-2">
           Agregar al Carrito
         </button>
       </div>

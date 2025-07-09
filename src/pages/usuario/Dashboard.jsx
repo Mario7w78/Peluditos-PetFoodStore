@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { OrderTable } from "@/components/OrderTable";
-export const Dashboard = ({
-  usuarios = [],
-  ordenes = [],
-  productos = [],
-  deactivate,
-  deleteuser,
-  cancelarOrdenPorId
-}) => {
+import { AuthContext } from "@/context/AuthContext";
+import { OrderContext } from "@/context/orderContext";
+export const Dashboard = () => {
+  const { usuarios, deactivateUser, deleteUser } = useContext(AuthContext);
+  const { ordenes, cancelarOrdenPorId } = useContext(OrderContext);
+
   const navigate = useNavigate();
   const [fechaFiltro, setFechaFiltro] = useState(() => {
     const hoy = new Date();
@@ -20,30 +18,34 @@ export const Dashboard = ({
   }
 
   const [selectedUser, setSelectedUser] = useState(usuarios[0] || null);
-  // Resumen
-  
+
   const usuariosFiltrados = fechaFiltro
-  ? usuarios.filter((u) => {
-      const fechaUsuario = new Date(u.fechaRegistro).toISOString().split("T")[0];
-      return fechaUsuario === fechaFiltro;
-    })
-  : usuarios;
+    ? usuarios.filter((u) => {
+        const fechaUsuario = new Date(u.fechaRegistro)
+          .toISOString()
+          .split("T")[0];
+        return fechaUsuario === fechaFiltro;
+      })
+    : usuarios;
   const ordenesFiltrados = fechaFiltro
-  ? ordenes.filter((o) => {
-      const fechaOrden = new Date(o.fecha).toISOString().split("T")[0];
-      return fechaOrden === fechaFiltro;
-    })
-  : usuarios;
+    ? ordenes.filter((o) => {
+        const fechaOrden = new Date(o.fecha).toISOString().split("T")[0];
+        return fechaOrden === fechaFiltro;
+      })
+    : usuarios;
   const totalOrdenes = ordenesFiltrados.length;
   const totalUsuarios = usuariosFiltrados.length;
-  const totalIngresos = ordenesFiltrados.reduce((acc, orden) => acc + orden.total, 0);
+  const totalIngresos = ordenesFiltrados.reduce(
+    (acc, orden) => acc + orden.total,
+    0
+  );
 
   const handleDeactivate = (usuario) => {
     if (usuario.admin) {
       alert("No puedes desactivar a un administrador");
       return;
     }
-    deactivate(usuario.id, { canlogin: !usuario.canlogin });
+    deactivateUser(usuario.id, { canlogin: !usuario.canlogin });
   };
 
   const handleDelete = (usuario) => {
@@ -51,7 +53,7 @@ export const Dashboard = ({
       alert("No puedes eliminar a un administrador");
       return;
     }
-    deleteuser(usuario.id);
+    deleteUser(usuario.id);
   };
 
   const ordenesUsuario = ordenes.filter(
@@ -61,18 +63,19 @@ export const Dashboard = ({
   return (
     <div className="p-8 bg-[#fafbfc] min-h-screen font-sans">
       <div className="flex flex-col items-center">
-      <label htmlFor="fechafiltro" className="mb-2 font-semibold">
-        Filtrar por fecha:
-      </label>
-      <input
-        name="fechafiltro"
-        type="date"
-        value={fechaFiltro}
-        onChange={(e) => setFechaFiltro(e.target.value)}
-        className="mb-6 border border-gray-300 rounded px-3 py-1"
-      />
-
-      </div>5      <div className="flex flex-col sm:flex-row gap-6 mb-8">
+        <label htmlFor="fechafiltro" className="mb-2 font-semibold">
+          Filtrar por fecha:
+        </label>
+        <input
+          name="fechafiltro"
+          type="date"
+          value={fechaFiltro}
+          onChange={(e) => setFechaFiltro(e.target.value)}
+          className="mb-6 border border-gray-300 rounded px-3 py-1"
+        />
+      </div>
+      5{" "}
+      <div className="flex flex-col sm:flex-row gap-6 mb-8">
         <div className="flex-1 bg-gradient-to-b from-purple-500 to-red-400 text-white rounded-xl p-6 shadow text-center">
           <span>Órdenes</span>
           <h2 className="text-4xl font-bold">{totalOrdenes}</h2>
@@ -86,7 +89,6 @@ export const Dashboard = ({
           <h2 className="text-4xl font-bold">S/{totalIngresos.toFixed(2)}</h2>
         </div>
       </div>
-
       {/* Zona principal: tabla de usuarios + detalle */}
       <div className="flex flex-col lg:flex-row gap-8 mb-8">
         {/* Usuarios */}
@@ -212,11 +214,14 @@ export const Dashboard = ({
           )}
         </div>
       </div>
-
       {/* Tabla de órdenes */}
       <div className="bg-white rounded-xl p-6 shadow">
         <span className="font-semibold text-lg">Listado de órdenes</span>
-        <OrderTable ordenes={ordenes.slice(0, 5)} mostrarAcciones={false} cancelarOrdenPorId={cancelarOrdenPorId}/>
+        <OrderTable
+          ordenes={ordenes.slice(0, 5)}
+          mostrarAcciones={false}
+          cancelarOrdenPorId={cancelarOrdenPorId}
+        />
         <div className="flex justify-end gap-4 mt-4">
           <button
             onClick={() => navigate("/productos")}

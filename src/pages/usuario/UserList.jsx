@@ -2,18 +2,21 @@ import { Title } from "@/components/Title";
 import { UserRow } from "@/components/UserRow";
 import { Link } from "react-router-dom";
 import styles from "@/styles/Alumno3Styles";
+import { useContext } from "react";
+import { AuthContext } from "@/context/AuthContext";
 
-export function UserList({usuarios, deactivate, deleteuser}) {
+export function UserList() {
+  const { usuarios, deactivateUser, deleteUser } = useContext(AuthContext);
   return (
     <>
       <div className="flex flex-col items-center h-screen">
         <Title text="Lista de Usuarios" />
-          <Link
-            to="/dashboard"
-            className="text-blue-700 hover:font-bold border my-3 rounded-2xl p-2 hover:border-2"
-          >
-            Volver al Dashboard
-          </Link>
+        <Link
+          to="/dashboard"
+          className="text-blue-700 hover:font-bold border my-3 rounded-2xl p-2 hover:border-2"
+        >
+          Volver al Dashboard
+        </Link>
         <table className="text-center">
           <thead>
             <tr className="bg-gray-200">
@@ -30,7 +33,12 @@ export function UserList({usuarios, deactivate, deleteuser}) {
               </tr>
             ) : (
               usuarios.map((usuario) => (
-                <UserRow usuario={usuario} deactivate={deactivate} deleteuser={deleteuser} key={usuario.id} />
+                <UserRow
+                  usuario={usuario}
+                  deactivate={deactivateUser}
+                  deleteuser={deleteUser}
+                  key={usuario.id}
+                />
               ))
             )}
           </tbody>

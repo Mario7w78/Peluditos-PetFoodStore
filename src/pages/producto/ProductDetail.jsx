@@ -1,9 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { ProductContext } from "@/context/ProductContext";
+import { CartContext } from "@/context/CartContext";
 
-const ProductDetail = ({ obtenerProductoPorId, AgregarAlCarrito }) => {
+const ProductDetail = () => {
   const { productoId } = useParams();
   const [producto, setProducto] = useState({})
+  const { obtenerProductoPorId } = useContext(ProductContext);
+  const { AgregarAlCarrito } = useContext(CartContext);
 
   useEffect( () => {
     async function fetchProducto() {

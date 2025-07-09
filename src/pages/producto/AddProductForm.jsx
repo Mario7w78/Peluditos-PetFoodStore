@@ -1,7 +1,13 @@
-import React, { useState} from "react";
+import { useState, useContext} from "react";
 import { useNavigate } from "react-router-dom";
+import { CategoriesContext } from "@/context/CategoriesContext";
+import { ProductContext } from "@/context/ProductContext";
 
-function AddProductForm({agregarProducto, categorias}) {
+function AddProductForm() {
+
+  const { categorias } = useContext(CategoriesContext);
+  const { agregarProducto } = useContext(ProductContext);
+
   const navigate = useNavigate();
   const [nombre, setNombre] = useState("");
   const [presentacion, setPresentacion] = useState("");

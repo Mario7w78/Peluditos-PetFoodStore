@@ -1,80 +1,75 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
+import {
+  obtenerOrdenes,
+  crearOrdenDesdeCarrito,
+  obtenerOrdenesPorUsuario,
+  obtenerOrdenesPorId,
+  cancelarOrden,
+} from "@/data/ordenes";
 
-const OrderContext = createContext();
+export const OrderContext = createContext();
 
 export const ContextProvider = ({ children }) => {
-
-    const [productos, setProductos] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("productos")) || [];
-    } catch (error) {
-      console.error("Error al obtener productos:", error);
-      return [];
-    }
-  });
-
-  const [envios, setEnvios] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("envioGuardar")) || [];
-    } catch (error) {
-      console.error("Error al obtener envíos:", error);
-      return [];
-    }
-  });
-
-  // Órdenes
-  const [ordenes, setOrdenes] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("ordenes")) || [];
-    } catch (error) {
-      console.error("Error al obtener órdenes:", error);
-      return [];
-    }
-  });
-
+  const [ordenes, setOrdenes] = useState([]);
   useEffect(() => {
-    localStorage.setItem("productos", JSON.stringify(productos));
-  }, [productos]);
+    const fetchData = async () => {
+      try {
+        const ordenesData = await obtenerOrdenes();
+        setOrdenes(ordenesData);
+      } catch (error) {
+        console.error("Error al obtener datos:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
-  useEffect(() => {
-    localStorage.setItem("envioGuardar", JSON.stringify(envios));
-  }, [envios]);
-
-  useEffect(() => {
-    localStorage.setItem("ordenes", JSON.stringify(ordenes));
-  }, [ordenes]);
-
-  const guardarProducto = (producto) => {
-    setProductos((prev) => [...prev, producto]);
+  const cancelarOrdenPorId = async (id) => {
+    try {
+      await cancelarOrden(id);
+      const actualizado = ordenes.filter((u) => u.id !== id);
+      setOrdenes(actualizado);
+    } catch (error) {
+      console.error("Error al agregar usuarios:", error);
+    }
   };
 
-  const agregarOrden = (nuevaOrden) => {
-    const nuevas = [...ordenes, nuevaOrden];
-    setOrdenes(nuevas);
+  const ordenesUsuario = async (usuarioId) => {
+    try {
+      const orden = await obtenerOrdenesPorUsuario(usuarioId);
+      return orden;
+    } catch (e) {
+      console.error(e);
+    }
   };
 
-  const eliminarOrden = (id) => {
-    const actualizadas = ordenes.filter((orden) => orden.id !== id);
-    setOrdenes(actualizadas);
+  const ordenesPorId = async (ordenId) => {
+    try {
+      const orden = await obtenerOrdenesPorId(ordenId);
+      return orden;
+    } catch (e) {
+      console.error(e);
+    }
   };
 
+  const crearOrdenes = async (usuarioId) => {
+    try {
+      const ordenid = await crearOrdenDesdeCarrito(usuarioId);
+      return ordenid;
+    } catch (e) {
+      console.error(e);
+    }
+  };
   return (
     <OrderContext.Provider
       value={{
-        productos,
-        guardarProducto,
-        envios,
-        setEnvios,
         ordenes,
-        setOrdenes,
-        agregarOrden,
-        eliminarOrden,
+        cancelarOrdenPorId,
+        ordenesUsuario,
+        ordenesPorId,
+        crearOrdenes,
       }}
     >
       {children}
     </OrderContext.Provider>
   );
 };
-
-// Hook personalizado para usar el contexto
-export const useOrderContext = () => useContext(OrderContext);

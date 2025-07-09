@@ -27,3 +27,7 @@ export async function cancelarOrden(ordenId) {
   });
   return res.text();
 }
+export async function buscarOrden(buscar) {
+  const res = await fetch(`${API_URL}/ordenes/buscar/${buscar}`);
+  return res.json();
+}

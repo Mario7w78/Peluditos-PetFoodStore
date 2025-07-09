@@ -5,6 +5,7 @@ import {
   obtenerOrdenesPorUsuario,
   obtenerOrdenesPorId,
   cancelarOrden,
+  buscarOrden,
 } from "@/data/ordenes";
 
 export const OrderContext = createContext();
@@ -12,6 +13,7 @@ export const OrderContext = createContext();
 export const ContextProvider = ({ children }) => {
   const [ordenes, setOrdenes] = useState([]);
   const [ordenesDelUsuario, setOrdenesDelUsuario] = useState([]);
+  const [ordenesBuscados, setOrdenesBuscados] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,6 +64,16 @@ export const ContextProvider = ({ children }) => {
       console.error(e);
     }
   };
+
+   const buscarOrdenes = async (buscar) => {
+      try {
+        const ordenes = await buscarOrden(buscar);
+        setOrdenesBuscados(ordenes);
+      } catch (error) {
+        console.error("Error al buscar ordenes:", error);
+      }
+    };
+
   return (
     <OrderContext.Provider
       value={{
@@ -71,6 +83,8 @@ export const ContextProvider = ({ children }) => {
         ordenesUsuario,
         ordenesPorId,
         crearOrdenes,
+        buscarOrdenes,
+        ordenesBuscados
       }}
     >
       {children}

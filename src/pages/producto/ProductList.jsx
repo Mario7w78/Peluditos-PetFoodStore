@@ -5,11 +5,12 @@ import { AuthContext } from "@/context/AuthContext";
 
 function ProductList() {
   const navigate = useNavigate();
-  const { productos } = useContext(ProductContext);
+  const { productos, eliminarProductos } = useContext(ProductContext);
   const { user } = useContext(AuthContext);
 
   const handleDelete = (id) => {
-    //eliminarProducto(id);
+    eliminarProductos(id);
+    alert("Producto eliminado correctamente - Recargar la página para ver los cambios");
   };
 
   return (
@@ -52,9 +53,9 @@ function ProductList() {
                 {productos.map((producto) => (
                   <tr key={producto.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4">
-                      {producto.imagen ? (
+                      {producto.imgurl ? (
                         <img
-                          src={producto.imagen}
+                          src={producto.imgurl}
                           alt={producto.nombre}
                           className="w-12 h-12 object-cover rounded"
                         />
@@ -65,7 +66,7 @@ function ProductList() {
                     <td className="px-6 py-4">{producto.nombre}</td>
                     <td className="px-6 py-4">{producto.presentacion}</td>
                     <td className="px-6 py-4">{producto.descripcion}</td>
-                    <td className="px-6 py-4">{producto.categoria}</td>
+                    <td className="px-6 py-4">{producto.categoriaId}</td>
                     <td className="px-6 py-4">{producto.stock}</td>
                     {user?.rol === "admin" && (
                       <td className="px-6 py-4 flex gap-2">

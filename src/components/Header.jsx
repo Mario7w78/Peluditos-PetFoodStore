@@ -102,6 +102,12 @@ const Header = () => {
                 Lista de usuarios
               </Link>
               <Link
+                to="/productlist"
+                className="px-4 py-2 hover:bg-gray-100"
+              >
+                Lista de productos
+              </Link>
+              <Link
                 to="/totalorderlist"
                 className="px-4 py-2 hover:bg-gray-100"
               >

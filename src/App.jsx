@@ -46,8 +46,10 @@ function App() {
           <Route element={<ProtectedRoutes />}>
             <Route path="/userlist" element={<UserList />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/productlist" element={<ProductList/>} />
             <Route path="agregar-categoria" element={<NuevaCategoria />} />
             <Route path="/agregar-producto" element={<AddProductForm />} />
+            <Route path="/editar-producto/:id" element={<AddProductForm />} />
             <Route path="/totalorderlist" element={<OrderList />} />
           </Route>
         </Route>

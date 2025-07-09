@@ -1,35 +1,59 @@
-import { useState, useContext} from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { CategoriesContext } from "@/context/CategoriesContext";
 import { ProductContext } from "@/context/ProductContext";
 
 function AddProductForm() {
-
+  const { id } = useParams();
   const { categorias } = useContext(CategoriesContext);
-  const { agregarProducto } = useContext(ProductContext);
-
+  const { agregarProducto, obtenerProductoPorId, modificarProductos } = useContext(ProductContext);
   const navigate = useNavigate();
   const [nombre, setNombre] = useState("");
   const [presentacion, setPresentacion] = useState("");
   const [descripcion, setDescripcion] = useState("");
-  const [stock, setStock] = useState("");
-  const [precio, setPrecio] = useState("");
+  const [stock, setStock] = useState(0);
+  const [precio, setPrecio] = useState(0);
   const [imagen, setImagen] = useState(null);
   const [imagenBase64, setImagenBase64] = useState(null);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
   const [presentacionError, setPresentacionError] = useState("");
   const [camposIncompletos, setCamposIncompletos] = useState(false);
 
-  const handleCrearProducto = () => {
+  useEffect(() => {
+    const fetchProducto = async () => {
+      if (id) {
+        try {
+          const producto = await obtenerProductoPorId(id);
+          if (producto) {
+            setNombre(producto.nombre ?? "");
+            setPresentacion(producto.presentacion ?? "");
+            setDescripcion(producto.descripcion ?? "");
+            setStock(producto.stock ?? 0);
+            setPrecio(producto.precioUnitario ?? 0);
+            setImagenBase64(producto.imgurl ?? "");
+            setCategoriaSeleccionada(producto.categoriaId ?? "");
+          }
+        } catch (error) {
+          console.error("Error al obtener el producto:", error);
+        }
+      }
+    };
 
+    fetchProducto(); // ✅ se llama la función async correctamente
+  }, [id, obtenerProductoPorId]);
+
+
+
+
+  const handleCrearProducto = async () => {
     if (
       nombre.trim() === "" ||
       presentacion.trim() === "" ||
       descripcion.trim() === "" ||
-      stock === "" ||
-      precio === "" ||
+      stock === 0 ||
+      precio === 0 ||
       categoriaSeleccionada === "" ||
-      !imagenBase64 
+      !imagenBase64
     ) {
       setCamposIncompletos(true);
       return;
@@ -45,9 +69,21 @@ function AddProductForm() {
       categoriaId: categoriaSeleccionada,
     };
 
-    agregarProducto(nuevoProducto);
-    navigate("/productos");
+    try {
+      if (id) {
+        await modificarProductos(id, nuevoProducto);
+        alert("Producto modificado correctamente");
+      } else {
+        await agregarProducto(nuevoProducto);
+        alert("Producto creado correctamente");
+      }
+
+      navigate("/productlist");
+    } catch (error) {
+      console.error("Error al guardar el producto:", error);
+    }
   };
+
 
   const convertirABase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -114,7 +150,7 @@ function AddProductForm() {
                 onChange={(e) => setCategoriaSeleccionada(e.target.value)}
               >
                 <option value="">Seleccionar categoría</option>
-                {categorias.map(categoria=>(
+                {categorias.map(categoria => (
                   <option key={categoria.id} value={categoria.id}>{categoria.nombre}</option>
                 ))}
               </select>
@@ -179,7 +215,7 @@ function AddProductForm() {
                 onClick={handleCrearProducto}
                 className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded text-sm"
               >
-                Crear producto
+                {id ? "Modificar Producto" : "Crear Producto"}
               </button>
             </div>
           </div>

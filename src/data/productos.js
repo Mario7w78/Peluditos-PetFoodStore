@@ -34,3 +34,25 @@ export async function obtenerProductosMasVendidos() {
   const res = await fetch(`${API_URL}/producto/masvendidos`);
   return res.json();
 }
+
+
+export async function buscarProducto(buscar) {
+  const res = await fetch(`${API_URL}/producto/buscar/${buscar}`);
+  return res.json();
+}
+
+export async function modificarProducto(id, data) {
+  const res = await fetch(`${API_URL}/producto/${id}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  return res.json();
+}
+
+export async function eliminarProducto(id) {
+  const res = await fetch(`${API_URL}/producto/${id}`, {
+    method: 'DELETE',
+  });
+  return res.json();
+}

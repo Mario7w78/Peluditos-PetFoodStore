@@ -11,6 +11,8 @@ export const OrderContext = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [ordenes, setOrdenes] = useState([]);
+  const [ordenesDelUsuario, setOrdenesDelUsuario] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,6 +38,7 @@ export const ContextProvider = ({ children }) => {
   const ordenesUsuario = async (usuarioId) => {
     try {
       const orden = await obtenerOrdenesPorUsuario(usuarioId);
+      setOrdenesDelUsuario(orden);
       return orden;
     } catch (e) {
       console.error(e);
@@ -63,6 +66,7 @@ export const ContextProvider = ({ children }) => {
     <OrderContext.Provider
       value={{
         ordenes,
+        ordenesDelUsuario,
         cancelarOrdenPorId,
         ordenesUsuario,
         ordenesPorId,

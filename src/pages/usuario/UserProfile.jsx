@@ -7,7 +7,7 @@ import { OrderContext } from "../../context/orderContext";
 
 const UserProfile = () => {
   const { user } = useContext(AuthContext);
-  const { ordenes } = useContext(OrderContext);
+  const { ordenesUsuario, ordenesDelUsuario } = useContext(OrderContext);
   const navigate = useNavigate();
 
   const [showChangeForm, setShowChangeForm] = useState(false);
@@ -19,15 +19,19 @@ const UserProfile = () => {
   const ordenesPorPagina = 10;
 
   useEffect(() => {
-    const propias = ordenes.filter((o) => o.usuarioid === user.id);
+    const cargarOrdenes = async () => {
+      if (user?.id) await ordenesUsuario(user.id); // Esto actualizará el estado global
+    };
+    cargarOrdenes();
+  }, [user]);
 
-    const filtradas = propias.filter((o) =>
-      o.id.toLowerCase().includes(search.toLowerCase())
+  useEffect(() => {
+    const filtradas = ordenesDelUsuario.filter((o) =>
+      o.id.toString().toLowerCase().includes(search.toLowerCase())
     );
-
     setOrdenesFiltradas(filtradas);
     setCurrentPage(1);
-  }, [search, user]);
+  }, [search, ordenesDelUsuario]);
 
   if (!user) {
     return <p className="text-center mt-8">No has iniciado sesión.</p>;
@@ -58,29 +62,53 @@ const UserProfile = () => {
 
   // Paginación
   const indexInicio = (currentPage - 1) * ordenesPorPagina;
-  const ordenesPagina = ordenesFiltradas.slice(indexInicio, indexInicio + ordenesPorPagina);
+  const ordenesPagina = ordenesFiltradas.slice(
+    indexInicio,
+    indexInicio + ordenesPorPagina
+  );
   const totalPaginas = Math.ceil(ordenesFiltradas.length / ordenesPorPagina);
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 space-y-10">
-
       {/* Grid con bloque de perfil y bloque de contador */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-
         {/* Bloque de perfil */}
         <div className="bg-white p-8 rounded-lg shadow-md flex flex-col items-center text-center">
-          <h2 className="text-2xl font-semibold mb-6 text-blue-700">👤 Perfil de Usuario</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-blue-700">
+            👤 Perfil de Usuario
+          </h2>
           <div className="space-y-3 text-gray-700 text-base w-full">
-            <p><strong>Nombre:</strong> {user.nombre}</p>
-            <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>DNI:</strong> {user.dni}</p>
-            <p><strong>Contraseña:</strong> {"*".repeat(user.password.length)}</p>
-            <p><strong>Fecha de nacimiento:</strong> {user.age}</p>
-            <p><strong>Dirección:</strong> {user.direccion || "No especificada"}</p>
-            <p><strong>Ciudad:</strong> {user.ciudad || "No especificada"}</p>
-            <p><strong>Departamento:</strong> {user.departamento || "No especificado"}</p>
-            <p><strong>Teléfono:</strong> {user.telefono || "No especificado"}</p>
-            <p><strong>Rol:</strong> {user.rol || "Cliente"}</p>
+            <p>
+              <strong>Nombre:</strong> {user.nombre}
+            </p>
+            <p>
+              <strong>Email:</strong> {user.email}
+            </p>
+            <p>
+              <strong>DNI:</strong> {user.dni}
+            </p>
+            <p>
+              <strong>Contraseña:</strong> {"*".repeat(user.password.length)}
+            </p>
+            <p>
+              <strong>Fecha de nacimiento:</strong> {user.age}
+            </p>
+            <p>
+              <strong>Dirección:</strong> {user.direccion || "No especificada"}
+            </p>
+            <p>
+              <strong>Ciudad:</strong> {user.ciudad || "No especificada"}
+            </p>
+            <p>
+              <strong>Departamento:</strong>{" "}
+              {user.departamento || "No especificado"}
+            </p>
+            <p>
+              <strong>Teléfono:</strong> {user.telefono || "No especificado"}
+            </p>
+            <p>
+              <strong>Rol:</strong> {user.rol || "Cliente"}
+            </p>
 
             {!showChangeForm ? (
               <button
@@ -142,7 +170,9 @@ const UserProfile = () => {
 
       {/* Bloque de tabla de órdenes */}
       <div className="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md">
-        <h3 className="text-xl font-semibold mb-4 text-blue-600">🧾 Tus Órdenes</h3>
+        <h3 className="text-xl font-semibold mb-4 text-blue-600">
+          🧾 Tus Órdenes
+        </h3>
         <input
           type="text"
           placeholder="Buscar por ID de orden..."

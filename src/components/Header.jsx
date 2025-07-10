@@ -4,7 +4,7 @@ import { AuthContext } from "@/context/AuthContext";
 import styles from "@/styles/Alumno3Styles";
 import Footer from "./Footer";
 import { CategoriesContext } from "@/context/CategoriesContext";
-
+import logo from "@/assets/LOGO.png";
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
   const { categorias } = useContext(CategoriesContext);
@@ -64,7 +64,7 @@ const Header = () => {
       >
         <div className="flex items-center gap-2 text-xl font-bold">
           <img
-            src="/LOGO.png"
+            src={logo}
             alt="Logo Peluditos"
             className="h-15 w-15 object-contain rounded-full"
           />

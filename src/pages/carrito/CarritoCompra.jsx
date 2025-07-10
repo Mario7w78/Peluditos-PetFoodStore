@@ -4,6 +4,7 @@ import styles from "@/styles/CarritoStyles";
 import { DetallesCarrito } from "./detallesCarrito";
 import { AuthContext } from "../../context/AuthContext";
 import { CartContext } from "../../context/CartContext";
+import offer from "@/assets/Limited-offer.jpg";
 
 const CarritoCompra = () => {
   const { user } = useContext(AuthContext);
@@ -146,7 +147,8 @@ const CarritoCompra = () => {
         {/*En el caso de que el contador llegase a cero, simplemente desapareceria. El problema*/}
         {/* es que detiene todas las funcionalidades de los botones*/}
         <img
-          src="src/images/Limited-offer.jpg"
+
+          src={offer}
           alt="centered image"
           className={styles.image_offer}
         />

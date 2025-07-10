@@ -5,7 +5,9 @@ import { AuthContext } from "@/context/AuthContext";
 import { OrderContext } from "@/context/orderContext";
 export const Dashboard = () => {
   const { usuarios, deactivateUser, deleteUser } = useContext(AuthContext);
-  const { ordenes, cancelarOrdenPorId } = useContext(OrderContext);
+  const { ordenes, cancelarOrdenPorId, ordenesUsuario } = useContext(OrderContext);
+  const [ordenesU, setOrdenesUsuario] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null)
 
   const navigate = useNavigate();
   const [fechaFiltro, setFechaFiltro] = useState(() => {
@@ -17,7 +19,6 @@ export const Dashboard = () => {
     return <div>Cargando datos del dashboard...</div>;
   }
 
-  const [selectedUser, setSelectedUser] = useState(usuarios[0] || null);
 
   const usuariosFiltrados = fechaFiltro
     ? usuarios.filter((u) => {
@@ -56,9 +57,16 @@ export const Dashboard = () => {
     deleteUser(usuario.id);
   };
 
-  const ordenesUsuario = ordenes.filter(
-    (ord) => ord.usuarioid === selectedUser?.id
-  );
+  const handleOrdenesUsuario = async (usuarioId) => {
+    try {
+      const usuario = usuarios.find((u) => u.id === usuarioId); 
+      setSelectedUser(usuario);
+      const ordenes = await ordenesUsuario(usuarioId);
+      setOrdenesUsuario(ordenes);
+    } catch (error) {
+      console.error("Error al obtener órdenes del usuario:", error);
+    }
+  };
 
   return (
     <div className="p-8 bg-[#fafbfc] min-h-screen font-sans">
@@ -129,7 +137,7 @@ export const Dashboard = () => {
                   </td>
                   <td className="py-2 flex gap-2">
                     <button
-                      onClick={() => setSelectedUser(user)}
+                      onClick={() => handleOrdenesUsuario(user.id)}
                       className="border border-blue-600 text-blue-600 font-semibold px-3 py-1 rounded hover:bg-blue-600 hover:text-white transition"
                     >
                       Ver detalle
@@ -180,10 +188,6 @@ export const Dashboard = () => {
                     </span>
                   </div>
                 </div>
-                <img
-                  src={selectedUser.avatar || "/default-avatar.png"}
-                  className="w-16 h-16 rounded-full object-cover border-2 border-[#ff7e5a]"
-                />
               </div>
 
               <table className="w-full border-collapse mt-2">
@@ -195,7 +199,7 @@ export const Dashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {ordenesUsuario.slice(0, 10).map((ord) => (
+                  {ordenesU.slice(0, 10).map((ord) => (
                     <tr key={ord.id} className="border-b">
                       <td className="py-1 text-blue-600 font-semibold">
                         {ord.id}

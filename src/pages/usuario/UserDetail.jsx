@@ -3,12 +3,14 @@ import { useContext, useEffect, useState } from "react";
 import { Title } from "@/components/Title";
 import { OrderTable } from "@/components/OrderTable";
 import { AuthContext } from "@/context/AuthContext";
+import { OrderContext } from "../../context/orderContext";
 
-export function UserDetail({ ordenesUsuario }) {
+export function UserDetail() {
   const { id } = useParams();
   const [usuario, setUsuario] = useState(null);
   const [ordenes, setOrdenes] = useState([]);
   const {usuarioPorId} = useContext(AuthContext);
+  const {ordenesUsuario} = useContext(OrderContext);
 
   useEffect(() => {
     const fetchData = async () => {

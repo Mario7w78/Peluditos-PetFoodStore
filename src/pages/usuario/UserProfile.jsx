@@ -6,7 +6,7 @@ import Pagination from "@/components/Pagination";
 import { OrderContext } from "../../context/orderContext";
 
 const UserProfile = () => {
-  const { user } = useContext(AuthContext);
+  const { actualizarDatosUsuario, user } = useContext(AuthContext);
   const { ordenesUsuario, ordenesDelUsuario } = useContext(OrderContext);
   const navigate = useNavigate();
 
@@ -37,7 +37,7 @@ const UserProfile = () => {
     return <p className="text-center mt-8">No has iniciado sesión.</p>;
   }
 
-  const handlePasswordChange = () => {
+  const handlePasswordChange = async () => {
     if (newPassword.trim().length < 4) {
       alert("La contraseña debe tener al menos 4 caracteres.");
       return;
@@ -48,12 +48,16 @@ const UserProfile = () => {
       return;
     }
 
-    const updatedUser = { ...user, password: newPassword };
-    actualizarUsuario(updatedUser);
-    alert("Contraseña actualizada con éxito.");
-    setNewPassword("");
-    setConfirmPassword("");
-    setShowChangeForm(false);
+    try{
+      await actualizarDatosUsuario({ password: newPassword },user.id);
+      alert("Contraseña actualizada con éxito.");
+      setNewPassword("");
+      setConfirmPassword("");
+      setShowChangeForm(false);
+    } catch (error) {
+      console.error("Error al actualizar la contraseña:", error);
+      alert("Error al actualizar la contraseña. Inténtalo de nuevo.");
+    }
   };
 
   const handleRegresar = () => {

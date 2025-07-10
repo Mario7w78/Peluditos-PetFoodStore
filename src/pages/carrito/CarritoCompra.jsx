@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, } from "react";
 import { Link } from "react-router-dom";
 import styles from "@/styles/CarritoStyles";
 import { DetallesCarrito } from "./detallesCarrito";
@@ -41,6 +41,7 @@ const CarritoCompra = () => {
     }
   }, [contador]);
 
+  
   const calcularTotal = () => {
     if (!carrito) return 0;
     return detalleCarrito.productos.reduce(
